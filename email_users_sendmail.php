@@ -18,7 +18,7 @@
 ?>
 
 <?php
-	require(ABSPATH.'wp-content/plugins/email_users/class-phpmailer.php');
+	require(ABSPATH.'wp-content/plugins/email-users/class-phpmailer.php');
 	$err_msg = '';
 	
 	// Analyse form input, check for blank fields

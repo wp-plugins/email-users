@@ -4,7 +4,7 @@
 		<script language="JavaScript">
 		<!--
 			function goToNotificationPage( thisForm ) {
-				thisForm.action = "post.php?page=email_users/email_users_form.php";
+				thisForm.action = "post.php?page=email-users/email_users_form.php";
 				thisForm.submit();
 			}
 		// -->
