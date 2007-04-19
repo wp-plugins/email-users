@@ -114,7 +114,7 @@
 			<p>Please correct the errors displayed above and try again.</p>
 	<?	} ?>
 		
-	<form name="SendEmail" action="post.php?page=email_users/email_users_sendmail.php" method="post">		
+	<form name="SendEmail" action="post.php?page=email-users/email_users_sendmail.php" method="post">		
 		<input type="hidden" name="send" value="true" />
 		<fieldset id="titlediv">
 			<legend>Send From (name)</legend>

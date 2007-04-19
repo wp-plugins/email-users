@@ -33,7 +33,7 @@
 <div class="wrap">
 	<h2>Email users</h2>
 	<p>
-		Set the various options related to the email_users plugin. The various variables you can 
+		Set the various options related to the email-users plugin. The various variables you can 
 		include in the subject or body templates are:<br/>
 		<ul>
 			<li><strong>%MAILUSERS_BLOG_URL%</strong>: the link to the blog</li>
@@ -57,7 +57,7 @@
 		Current version: <?php echo mailusers_get_current_version(); ?>
 	</p>
 	
-	<form name="SendEmail" action="options-general.php?page=email_users/email_users_set_options.php" method="post">		
+	<form name="SendEmail" action="options-general.php?page=email-users/email_users_set_options.php" method="post">		
 		<input type="hidden" name="send" value="true" />
 		<fieldset id="titlediv">
 			<legend>Default notification subject</legend>
