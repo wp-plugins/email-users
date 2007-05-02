@@ -67,16 +67,14 @@
 		// No error, send the mail
 ?>
 	<div class="wrap">
-		<p>Result of the mailing:</p>
-		<p><ul>
-		
+	
 		
 <?php 
 		// Fetch users
 		$users = mailusers_get_users_from_role( $send_role );
 
 		if ( 0==count( $users ) ) {
-			echo '<li><strong>No users in this group</strong></li>';
+			echo '<p><strong>No users in this group</strong></p>';
 		}
 		else {		
 			// --------
@@ -99,17 +97,26 @@
 			$mail->Subject 		= $subject;
 			$mail->Body    		= $mailContent;
 			
-			foreach ( $users as $user ) {		
-				$mail->AddAddress( $user->user_email, $user->display_name );
+			// Our list of users to show as result
+			$user_list_as_string = '';
 			
-				if ( !$mail->send() ) {
-					echo '<li style="text-color:red;">Failure: '.$user->display_name.' ('.$user->user_email.'), ' . $mail->ErrorInfo . '</li>';
-				}
-				else {		
-					echo '<li style="text-color:green;>Ok: '.$user->display_name.'('.$user->user_email.')</li>';
-				}
-				
-				$mail->ClearAddresses();
+			// Add author of the mail as main recipient
+			$mail->AddAddress( $fromAddress, $fromName );
+			
+			// Add users as BCC
+			foreach ( $users as $user ) {
+				$mail->AddBCC( $user->user_email, $user->display_name );
+				$user_list_as_string .= '<li>'.$user->display_name.' ('.$user->user_email.')</li>';
+			}
+			
+			// Send mail and show result
+			if ( !$mail->send() ) {
+				echo '<p style="text-color:red;">Failure: ' . $mail->ErrorInfo . '</p>';
+			} else {		
+				echo '<p><strong>Result of the mailing</strong></p>';
+				echo '<p style="text-color:green;"><ul>';
+				echo $user_list_as_string;
+				echo '</ul></p>';
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: email users
-Version: 2.2
+Version: 2.3
 Plugin URI: http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-email-users/
 Description: Allows the administrator to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. This plugin is using <a href="http://phpmailer.sourceforge.net/">PhpMailer</a>. Bug reports and corrections by Cyril Crua and Pokey
 Author: Vincent Prat (email : vpratfr@yahoo.fr)
@@ -26,7 +26,7 @@ Author URI: http://www.vincentprat.info
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '2.2' );
+define( 'MAILUSERS_CURRENT_VERSION', '2.3' );
 
 
 /**
@@ -170,30 +170,25 @@ function mailusers_get_current_version() {
 function mailusers_get_users_from_role( $role ) {
 	global $wpdb;
 	
+	// Bug corrected in version 2.3, better way to select users based on their role. Thanks to Carl for the ideas.
 	switch ($role) {
 		case 0:		// subscribers		0
-			$lvl_lo = 0;
-			$lvl_hi = 0;
+			$capability_filter = "meta_value like '%subscriber%'";
 			break;
 		case 1:		// contributors		1
-			$lvl_lo = 1;
-			$lvl_hi = 1;
+			$capability_filter = "meta_value like '%contributor%'";
 			break;
 		case 2:		// authors			2..4
-			$lvl_lo = 2;
-			$lvl_hi = 4;
+			$capability_filter = "meta_value like '%author%'";
 			break;
 		case 3:		// editors			5..7
-			$lvl_lo = 5;
-			$lvl_hi = 7;
+			$capability_filter = "meta_value like '%editor%'";
 			break;
 		case 4:		// administrators		8..10
-			$lvl_lo = 8;
-			$lvl_hi = 10;
+			$capability_filter = "meta_value like '%administrator%'";
 			break;
 		case 5:		// all				0..10
-			$lvl_lo = 0;
-			$lvl_hi = 10;
+			$capability_filter = "meta_value like '%subscriber%' OR meta_value like '%contributor%' OR meta_value like '%author%' OR meta_value like '%editor%' OR meta_value like '%administrator%'";
 			break;
 		default:	// error
 			return array();
@@ -202,9 +197,8 @@ function mailusers_get_users_from_role( $role ) {
 	// Bug corrected in version 2.2, $wpdb->prefix was not taken into account. Credits to Pokey
 	//--
     $users = $wpdb->get_results( "SELECT display_name, user_email FROM $wpdb->usermeta, $wpdb->users WHERE 
-																		(meta_key = '".$wpdb->prefix."user_level') AND
-																		((meta_value >= $lvl_lo) AND
-																		(meta_value <= $lvl_hi)) AND
+																		(meta_key = '".$wpdb->prefix."capabilities') AND
+																		(".$capability_filter.") AND
 																		(user_id = id);");
 																		
 	return $users;
