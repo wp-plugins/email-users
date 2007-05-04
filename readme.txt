@@ -4,7 +4,7 @@ Donate link: http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-e
 Tags: email, users, list, admin
 Requires at least: 1.5.0
 Tested up to: 2.1
-Stable tag: 2.2
+Stable tag: 2.3
 
 A plugin for wordpress which allows you to send an e-mail to your registered blog users, based on their role.
 
@@ -16,5 +16,5 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 == Installation ==
 
-To install the plugin, just drop the "email_users" folder into your wordpress "wp-content/plugin/email_users" directory and activate the plugin from the administration panel. This adds a submenu under the Write menu.
+To install the plugin, just drop the "email-users" folder into your wordpress "wp-content/plugins" directory and activate the plugin from the administration panel. This adds a submenu under the Write menu.
 
