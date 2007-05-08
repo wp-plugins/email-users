@@ -18,13 +18,13 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 To install the plugin, just drop the "email-users" folder into your wordpress "wp-content/plugins" directory and activate the plugin from the administration panel. This adds a submenu under the Write menu.
 
-== FAQ ==
+== Frequently Asked Questions ==
 
-**I got an error looking like "Language string failed to load: instantiate"**
+= I got an error looking like "Language string failed to load: instantiate" =
 
 It looks like a problem with your host. You can have a look at the following link:
 http://www.u-g-h.com/index.php/2007/04/27/phpmailer-issue-on-iis/
 
-**The "notify users of this post" button does not work**
+= The "notify users of this post" button does not work =
 
 It looks like you are using Internet Explorer. I am aware of the bug but I cannot manage to correct it. If you have an idea, please let me know. By the way, the button works nicely with Firefox.
