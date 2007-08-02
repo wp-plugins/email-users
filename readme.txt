@@ -1,6 +1,6 @@
 === Email Users ===
 Contributors: vprat
-Donate link: http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-email-users/
+Donate link: http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-email-users/ 
 Tags: email, users, list, admin
 Requires at least: 1.5.0
 Tested up to: 2.1
