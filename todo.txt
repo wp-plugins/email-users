@@ -1,0 +1,14 @@
+OK - Check that the variables get replaced in the template
+OK - Shorten the names of the template variables
+OK - Internationalised using PO files
+OK - Enable sending HTML or PLAIN TEXT emails
+OK - Options to configure how the mails get sent
+OK - Option to give access to the plugin to users that are not administrators
+
+NO - Add %TO_NAME%, %TO_ADDRESS% to template variables
+
+- Email one particular user
+- Role manager plugin compatibility?
+- Allow users to opt for not recieving the post notifications?
+
+- More language translations
