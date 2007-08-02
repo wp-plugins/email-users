@@ -1,0 +1,252 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: email-users 2.4\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-08-02 17:23-0500\n"
+"Last-Translator: Vincent Prat <vpratfr@yahoo.fr>\n"
+"Language-Team: Vincent Prat <vpratfr@yahoo.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: /home/vincent/dev/email-users/\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: trunk\n"
+
+#: trunk/email_users_form.php:24
+#: trunk/email_users_sendmail.php:24
+msgid "You are not allowed to send mails with this plugin."
+msgstr "Vous n'êtes pas autorisé à envoyer des courriels en utilisant ce plugin."
+
+#: trunk/email_users_form.php:42
+msgid "Trying to notify of a post without passing the post id !"
+msgstr "Vous essayez d'avertir d'un article sans fournir d'id"
+
+#: trunk/email_users_form.php:83
+#: trunk/email_users_options_form.php:38
+msgid "It looks like you have an old version of the plugin activated. Please deactivate the plugin and activate it again to complete the installation of the new version."
+msgstr "Il semble qu'une ancienne version du plugin est activée actuellement. Veuillez désactiver le plugin et le réactiver pour terminer l'installation de la nouvelle version."
+
+#: trunk/email_users_form.php:91
+#: trunk/email_users_options_form.php:46
+#: trunk/email-users.php:61
+#: trunk/email-users.php:62
+msgid "Email users"
+msgstr "Email users"
+
+#: trunk/email_users_form.php:96
+msgid "Notify your registered users of a particular post based on their access levels."
+msgstr "Avertissez vos utilisateurs enregistrés d'un article en particulier selon leur rôle."
+
+#: trunk/email_users_form.php:103
+msgid "Send an email to your registered users based on their access levels."
+msgstr "Envoyez un courriel à vos utilisateurs enregistrés selon leur rôle."
+
+#: trunk/email_users_form.php:111
+#: trunk/email_users_options_form.php:61
+msgid "Please correct the errors displayed above and try again."
+msgstr "Veuillez corriger les erreurs précédentes et essayer de nouveau."
+
+#: trunk/email_users_form.php:117
+msgid "Mail format"
+msgstr "Format de mail"
+
+#: trunk/email_users_form.php:119
+#: trunk/email_users_options_form.php:86
+msgid "HTML"
+msgstr "HTML"
+
+#: trunk/email_users_form.php:120
+#: trunk/email_users_options_form.php:87
+msgid "Plain text"
+msgstr "Texte brut"
+
+#: trunk/email_users_form.php:124
+msgid "Send From (name)"
+msgstr "Expéditeur (Nom)"
+
+#: trunk/email_users_form.php:128
+msgid "Send From (email)"
+msgstr "Expéditeur (adresse électronique)"
+
+#: trunk/email_users_form.php:132
+msgid "Send To"
+msgstr "Envoyer à"
+
+#: trunk/email_users_form.php:133
+#: trunk/email_users_options_form.php:80
+msgid "Subscribers"
+msgstr "Abonnés"
+
+#: trunk/email_users_form.php:134
+#: trunk/email_users_options_form.php:79
+msgid "Contributors"
+msgstr "Participants"
+
+#: trunk/email_users_form.php:135
+#: trunk/email_users_options_form.php:78
+msgid "Authors"
+msgstr "Auteurs"
+
+#: trunk/email_users_form.php:136
+#: trunk/email_users_options_form.php:77
+msgid "Editors"
+msgstr "Editeurs"
+
+#: trunk/email_users_form.php:137
+#: trunk/email_users_options_form.php:76
+msgid "Administrators"
+msgstr "Administrateurs"
+
+#: trunk/email_users_form.php:138
+msgid "All the users"
+msgstr "Tous les utilisateurs"
+
+#: trunk/email_users_form.php:141
+msgid "Subject"
+msgstr "Sujet"
+
+#: trunk/email_users_form.php:145
+msgid "Body"
+msgstr "Corps du message"
+
+#: trunk/email_users_form.php:149
+msgid "Send Email"
+msgstr "Envoyer le courriel"
+
+#: trunk/email_users_set_options.php:24
+#: trunk/email_users_options_form.php:25
+msgid "You are not allowed to change the options of this plugin."
+msgstr "Vous n'êtes pas autorisé à configurer ce plugin"
+
+#: trunk/email_users_set_options.php:91
+msgid "Options set successfully"
+msgstr "Options enregistrées"
+
+#: trunk/email_users_options_form.php:48
+msgid "Set the various options related to the email-users plugin. The various variables you can include in the subject or body templates are:"
+msgstr "Réglez ici les options du plugin Email Users. Les différentes variables que vous pouvez inclure dans le sujet ou le corps du modèle de message sont :"
+
+#: trunk/email_users_options_form.php:50
+msgid "the link to the blog"
+msgstr "Le lien vers le blog"
+
+#: trunk/email_users_options_form.php:51
+msgid "the blog's name"
+msgstr "Le nom du blog"
+
+#: trunk/email_users_options_form.php:52
+msgid "the wordpress user name of the person sending the mail"
+msgstr "Le nom d'utilisateur WordPress de l'expéditeur"
+
+#: trunk/email_users_options_form.php:53
+msgid "the title of the post you want to highlight"
+msgstr "Le titre de l'article dont vous avertissez les utilisateurs"
+
+#: trunk/email_users_options_form.php:54
+msgid "the excerpt of the post you want to highlight"
+msgstr "L'extrait de l'article dont vous avertissez les utilisateurs"
+
+#: trunk/email_users_options_form.php:55
+msgid "the link to the post you want to highlight"
+msgstr "Le liens vers l'article dont vous avertissez les utilisateurs"
+
+#: trunk/email_users_options_form.php:65
+msgid "Installed version:"
+msgstr "Version installée :"
+
+#: trunk/email_users_options_form.php:68
+msgid "Current version:"
+msgstr "Version actuelle :"
+
+#: trunk/email_users_options_form.php:74
+msgid "Allow users having at least following role to use the plugin"
+msgstr "Autoriser ces utilisateurs à utiliser le plugin"
+
+#: trunk/email_users_options_form.php:84
+msgid "Send mails as plain text or HTML by default?"
+msgstr "Envoyer les courriels en HTML ou texte brut par défaut ?"
+
+#: trunk/email_users_options_form.php:91
+msgid "Send mails using SMTP server or built-in PHP mail functions?"
+msgstr "Envoyer les courriels en utilisant un serveur SMTP ou la fonction mail de PHP ?"
+
+#: trunk/email_users_options_form.php:98
+msgid "SMTP server (only for SMTP method)"
+msgstr "Serveur SMTP (seulement pour la méthode d'envoi smtp)"
+
+#: trunk/email_users_options_form.php:103
+msgid "SMTP port (only for SMTP method) - Usually 25 by default on most servers."
+msgstr "Port SMTP (seulement pour la méthode d'envoi smtp) - En général 25 par défaut sur la plupart des serveurs"
+
+#: trunk/email_users_options_form.php:108
+msgid "SMTP user (only for SMTP method) - Leave blank if your server does not require authentication."
+msgstr "Utilisateur SMTP (seulement pour la méthode d'envoi smtp) - Laissez vide si votre serveur ne requiert pas d'identification."
+
+#: trunk/email_users_options_form.php:113
+msgid "SMTP password (only for SMTP method)"
+msgstr "Mot de passe SMTP (seulement pour la méthode d'envoi smtp)"
+
+#: trunk/email_users_options_form.php:118
+msgid "Default notification subject"
+msgstr "Sujet par défaut"
+
+#: trunk/email_users_options_form.php:124
+msgid "Default notification body"
+msgstr "Corps par défaut"
+
+#: trunk/email_users_options_form.php:128
+msgid "Set options"
+msgstr "Enregistrer les options"
+
+#: trunk/email_users_sendmail.php:37
+msgid "You must enter a sender name."
+msgstr "Vous devez préciser un nom d'expéditeur."
+
+#: trunk/email_users_sendmail.php:44
+msgid "You must specify a mail format (HTML or plain text)."
+msgstr "Vous deviez spécifier un format de courriel (HTML ou texte brut)"
+
+#: trunk/email_users_sendmail.php:51
+msgid "You must enter a sender mail address."
+msgstr "Vous devez préciser une adresse d'expéditeur."
+
+#: trunk/email_users_sendmail.php:58
+msgid "You must enter a recipient category."
+msgstr "Vous devez préciser un groupe d'utilisateurs."
+
+#: trunk/email_users_sendmail.php:66
+msgid "You must enter a subject."
+msgstr "Vous devez préciser un sujet."
+
+#: trunk/email_users_sendmail.php:73
+msgid "You must enter a content."
+msgstr "Vous devez préciser un corps de message."
+
+#: trunk/email_users_sendmail.php:97
+msgid "No users in this group"
+msgstr "Aucun utilisateur dans ce groupe"
+
+#: trunk/email_users_sendmail.php:168
+msgid "Failure:"
+msgstr "Echec :"
+
+#: trunk/email_users_sendmail.php:173
+msgid "Result of the mailing"
+msgstr "Résultat de l'envoi"
+
+#: trunk/email-users.php:56
+#: trunk/email-users.php:57
+msgid "Send email to users"
+msgstr "Envoyer un courriel aux utilisateurs"
+
+#: trunk/email-users.php:99
+#: trunk/email-users.php:139
+msgid "[%BLOG_NAME%] A post of interest: %POST_TITLE%"
+msgstr "[%BLOG_NAME%] Un article d'intérêt : %POST_TITLE%"
+
+#: trunk/email-users.php:103
+#: trunk/email-users.php:142
+msgid "<p>Hello, </p><p>I would like to bring your attention on a new post published on the blog. Details of the post follow; I hope you will find it interesting.</p><p>Best regards, </p><p>%FROM_NAME%</p><hr><p><strong>%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Link to the post: <a href=\"%POST_URL%\">%POST_URL%</a></li><li>Link to %BLOG_NAME%: <a href=\"%BLOG_URL%\">%BLOG_URL%</a></li></ul>"
+msgstr "<p>Bonjour, </p><p>Je voudrais attirer votre attention sur un nouvel article publié sur le blog, j'espère qu'il vous intéressera.</p><p>Cordialement, </p><p>%FROM_NAME%</p><hr><p><strong>%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Lien vers l'article : <a href=\"%POST_URL%\">%POST_URL%</a></li><li>Lien vers %BLOG_NAME%: <a href=\"%BLOG_URL%\">%BLOG_URL%</a></li></ul>"
+

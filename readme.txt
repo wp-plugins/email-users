@@ -4,13 +4,15 @@ Donate link: http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-e
 Tags: email, users, list, admin
 Requires at least: 1.5.0
 Tested up to: 2.1
-Stable tag: 2.3
+Stable tag: 2.4
 
 A plugin for wordpress which allows you to send an e-mail to your registered blog users, based on their role.
 
 == Description ==
 
 A plugin for wordpress which allows you to send an e-mail to your registered blog users, based on their role. Some translations of the plugin to Danish, Italian and Japanese can be found on the [plugin home page](http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-email-users/).
+
+I need translators for the plugin, this is not a hard task, just a file to translate. Please contact me if you want to translate. Currently available in English and French.
 
 This plugin is available under the GPL license, which means that it's free. If you use it for a commercial web site, if you appreciate my efforts or if you want to encourage me to develop and maintain it, please consider making a donation using Paypal, a secured payment solution. You just need to click the button on the [plugin home page](http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-email-users/) and follow the instructions.
 
