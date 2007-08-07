@@ -17,7 +17,6 @@
 */
 ?>
 
-
 <?php 
 	if (!mailusers_is_current_user_allowed_to_configure()) {
 ?>
@@ -44,6 +43,25 @@
 
 <div class="wrap">
 	<h2><?php _e('Email users', MAILUSERS_I18N_DOMAIN); ?></h2>
+
+<div align="center">
+<a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s home page', MAILUSERS_I18N_DOMAIN); ?></a>
+<br/><br/>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="vpratfr@yahoo.fr">
+<input type="hidden" name="item_name" value="Email Users - Wordpress Plugin">
+<input type="hidden" name="no_shipping" value="1">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="currency_code" value="EUR">
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="lc" value="<?php _e('EN', MAILUSERS_I18N_DOMAIN); ?>">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" border="0" name="submit" alt="PayPal">
+<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+</form>
+</div>
+
 	<p>
 		<?php _e('Set the various options related to the email-users plugin. The various variables you can include in the subject or body templates are:', MAILUSERS_I18N_DOMAIN); ?><br/>
 		<ul>
