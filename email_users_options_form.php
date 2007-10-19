@@ -35,6 +35,10 @@
 <div class="wrap">
 	<p style="text-color:red;">
 		<?php _e('It looks like you have an old version of the plugin activated. Please deactivate the plugin and activate it again to complete the installation of the new version.', MAILUSERS_I18N_DOMAIN); ?>
+	</p>		
+	<p>
+		<?php _e('Installed version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_installed_version(); ?> <br/>
+		<?php _e('Current version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_current_version(); ?>
 	</p>
 </div>
 <?php
@@ -42,7 +46,7 @@
 ?>
 
 <div class="wrap">
-	<h2><?php _e('Email users', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<h2><?php _e('Email users', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_installed_version(); ?></h2>
 
 <div align="center">
 <a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s home page', MAILUSERS_I18N_DOMAIN); ?></a>
@@ -74,74 +78,95 @@
 		</ul>
 	</p>
 	
-	<? 	if ($err_msg!='') { ?>
-			<p class="error"><?=$err_msg?></p>
+	<?php 	
+		if (isset($err_msg) && $err_msg!='') { ?>
+			<p class="error"><?php echo $err_msg; ?></p>
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
-	<?	} ?>
-		
-	<p>
-		<?php _e('Installed version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_installed_version(); ?>
-	</p>
-	<p>
-		<?php _e('Current version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_current_version(); ?>
-	</p>
+	<?php	
+		} ?>
 	
 	<form name="SendEmail" action="options-general.php?page=email-users/email_users_set_options.php" method="post">		
 		<input type="hidden" name="send" value="true" />
-		<fieldset id="titlediv">
-			<legend><?php _e('Allow users having at least following role to use the plugin', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><select name="mail_user_level">
-				<option value="8" <?php if (mailusers_get_mail_user_level()=='8') echo 'selected="true"'; ?>><?php _e('Administrators', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="5" <?php if (mailusers_get_mail_user_level()=='5') echo 'selected="true"'; ?>><?php _e('Editors', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="2" <?php if (mailusers_get_mail_user_level()=='2') echo 'selected="true"'; ?>><?php _e('Authors', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="1" <?php if (mailusers_get_mail_user_level()=='1') echo 'selected="true"'; ?>><?php _e('Contributors', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="0" <?php if (mailusers_get_mail_user_level()=='0') echo 'selected="true"'; ?>><?php _e('Subscribers', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('Send mails as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><select name="default_mail_format">
-				<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"'; ?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"'; ?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('Send mails using SMTP server or built-in PHP mail functions?', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><select name="mail_method">
-				<option value="smtp" <?php if (mailusers_get_mail_method()=='smtp') echo 'selected="true"'; ?>>SMTP</option>
-				<option value="mail" <?php if (mailusers_get_mail_method()=='mail') echo 'selected="true"'; ?>>PHP mail</option>
-			</select></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('SMTP server (only for SMTP method)', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><input type="text" name="smtp_server" 
-					value="<?php echo mailusers_get_smtp_server(); ?>"/></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('SMTP port (only for SMTP method) - Usually 25 by default on most servers.', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><input type="text" name="smtp_port" 
-					value="<?php echo mailusers_get_smtp_port(); ?>"/></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('SMTP user (only for SMTP method) - Leave blank if your server does not require authentication.', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><input type="text" name="smtp_user" 
-					value="<?php echo mailusers_get_smtp_user(); ?>"/></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('SMTP password (only for SMTP method)', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><input type="password" name="smtp_password" 
-					value="<?php echo mailusers_get_smtp_password(); ?>"/></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('Default notification subject', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><input type="text" name="default_subject" 
+		<table class="editform" width="100%" cellspacing="2" cellpadding="5">
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('Allow users having at least following role to use the plugin', MAILUSERS_I18N_DOMAIN); ?></label></th>
+			<td>
+				<select name="mail_user_level">
+					<option value="8" <?php if (mailusers_get_mail_user_level()=='8') echo 'selected="true"'; ?>>
+						<?php _e('Administrators', MAILUSERS_I18N_DOMAIN); ?></option>
+					<option value="5" <?php if (mailusers_get_mail_user_level()=='5') echo 'selected="true"'; ?>>
+						<?php _e('Editors', MAILUSERS_I18N_DOMAIN); ?></option>
+					<option value="2" <?php if (mailusers_get_mail_user_level()=='2') echo 'selected="true"'; ?>>
+						<?php _e('Authors', MAILUSERS_I18N_DOMAIN); ?></option>
+					<option value="1" <?php if (mailusers_get_mail_user_level()=='1') echo 'selected="true"'; ?>>
+						<?php _e('Contributors', MAILUSERS_I18N_DOMAIN); ?></option>
+					<option value="0" <?php if (mailusers_get_mail_user_level()=='0') echo 'selected="true"'; ?>>
+						<?php _e('Subscribers', MAILUSERS_I18N_DOMAIN); ?></option>
+			</select></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('Send mails as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<select name="default_mail_format">
+					<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"'; ?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
+					<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"'; ?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
+				</select></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('Send mails using SMTP server or built-in PHP mail functions?', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<select name="mail_method">
+					<option value="smtp" <?php if (mailusers_get_mail_method()=='smtp') echo 'selected="true"'; ?>>SMTP</option>
+					<option value="mail" <?php if (mailusers_get_mail_method()=='mail') echo 'selected="true"'; ?>>PHP mail</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('SMTP server (only for SMTP method)', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<input type="text" name="smtp_server" 
+					value="<?php echo mailusers_get_smtp_server(); ?>"/></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('SMTP port (only for SMTP method) - Usually 25 by default on most servers.', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<input type="text" name="smtp_port" 
+					value="<?php echo mailusers_get_smtp_port(); ?>"/></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('SMTP user (only for SMTP method) - Leave blank if your server does not require authentication.', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<input type="text" name="smtp_user" 
+					value="<?php echo mailusers_get_smtp_user(); ?>"/></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('SMTP password (only for SMTP method)', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<input type="password" name="smtp_password" 
+					value="<?php echo mailusers_get_smtp_password(); ?>"/></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('Default notification subject', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<input type="text" name="default_subject" 
 					value="<?php echo mailusers_get_default_subject(); ?>" 
-					size="25" /></div>
-		</fieldset>
-		<fieldset id="titlediv">
-			<legend><?php _e('Default notification body', MAILUSERS_I18N_DOMAIN); ?></legend>
-			<div><textarea rows="10" cols="80" name="default_body" id="default_body"><?php echo mailusers_get_default_body(); ?></textarea></div>
-		</fieldset>
+					size="80" /></td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top">
+				<label for="mail_format"><?php _e('Default notification body', MAILUSERS_I18N_DOMAIN); ?></th>
+			<td>
+				<textarea rows="10" cols="80" name="default_body" id="default_body"><?php echo mailusers_get_default_body(); ?></textarea>
+			</td>
+		</tr>
+		</table>
 		<p class="submit">
 			<input type="submit" name="Submit" value="<?php _e('Set options', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 		</p>

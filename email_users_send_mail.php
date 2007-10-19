@@ -54,12 +54,12 @@
 		$from_address = $_POST['fromAddress'];
 	}
 	
-	if ( !isset( $_POST['send_role'] ) || trim($_POST['send_role'])=='' ) {
-		$err_msg = $err_msg . __('You must enter a recipient category.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+	if ( !isset( $_POST['send_roles'] ) && !isset( $_POST['send_users'] ) ) {
+		$err_msg = $err_msg . __('You must enter at least a recipient.', MAILUSERS_I18N_DOMAIN) . '<br/>';
 	}
 	else {
-		$send_role = $_POST['send_role'];
-		$to = $send_role;
+		$send_roles = isset($_POST['send_roles']) ? $_POST['send_roles'] : array();
+		$send_users = isset($_POST['send_users']) ? $_POST['send_users'] : array();
 	}
 	
 	if ( !isset( $_POST['subject'] ) || trim($_POST['subject'])=='' ) {
@@ -79,7 +79,7 @@
 	// If error, we simply show the form again
 	if ( $err_msg!='' ) {
 		// Redirect to the form page
-		include 'email_users_form.php';
+		include 'email_users_send_mail_form.php';
 	}
 	else {
 		// No error, send the mail
@@ -90,7 +90,9 @@
 <?php 
 		// Fetch users
 		// --
-		$users = mailusers_get_users_from_role( $send_role );
+		$users_from_roles = mailusers_get_users_from_roles( $send_roles );
+		$users_from_ids = mailusers_get_users_from_ids( $send_users );
+		$users = array_merge($users_from_roles, $users_from_ids);
 
 		if ( 0==count( $users ) ) {
 			echo '<p><strong>' 
@@ -101,7 +103,7 @@
 			// --------
 			// Bug correction from Cyril Crua, prevents savage backslashes to be
 			// inserted and retrieved from database before special characters.
-			if (get_magic_quotes_gpc()) {
+			if (get_magic_quotes_gpc() || get_magic_quotes_runtime()) {
 			    $from_address = stripslashes($from_address);
 			    $from_name = stripslashes($from_name);
 			    $original_subject = stripslashes($original_subject);
@@ -133,11 +135,8 @@
 			
 			// Mail format
 			// --
-			if ($mail_format=='html') {
-				$mail->IsHTML(true);
-			} else {
-				$mail->IsHTML(false);
-			}
+			$mail->CharSet = get_option('blog_charset');
+			$mail->IsHTML($mail_format=='html');
 			
 			// Mail details
 			// --
@@ -154,12 +153,12 @@
 			// --
 			$mail->AddAddress( $from_address, $from_name );
 			
-			// Add users as BCC
+			// Add users from the roles as BCC
 			// --
 			foreach ( $users as $user ) {
 				$mail->AddBCC( $user->user_email, $user->display_name );
 				$user_list_as_string .= '<li>'.$user->display_name.' ('.$user->user_email.')</li>';
-			}
+			}		
 			
 			// Send mail and show result
 			// --

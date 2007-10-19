@@ -87,7 +87,7 @@
 	mailusers_update_mail_user_level( $mail_user_level );
 ?>
 
-<div class="wrap">
+<div class="updated fade">
 	<p><?php _e('Options set successfully', MAILUSERS_I18N_DOMAIN); ?></p>
 </div>
 

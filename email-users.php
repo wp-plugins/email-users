@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 2.4
+Version: 2.5
 Plugin URI: http://email-users.vincentprat.info
 Description: Allows the administrator to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. This plugin is using <a href="http://phpmailer.sourceforge.net/">PhpMailer</a>. Bug reports and corrections by Cyril Crua and Pokey.
 Author: Vincent Prat (email : vpratfr@yahoo.fr)
@@ -26,7 +26,7 @@ Author URI: http://www.vincentprat.info
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '2.4' );
+define( 'MAILUSERS_CURRENT_VERSION', '2.5' );
 
 // i18n plugin domain 
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -34,13 +34,13 @@ define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
 /**
  * Initialise the internationalisation domain
  */
-$is_i18n_setup = false;
+$is_mailusers_i18n_setup = false;
 function mailusers_init_i18n() {
-	global $is_i18n_setup;
+	global $is_mailusers_i18n_setup;
 
-	if ($is_i18n_setup == false) {
+	if ($is_mailusers_i18n_setup == false) {
 		load_plugin_textdomain(MAILUSERS_I18N_DOMAIN, 'wp-content/plugins/email-users');
-		$is_i18n_setup = true;
+		$is_mailusers_i18n_setup = true;
 	}
 }
 
@@ -52,15 +52,17 @@ add_action( 'admin_menu', 'mailusers_add_pages' );
 function mailusers_add_pages() {
 	mailusers_init_i18n();
 
-	add_submenu_page( 'post.php', 
-		__('Send email to users', MAILUSERS_I18N_DOMAIN), 
-		__('Send email to users', MAILUSERS_I18N_DOMAIN), 
-		mailusers_get_mail_user_level(), 
-		'post.php?page=email-users/email_users_form.php' );
-
+	if (mailusers_is_current_user_allowed_to_mail()) {
+		add_submenu_page( 'post.php', 
+			__('Send email to users', MAILUSERS_I18N_DOMAIN), 
+			__('Send email to users', MAILUSERS_I18N_DOMAIN), 
+			mailusers_get_mail_user_level(), 
+			'post-new.php?page=email-users/email_users_send_mail_form.php' );
+	}
+	
 	add_options_page( __('Email users', MAILUSERS_I18N_DOMAIN), 
 		__('Email users', MAILUSERS_I18N_DOMAIN), 
-		2, 
+		8, 
 		'options-general.php?page=email-users/email_users_options_form.php' );
 }
 
@@ -180,6 +182,9 @@ function mailusers_plugin_activation() {
  * Wrapper for the option 'mailusers_default_subject'
  */
 function mailusers_get_default_subject() {
+	if (get_magic_quotes_gpc() || get_magic_quotes_runtime()) {
+		return stripslashes(get_option( 'mailusers_default_subject' ));
+	}
 	return get_option( 'mailusers_default_subject' );
 }
 
@@ -189,7 +194,7 @@ function mailusers_get_default_subject() {
 function mailusers_update_default_subject( $subject ) {  
 	// --------
 	// Bug correction from Cyril Crua, prevents savage backslashes to be inserted and retrieved from database before special characters.
-	if (get_magic_quotes_gpc()) {
+	if (get_magic_quotes_gpc() || get_magic_quotes_runtime()) {
 		$subject = stripslashes($subject);  
 	}
 	// End of bug correction
@@ -201,6 +206,9 @@ function mailusers_update_default_subject( $subject ) {
  * Wrapper for the option 'mailusers_default_body'
  */
 function mailusers_get_default_body() {
+	if (get_magic_quotes_gpc() || get_magic_quotes_runtime()) {
+		return stripslashes(get_option( 'mailusers_default_body' ));
+	}
 	return get_option( 'mailusers_default_body' );
 }
  
@@ -210,7 +218,7 @@ function mailusers_get_default_body() {
 function mailusers_update_default_body( $body ) {
 	// --------
 	// Bug correction from Cyril Crua, prevents savage backslashes to be inserted and retrieved from database before special characters.
-	if (get_magic_quotes_gpc()) {
+	if (get_magic_quotes_gpc() || get_magic_quotes_runtime()) {
 		$body = stripslashes($body);
 	}
 	// End of bug correction
@@ -331,40 +339,59 @@ function mailusers_update_mail_user_level( $mail_user_level ) {
 }
 
 /**
- * Get the user names and the user mail addresses, given a level
+ * Get the users given a role or an array of ids
  */
-function mailusers_get_users_from_role( $role ) {
+function mailusers_get_users_from_ids( $ids ) {
 	global $wpdb;
 	
-	// Bug corrected in version 2.3, better way to select users based on their role. Thanks to Carl for the ideas.
-	switch ($role) {
-		case 0:		// subscribers		0
-			$capability_filter = "meta_value like '%subscriber%'";
-			break;
-		case 1:		// contributors		1
-			$capability_filter = "meta_value like '%contributor%'";
-			break;
-		case 2:		// authors			2..4
-			$capability_filter = "meta_value like '%author%'";
-			break;
-		case 3:		// editors			5..7
-			$capability_filter = "meta_value like '%editor%'";
-			break;
-		case 4:		// administrators		8..10
-			$capability_filter = "meta_value like '%administrator%'";
-			break;
-		case 5:		// all				0..10
-			$capability_filter = "meta_value like '%subscriber%' OR meta_value like '%contributor%' OR meta_value like '%author%' OR meta_value like '%editor%' OR meta_value like '%administrator%'";
-			break;
-		default:	// error
-			return array();
+	if (!is_array($ids)) {
+		$ids = array($ids);
+	}
+	$id_count = count($ids);
+	
+	if ($id_count==0) {
+		return array();
+	}
+	
+	$id_filter = implode(", ", $ids);
+	
+    $users = $wpdb->get_results( "SELECT display_name, user_email FROM $wpdb->usermeta, $wpdb->users WHERE 
+																		(meta_key = '" . $wpdb->prefix . "capabilities') AND
+																		(user_id IN (" . $id_filter . ")) AND
+																		(user_id = id);");												
+	return $users;
+}
+
+/**
+ * Get the users given a role or an array of roles
+ */
+function mailusers_get_users_from_roles( $roles ) {
+	global $wpdb;
+	
+	if (!is_array($roles)) {
+		$roles = array($roles);
+	}
+	$role_count = count($roles);
+	
+	if ($role_count==0) {
+		return array();
+	}
+	
+	// Build role filter for the list of roles
+	//--
+	$capability_filter = '';
+	for ($i=0; $i<$role_count; $i++) {
+		$capability_filter .= "meta_value like '%" . $roles[$i] . "%'";
+		if ($i!=$role_count-1) {
+			$capability_filter .= ' OR ';
+		}
 	}
 	
 	// Bug corrected in version 2.2, $wpdb->prefix was not taken into account. Credits to Pokey
 	//--
     $users = $wpdb->get_results( "SELECT display_name, user_email FROM $wpdb->usermeta, $wpdb->users WHERE 
-																		(meta_key = '".$wpdb->prefix."capabilities') AND
-																		(".$capability_filter.") AND
+																		(meta_key = '" . $wpdb->prefix . "capabilities') AND
+																		(" . $capability_filter . ") AND
 																		(user_id = id);");
 																		
 	return $users;
