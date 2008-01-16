@@ -29,7 +29,10 @@
 ?>
 
 <?php
-	require(ABSPATH.'wp-content/plugins/email-users/class.phpmailer.php');
+	if( !class_exists('PHPMailer') ) {
+		require_once(ABSPATH.'wp-content/plugins/email-users/class.phpmailer.php');
+	}
+	
 	$err_msg = '';
 	
 	// Analyse form input, check for blank fields
