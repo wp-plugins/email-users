@@ -604,7 +604,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$recipient = $recipients[$i]->user_email;
 			
 			if (!mailusers_is_valid_email($recipient)) { continue; }			
-			//if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
+			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
 			
 			if ($bcc=='') {
 				$bcc = "Bcc: $recipient";
@@ -635,7 +635,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$recipient = $recipients[$i]->user_email;
 			
 			if (!mailusers_is_valid_email($recipient)) { continue; }
-			//if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
+			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
 			
 			if ($bcc=='') {
 				$bcc = "Bcc: $recipient";
