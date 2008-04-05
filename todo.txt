@@ -1,4 +1,0 @@
-- Use WP Cron to send emails (allow high number of recipients)
-- Allow users to opt for not recieving the post notifications?
-
-- More language translations

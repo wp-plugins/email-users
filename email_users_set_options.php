@@ -18,31 +18,16 @@
 ?>
 
 <?php 
-	if (!mailusers_is_current_user_allowed_to_configure()) {
-?>
-	<div id="message" class="error">
-		<p><?php _e("You are not allowed to change the options of this plugin.", MAILUSERS_I18N_DOMAIN); ?></p>
-	</div>
-<?php	
-		exit();
+	if (!current_user_can('manage_options')) {
+		wp_die(__("You are not allowed to change the options of this plugin.", MAILUSERS_I18N_DOMAIN));
 	} 
-	
 ?>
 
 <?php
-	$mail_user_level = '8';
 	$default_subject = '';
 	$default_body = '';
 	$default_mail_format = 'html';
-	$mail_method = 'mail';
-	$smtp_server = '';
-	$smtp_port = '';
-	$smtp_user = '';
-	$smtp_password = '';
-	
-	if ( isset( $_POST['mail_user_level'] ) ) {
-		$mail_user_level = $_POST['mail_user_level'];
-	}
+	$max_bcc_recipients = '0';
 	
 	if ( isset( $_POST['default_subject'] ) ) {
 		$default_subject = $_POST['default_subject'];
@@ -52,39 +37,18 @@
 		$default_body = $_POST['default_body'];
 	}
 	
-	if ( isset( $_POST['mail_method'] ) ) {
-		$mail_method = $_POST['mail_method'];
-	}
-	
-	if (isset( $_POST['default_mail_format'])) {
+	if ( isset( $_POST['default_mail_format'] ) ) {
 		$default_mail_format = $_POST['default_mail_format'];
 	}
-
-	if (isset( $_POST['smtp_server'])) {
-		$smtp_server = $_POST['smtp_server'];
+	
+	if ( isset( $_POST['max_bcc_recipients'] ) ) {
+		$max_bcc_recipients = $_POST['max_bcc_recipients'];
 	}
 	
-	if (isset($_POST['smtp_user'])) {
-		$smtp_user = $_POST['smtp_user'];
-	}
-	
-	if (isset($_POST['smtp_password'])) {
-		$smtp_password = $_POST['smtp_password'];
-	}
-	
-	if (isset($_POST['smtp_port'])) {
-		$smtp_port = $_POST['smtp_port'];
-	}
-	
-	mailusers_update_default_subject( $default_subject );
+	mailusers_update_default_subject( format_to_post($default_subject) );
 	mailusers_update_default_body( $default_body );
 	mailusers_update_default_mail_format( $default_mail_format );
-	mailusers_update_mail_method( $mail_method );
-	mailusers_update_smtp_server( $smtp_server );
-	mailusers_update_smtp_port( $smtp_port );
-	mailusers_update_smtp_user( $smtp_user );
-	mailusers_update_smtp_password( $smtp_password );
-	mailusers_update_mail_user_level( $mail_user_level );
+	mailusers_update_max_bcc_recipients( $max_bcc_recipients );
 ?>
 
 <div class="updated fade">
