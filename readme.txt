@@ -8,7 +8,7 @@ Stable tag: 3.1.1
 
 A plugin for wordpress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
-== Description ==
+== Description == 
 
 A plugin for wordpress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
