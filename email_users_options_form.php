@@ -109,23 +109,107 @@
 	</tr>
 	</table>
 
-<p>
-	<?php _e('The various variables you can include in the subject or body templates are:', MAILUSERS_I18N_DOMAIN); ?><br/>
-	<ul>
-		<li><strong>%BLOG_URL%</strong>: <?php _e('the link to the blog', MAILUSERS_I18N_DOMAIN); ?></li>
-		<li><strong>%BLOG_NAME%</strong>: <?php _e('the blog\'s name', MAILUSERS_I18N_DOMAIN); ?></li>
-		<li><strong>%FROM_NAME%</strong>: <?php _e('the wordpress user name of the person sending the mail', MAILUSERS_I18N_DOMAIN); ?></li>
-		<li><strong>%POST_TITLE%</strong>: <?php _e('the title of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></li>
-		<li><strong>%POST_EXCERPT%</strong>: <?php _e('the excerpt of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></li>
-		<li><strong>%POST_URL%</strong>: <?php _e('the link to the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></li>
-	</ul>
-</p>
-
 	<p class="submit">
 		<input type="submit" name="Submit" value="<?php _e('Save changes', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 	</p>
 </form>	
 
+<br class="clear"/>
+<table class="widefat">
+	<thead>
+	<tr>
+		<th colspan="2"><?php _e('Notification mail preview (updated when the options are saved)', MAILUSERS_I18N_DOMAIN); ?></th>
+	</tr>
+	</thead>
+	<tbody>
+<?php
+	global $wpdb;
+	$post_id = $wpdb->get_var("select max(id) from $wpdb->posts where post_type='post'");
+	if (!isset($post_id)) {
+?>
+	<tr>
+		<td colspan="2"><?php _e('No post found in the blog in order to build a notification preview.', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+<?php
+	} else {						
+		$subject = mailusers_get_default_subject();
+		$mail_content = mailusers_get_default_body();
+
+		// Replace the template variables concerning the blog details
+		// --
+		$subject = mailusers_replace_blog_templates($subject);
+		$mail_content = mailusers_replace_blog_templates($mail_content);
+			
+		// Replace the template variables concerning the sender details
+		// --	
+		get_currentuserinfo();
+		$from_name = $user_identity;
+		$from_address = $user_email;
+		$subject = mailusers_replace_sender_templates($subject, $from_name);
+		$mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
+	
+		$post = get_post( $post_id );
+		$post_title = $post->post_title;
+		$post_url = get_permalink( $post_id );			
+		$post_content = explode( '<!--more-->', $post->post_content, 2 );
+		$post_excerpt = $post_content[0];
+		
+		$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
+		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
+?>
+	<tr>
+		<td><b><?php _e('Subject', MAILUSERS_I18N_DOMAIN); ?></b></td>
+		<td><?php echo mailusers_get_default_mail_format()=='html' ? $subject : '<pre>' . format_to_edit($subject) . '</pre>';?></td>
+	</tr>
+	<tr>
+		<td><b><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></b></td>
+		<td><?php echo mailusers_get_default_mail_format()=='html' ? $mail_content : '<pre>' . wordwrap(strip_tags($mail_content), 80, "\n") . '</pre>';?></td>
+	</tr>
+<?php
+	}
+?>
+	</tbody>
+</table>
+<form name="SendTestEmail" action="options-general.php?page=email-users/email_users_send_test_mail.php" method="post">		
+	<p class="submit">
+		<input type="submit" name="Submit" value="<?php _e('Send test notification to yourself', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+	</p>
+</form>	
+<br class="clear"/>
+
+<table class="widefat">
+	<thead>
+	<tr>
+		<th colspan="2"><?php _e('Variables you can include in the subject or body templates', MAILUSERS_I18N_DOMAIN); ?></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td><b>%BLOG_URL%</b></td>
+		<td><?php _e('the link to the blog', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b>%BLOG_NAME%</b></td>
+		<td><?php _e('the blog\'s name', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b>%FROM_NAME%</b></td>
+		<td><?php _e('the wordpress user name of the person sending the mail', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b>%POST_TITLE%</b></td>
+		<td><?php _e('the title of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b>%POST_EXCERPT%</b></td>
+		<td><?php _e('the excerpt of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b>%POST_URL%</b></td>
+		<td><?php _e('the link to the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	</tbody>
+</table>
 <br class="clear"/>
 
 <p><?php _e('Email Users uses capabilities to define what users are allowed to do. Below is a list of the capabilities used by the plugin and the default user role allowed to make these actions.', MAILUSERS_I18N_DOMAIN); ?> <?php _e('If you want to change the roles having those capabilities, you should use the plugin:', MAILUSERS_I18N_DOMAIN); ?> <a href="http://www.im-web-gefunden.de/wordpress-plugins/role-manager/" target="_blank">Role Manager</a></p>

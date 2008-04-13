@@ -58,7 +58,7 @@
 	// If error, we simply show the form again
 	if ( $err_msg!='' ) {
 		// Redirect to the form page
-		include 'email_users_user_mail_form.php';
+		include 'email_users_group_mail_form.php';
 	} else {
 		// No error, send the mail
 ?>
@@ -77,7 +77,7 @@
 			mailusers_send_mail($recipients, $subject, $mail_content, $mail_format, $from_name, $from_address);
 	?>
 			<div class="updated fade">
-				<p><?php echo sprintf("Notification sent to %s user(s).", count($recipients)); ?></p>
+				<p><?php echo sprintf(__("Notification sent to %s user(s).", MAILUSERS_I18N_DOMAIN), count($recipients)); ?></p>
 			</div>
 	<?php
 			include 'email_users_group_mail_form.php';

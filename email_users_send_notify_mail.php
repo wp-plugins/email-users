@@ -79,7 +79,7 @@
 			mailusers_send_mail($recipients, format_to_post($original_subject), $original_mail_content, $mail_format, $from_name, $from_address);
 	?>
 			<div class="updated fade">
-				<p><?php echo sprintf("Notification sent to %s user(s).", count($recipients)); ?></p>
+				<p><?php echo sprintf(__("Notification sent to %s user(s).", MAILUSERS_I18N_DOMAIN), count($recipients)); ?></p>
 			</div>
 	<?php
 			include 'email_users_notify_form.php';
