@@ -51,7 +51,7 @@
 	}
 	
 	if ( !isset( $_POST['mailContent'] ) || trim($_POST['mailContent'])=='' ) {
-		$err_msg = $err_msg . __('You must enter a content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+		$err_msg = $err_msg . __('You must enter some content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
 	} else {
 		$mail_content = $_POST['mailContent'];
 	}
@@ -74,13 +74,23 @@
 	?>
 			<p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN); ?></strong></p>
 	<?php
-		} else {	
-			mailusers_send_mail($recipients, $subject, $mail_content, $mail_format, $from_name, $from_address);
+		} else {
+			$num_sent = mailusers_send_mail($recipients, $subject, $mail_content, $mail_format, $from_name, $from_address);
+			if (false === $num_sent) {
+				echo "<p class=\"error\">There was a problem trying to send email to users.</p>";
+			} else if (0 === $num_sent) {
+				echo "<p class=\"error\">No email has been sent to other users. This may be because no valid email addresses were found.</p>";
+			} else if ($num_sent > 0 && $num_sent == count($recipients)){
 	?>
 			<div class="updated fade">
-				<p><?php echo sprintf(__("Notification sent to %s user(s).", MAILUSERS_I18N_DOMAIN), count($recipients)); ?></p>
+				<p><?php echo sprintf(__("Notification sent to %s user(s).", MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
 			</div>
 	<?php
+			} else if ($num_sent > count($recipients)) {
+				echo "<div class=\"error\"><p>WARNING: More email has been sent than the number of recipients found.</p></div>";
+			} else {
+				echo "<p class=\"updated\">Email has been sent to $num_sent users, but ".count($recipients)." recipients were originally found. Perhaps some users don't have valid email addresses?</p>";
+			}
 			include 'email_users_user_mail_form.php';
 		}
 	?>
