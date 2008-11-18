@@ -46,19 +46,6 @@
 <div class="wrap">
 	<h2><?php _e('Write an email to user groups', MAILUSERS_I18N_DOMAIN); ?></h2>
 
-	<?php if (current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) { ?>
-	<ul class="subsubsub">
-	<li>
-		<a href="post-new.php?page=email-users/email_users_user_mail_form.php" title="<?php _e('Send a mail to one or more users.', MAILUSERS_I18N_DOMAIN) ?>">
-			<?php _e('Individual users', MAILUSERS_I18N_DOMAIN) ?>
-		</a>
-	</li>
-	<li>
-		| <?php _e('User groups', MAILUSERS_I18N_DOMAIN) ?>
-	</li>
-	</ul>
-	<?php } ?>
-
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
 			<p class="error"><?php echo $err_msg; ?></p>
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
