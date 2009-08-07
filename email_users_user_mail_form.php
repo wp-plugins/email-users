@@ -52,7 +52,7 @@
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 	<?php	} ?>
 
-	<form name="SendEmail" action="post-new.php?page=email-users/email_users_send_user_mail.php" method="post">
+	<form name="SendEmail" action="admin.php?page=email-users/email_users_send_user_mail.php" method="post">
 		<input type="hidden" name="send" value="true" />
 		<input type="hidden" name="fromName" value="<?php echo $from_name;?>" />
 		<input type="hidden" name="fromAddress" value="<?php echo $from_address;?>" />

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 3.1.6
+Version: 3.1.7
 Plugin URI: http://email-users.vincentprat.info
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua and Pokey.
 Author: Vincent Prat (email : vpratfr@yahoo.fr)
@@ -26,7 +26,7 @@ Author URI: http://www.vincentprat.info
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.1.6' );
+define( 'MAILUSERS_CURRENT_VERSION', '3.1.7' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -248,6 +248,17 @@ function mailusers_add_pages() {
 				0, 
 				'admin.php?page=email-users/email_users_group_mail_form.php' );
 		}
+		
+		// For WP 2.8
+		//--
+		global $_registered_pages;
+
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_user_mail_form.php','admin.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_group_mail_form.php','admin.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_group_mail.php','admin.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_notify_mail.php','admin.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_user_mail.php','admin.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_test_mail.php','options-general.php')] = true;
 	}
 }
 
