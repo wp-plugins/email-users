@@ -77,6 +77,26 @@
 			<p class="error"><?php echo $err_msg; ?></p>
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 	<?php	} ?>
+	
+	<?php	
+	if (!isset($post_id)) { ?>
+	<form name="SetPost" action="admin.php?page=email-users/email_users_notify_form.php" method="post">
+	    <p>Please select the post that you wish to notify users about.</p>
+	    <select name="post_id">
+		<?php
+		 $lastposts = get_posts('numberposts=0');
+		 foreach($lastposts as $post) :
+		    setup_postdata($post);
+		 ?>
+		<option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
+		 <?php endforeach; ?>
+	    </select>
+
+	    <p class="submit">
+		    <input type="submit" name="Submit" value="<?php _e('Select post', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+	    </p>
+	</form>
+	<?php } else { ?>
 		
 	<form name="SendEmail" action="admin.php?page=email-users/email_users_send_notify_mail.php" method="post">		
 		<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
@@ -145,4 +165,6 @@
 			<input type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 		</p>	
 	</form>	
+	
+	<?php } ?>
 </div>

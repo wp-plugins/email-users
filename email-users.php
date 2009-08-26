@@ -26,7 +26,7 @@ Author URI: http://www.vincentprat.info
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.1.7' );
+define( 'MAILUSERS_CURRENT_VERSION', '3.1.8' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -187,22 +187,32 @@ function mailusers_user_register($user_id) {
 /**
 * Add a related link to the post edit page to create a template from current post
 */
-add_action('post_relatedlinks_list', 'mailusers_post_relatedlink');
+add_action('submitpost_box', 'mailusers_post_relatedlink');
 function mailusers_post_relatedlink() {
 	global $post_ID;
 	if (isset($post_ID) && current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
 ?>
-<li><a href="post-new.php?page=email-users/email_users_notify_form.php&post_id=<?php echo $post_ID; ?>"><?php _e('Notify users about this post', MAILUSERS_I18N_DOMAIN); ?></a></li>
+<div class="postbox">
+<h3 class='hndle'><span>Email</span></h3>
+<div class="inside">
+<p><a href="admin.php?page=email-users/email_users_notify_form.php&post_id=<?php echo $post_ID; ?>"><?php _e('Notify users about this post', MAILUSERS_I18N_DOMAIN); ?></a></p>
+</div>
+</div>
 <?php
 	}
 }
 
-add_action('page_relatedlinks_list', 'mailusers_page_relatedlink');
+add_action('submitpage_box', 'mailusers_page_relatedlink');
 function mailusers_page_relatedlink() {
 	global $post_ID;
 	if (isset($post_ID) && current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
 ?>
-<li><a href="post-new.php?page=email-users/email_users_notify_form.php&post_id=<?php echo $post_ID; ?>"><?php _e('Notify users about this page', MAILUSERS_I18N_DOMAIN); ?></a></li>
+<div class="postbox">
+<h3 class='hndle'><span>Email</span></h3>
+<div class="inside">
+<p><a href="admin.php?page=email-users/email_users_notify_form.php&post_id=<?php echo $post_ID; ?>"><?php _e('Notify users about this page', MAILUSERS_I18N_DOMAIN); ?></a></p>
+</div>
+</div>
 <?php
 	}
 }
@@ -255,6 +265,7 @@ function mailusers_add_pages() {
 
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_user_mail_form.php','admin.php')] = true;
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_group_mail_form.php','admin.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_notify_form.php','admin.php')] = true;
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_group_mail.php','admin.php')] = true;
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_notify_mail.php','admin.php')] = true;
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_user_mail.php','admin.php')] = true;
