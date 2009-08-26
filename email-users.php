@@ -259,6 +259,7 @@ function mailusers_add_pages() {
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_notify_mail.php','admin.php')] = true;
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_user_mail.php','admin.php')] = true;
 		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_test_mail.php','options-general.php')] = true;
+		$_registered_pages[get_plugin_page_hookname('email-users/email_users_set_options.php','options-general.php')] = true;
 	}
 }
 
