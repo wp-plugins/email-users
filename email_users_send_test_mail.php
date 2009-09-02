@@ -24,6 +24,8 @@
 ?>
 
 <?php
+	global $wpdb, $user_ID;
+	
 	$err_msg = '';
 	
 	get_currentuserinfo();
@@ -48,7 +50,6 @@
 
 	// Replace the template variables concerning the post
 	// --	
-	global $wpdb;
 	$post_id = $wpdb->get_var("select max(id) from $wpdb->posts where post_type='post'");
 	if (!isset($post_id)) {
 		$post_title = __("Sample post title", MAILUSERS_I18N_DOMAIN);
@@ -73,7 +74,7 @@
 	// Fetch users
 	// --
 	$recipients = mailusers_get_recipients_from_ids(array($user_ID));
-
+	
 	if (empty($recipients)) {
 ?>
 		<p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN); ?></strong></p>

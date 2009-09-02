@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 3.1.8
+Version: 3.1.9
 Plugin URI: http://email-users.vincentprat.info
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua and Pokey.
 Author: Vincent Prat (email : vpratfr@yahoo.fr)
@@ -26,7 +26,7 @@ Author URI: http://www.vincentprat.info
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.1.8' );
+define( 'MAILUSERS_CURRENT_VERSION', '3.1.9' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -634,7 +634,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		if (mailusers_is_valid_email($recipients[0]->user_email)) {
 			$headers .= "To: \"" . $recipients[0]->display_name . "\" <" . $recipients[0]->user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
-			@wp_mail($sender_email, $subject, $mailtext, $headers);
+			wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
 			echo "<p class=\"error\">The email address of the user you are trying to send mail to is not a valid email address format.</p>";
@@ -673,7 +673,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				} else {
 					$newheaders = $headers . "To: \"Nobody\" <nobody@nowhere.ue>\n" . "$bcc\n\n";
 				}
-				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
@@ -697,7 +697,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
-		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+		wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;
