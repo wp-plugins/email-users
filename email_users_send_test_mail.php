@@ -48,11 +48,20 @@
 
 	// Replace the template variables concerning the post
 	// --	
-	$post = get_post( $post_id );
-	$post_title = $post->post_title;
-	$post_url = get_permalink( $post_id );			
-	$post_content = explode( '<!--more-->', $post->post_content, 2 );
-	$post_excerpt = $post_content[0];
+	global $wpdb;
+	$post_id = $wpdb->get_var("select max(id) from $wpdb->posts where post_type='post'");
+	if (!isset($post_id)) {
+		$post_title = __("Sample post title", MAILUSERS_I18N_DOMAIN);
+		$post_url = __("http://sample-post-url", MAILUSERS_I18N_DOMAIN);			
+		$post_content = __("Sample post content", MAILUSERS_I18N_DOMAIN);
+		$post_excerpt = __("Sample post excerpt", MAILUSERS_I18N_DOMAIN);;
+	} else {
+		$post = get_post( $post_id );
+		$post_title = $post->post_title;
+		$post_url = get_permalink( $post_id );			
+		$post_content = explode( '<!--more-->', $post->post_content, 2 );
+		$post_excerpt = $post_content[0];
+	}
 	
 	$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
 	$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);

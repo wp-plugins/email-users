@@ -671,7 +671,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
 					$sender_emailed = true;
 				} else {
-					$newheaders = $headers . "$bcc\n\n";
+					$newheaders = $headers . "To: \"Nobody\" <nobody@nowhere.ue>\n" . "$bcc\n\n";
 				}
 				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
