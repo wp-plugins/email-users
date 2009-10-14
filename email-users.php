@@ -4,11 +4,11 @@ Plugin Name: email users
 Version: 2.3
 Plugin URI: http://www.vincentprat.info/wordpress/2006/04/19/wordpress-plugin-email-users/
 Description: Allows the administrator to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. This plugin is using <a href="http://phpmailer.sourceforge.net/">PhpMailer</a>. Bug reports and corrections by Cyril Crua and Pokey
-Author: Vincent Prat (email : vpratfr@yahoo.fr)
+Author: Vincent Prat
 Author URI: http://www.vincentprat.info
 */
 
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
