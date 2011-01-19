@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 3.1.9
-Plugin URI: http://email-users.vincentprat.info
+Version: 3.2.0
+Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua and Pokey.
-Author: Vincent Prat (email : vpratfr@yahoo.fr)
-Author URI: http://www.vincentprat.info
+Author: MarvinLabs / Vincent Prat 
+Author URI: http://www.marvinlabs.com
 */
 
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat 
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ Author URI: http://www.vincentprat.info
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.1.9' );
+define( 'MAILUSERS_CURRENT_VERSION', '3.2.0' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -327,6 +327,19 @@ function mailusers_user_profile_update() {
 	}
 }
 
+add_action('admin_init', 'editor_admin_init');
+function editor_admin_init() {
+	wp_enqueue_script('word-count');
+	wp_enqueue_script('post');
+	wp_enqueue_script('editor');
+	wp_enqueue_script('media-upload');
+}
+ 
+add_action('admin_head', 'editor_admin_head');
+function editor_admin_head() {
+	wp_tiny_mce();
+}
+
 /**
  * Wrapper for the option 'mailusers_default_subject'
  */
@@ -564,8 +577,12 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
  * Check Valid E-Mail Address
  */
 function mailusers_is_valid_email($email) {
-   $regex = '/^[A-z0-9][\w.+-]*@[A-z0-9][\w\-\.]+\.[A-z0-9]{2,6}$/';
-   return (preg_match($regex, $email));
+	if (function_exists('is_email')) {
+		return is_email($email);
+	}
+
+	$regex = '/^[A-z0-9][\w.+-]*@[A-z0-9][\w\-\.]+\.[A-z0-9]{2,6}$/';
+	return (preg_match($regex, $email));
 }
 
 /**
@@ -582,7 +599,7 @@ function mailusers_replace_post_templates($text, $post_title, $post_excerpt, $po
  * Replace the template variables in a given text.
  */
 function mailusers_replace_blog_templates($text) {
-	$blog_url = get_option( 'siteurl' );
+	$blog_url = get_option( 'home' );
 	$blog_name = get_option( 'blogname' );
 
 	$text = preg_replace( '/%BLOG_URL%/', $blog_url, $text );
@@ -634,7 +651,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		if (mailusers_is_valid_email($recipients[0]->user_email)) {
 			$headers .= "To: \"" . $recipients[0]->display_name . "\" <" . $recipients[0]->user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
-			wp_mail($sender_email, $subject, $mailtext, $headers);
+			@wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
 			echo "<p class=\"error\">The email address of the user you are trying to send mail to is not a valid email address format.</p>";
@@ -671,9 +688,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
 					$sender_emailed = true;
 				} else {
-					$newheaders = $headers . "To: \"Nobody\" <nobody@nowhere.ue>\n" . "$bcc\n\n";
+					$newheaders = $headers . "$bcc\n\n";
 				}
-				wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
@@ -697,7 +714,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
-		wp_mail($sender_email, $subject, $mailtext, $newheaders);
+		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;

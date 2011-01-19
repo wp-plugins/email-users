@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

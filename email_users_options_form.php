@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -165,18 +165,16 @@
 		<td><b><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></b></td>
 		<td><?php echo mailusers_get_default_mail_format()=='html' ? $mail_content : '<pre>' . wordwrap(strip_tags($mail_content), 80, "\n") . '</pre>';?></td>
 	</tr>
-	<tr>
-		<form name="SendTestEmail" action="options-general.php?page=email-users/email_users_send_test_mail.php" method="post">		
-			<p class="submit">
-				<input type="submit" name="Submit" value="<?php _e('Send test notification to yourself', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
-			</p>
-		</form>	
-	</tr>
 <?php
 	}
 ?>
 	</tbody>
 </table>
+<form name="SendTestEmail" action="options-general.php?page=email-users/email_users_send_test_mail.php" method="post">		
+	<p class="submit">
+		<input type="submit" name="Submit" value="<?php _e('Send test notification to yourself', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+	</p>
+</form>	
 <br class="clear"/>
 
 <table class="widefat">

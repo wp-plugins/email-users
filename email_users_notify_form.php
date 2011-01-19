@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -65,6 +65,10 @@
 	$post_url = get_permalink( $post_id );			
 	$post_content = explode( '<!--more-->', $post->post_content, 2 );
 	$post_excerpt = $post_content[0];
+
+        if (mailusers_get_default_mail_format()=='html') {
+		$post_excerpt = wpautop($post_excerpt);
+        }
 	
 	$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
 	$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);

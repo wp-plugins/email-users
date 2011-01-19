@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,13 +60,19 @@
 	} else {
 		$mail_content = $_POST['mailContent'];
 	}
-
+	
 	// If error, we simply show the form again
 	if ( $err_msg!='' ) {
 		// Redirect to the form page
 		include 'email_users_group_mail_form.php';
 	} else {
 		// No error, send the mail
+		
+		// Do some HTML homework if needed
+		//--
+		if ($mail_format=='html') {
+			$mail_content = wpautop($mail_content);
+		}		
 ?>
 
 	<div class="wrap">

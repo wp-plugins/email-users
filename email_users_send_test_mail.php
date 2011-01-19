@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,8 +24,6 @@
 ?>
 
 <?php
-	global $wpdb, $user_ID;
-	
 	$err_msg = '';
 	
 	get_currentuserinfo();
@@ -50,19 +48,11 @@
 
 	// Replace the template variables concerning the post
 	// --	
-	$post_id = $wpdb->get_var("select max(id) from $wpdb->posts where post_type='post'");
-	if (!isset($post_id)) {
-		$post_title = __("Sample post title", MAILUSERS_I18N_DOMAIN);
-		$post_url = __("http://sample-post-url", MAILUSERS_I18N_DOMAIN);			
-		$post_content = __("Sample post content", MAILUSERS_I18N_DOMAIN);
-		$post_excerpt = __("Sample post excerpt", MAILUSERS_I18N_DOMAIN);;
-	} else {
-		$post = get_post( $post_id );
-		$post_title = $post->post_title;
-		$post_url = get_permalink( $post_id );			
-		$post_content = explode( '<!--more-->', $post->post_content, 2 );
-		$post_excerpt = $post_content[0];
-	}
+	$post = get_post( $post_id );
+	$post_title = $post->post_title;
+	$post_url = get_permalink( $post_id );			
+	$post_content = explode( '<!--more-->', $post->post_content, 2 );
+	$post_excerpt = $post_content[0];
 	
 	$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
 	$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
@@ -74,7 +64,7 @@
 	// Fetch users
 	// --
 	$recipients = mailusers_get_recipients_from_ids(array($user_ID));
-	
+
 	if (empty($recipients)) {
 ?>
 		<p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN); ?></strong></p>

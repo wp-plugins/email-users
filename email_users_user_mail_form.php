@@ -1,5 +1,5 @@
 <?php
-/*  Copyright 2006 Vincent Prat  (email : vpratfr@yahoo.fr)
+/*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -59,6 +59,12 @@
 			// Fetch users
 			// --
 			$recipients = mailusers_get_recipients_from_ids($send_users, $user_ID);
+			
+			// Do some HTML homework if needed
+			//--
+			if ($mail_format=='html') {
+				$mail_content = wpautop($mail_content);
+			}
 
 			if (empty($recipients)) {
 				$err_msg = $err_msg . _e('No recipients were found.', MAILUSERS_I18N_DOMAIN) . '<br/>';
@@ -166,7 +172,18 @@
 		</tr>
 		<tr>
 			<th scope="row" valign="top"><label for="mailContent"><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></label></th>
-			<td><textarea rows="10" cols="80" name="mailContent" id="mailContent" style="width: 647px;"><?php echo stripslashes($mail_content);?></textarea>
+			<td>
+				<div id="mail-content-editor" style="width: 647px;">
+				<?php
+					if ($mail_format=='html') {
+						the_editor(stripslashes($mail_content), "mailContent", "subject", true);
+					} else {
+				?>
+					<textarea rows="10" cols="80" name="mailContent" id="mailContent" style="width: 647px;"><?php echo stripslashes($mail_content);?></textarea>
+				<?php 
+					}
+				?>
+				</div>
 			</td>
 		</tr>
 		</table>
