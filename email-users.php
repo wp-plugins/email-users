@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 3.2.0
+Version: 3.3.0
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua and Pokey.
 Author: MarvinLabs / Vincent Prat 
@@ -26,7 +26,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.2.0' );
+define( 'MAILUSERS_CURRENT_VERSION', '3.3.0' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -275,11 +275,27 @@ function mailusers_add_pages() {
 }
 
 /**
-* Add a form to change user preferences in the profile
-*/
+ * Action hook to add e-mail options to current user profile
+ */
 add_action('show_user_profile', 'mailusers_user_profile_form');
 function mailusers_user_profile_form() {
 	global $user_ID;
+	mailusers_edit_any_user_profile_form($user_ID);
+}
+
+/**
+ * Action hook to add e-mail options to any user profile
+ */
+add_action('edit_user_profile', 'mailusers_edit_user_profile_form');
+function mailusers_edit_user_profile_form() {
+	global $profileuser;
+	mailusers_edit_any_user_profile_form($profileuser->ID);
+}
+
+/**
+ * Add a form to change user preferences in the profile
+ */
+function mailusers_edit_any_user_profile_form($uid) {
 ?>
 	<h3><?php _e('Email Preferences', MAILUSERS_I18N_DOMAIN); ?></h3>
 
@@ -292,13 +308,13 @@ function mailusers_user_profile_form() {
 						name="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						value="true"
-						<?php if (get_usermeta($user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META)=="true") echo 'checked="checked"'; ?> ></input>
+						<?php if (get_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META)=="true") echo 'checked="checked"'; ?> ></input>
 				<?php _e('Accept to recieve post or page notification emails', MAILUSERS_I18N_DOMAIN); ?><br/>
 				<input 	type="checkbox"
 						name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						value="true"
-						<?php if (get_usermeta($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META)=="true") echo 'checked="checked"'; ?> ></input>
+						<?php if (get_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META)=="true") echo 'checked="checked"'; ?> ></input>
 				<?php _e('Accept to recieve emails sent to multiple recipients (but still accept emails sent only to me)', MAILUSERS_I18N_DOMAIN); ?>
 			</td>
 		</tr>
@@ -308,22 +324,37 @@ function mailusers_user_profile_form() {
 }
 
 /**
-* Save our profile data
-*/
+ * Action hook to update mailusers profile for current user
+ */
 add_action('personal_options_update', 'mailusers_user_profile_update');
 function mailusers_user_profile_update() {
-	global $_POST, $user_ID;
+	global $user_ID;
+	mailusers_any_user_profile_update($user_ID);
+}
+
+/**
+ * Action hook to update mailusers profile for any user
+ */
+add_action('profile_update', 'mailusers_edit_user_profile_update');
+function mailusers_edit_user_profile_update($uid) {
+	mailusers_any_user_profile_update($uid);
+}
+
+/**
+ * Save mailusers profile data for any user id
+ */
+function mailusers_any_user_profile_update($uid) {
 
 	if (isset($_POST[MAILUSERS_ACCEPT_NOTIFICATION_USER_META])) {
-		update_usermeta($user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'true');
+		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'true');
 	} else {
-		update_usermeta($user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'false');
+		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'false');
 	}
 
 	if (isset($_POST[MAILUSERS_ACCEPT_MASS_EMAIL_USER_META])) {
-		update_usermeta($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'true');
+		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'true');
 	} else {
-		update_usermeta($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'false');
+		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'false');
 	}
 }
 
