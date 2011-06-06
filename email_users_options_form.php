@@ -77,16 +77,34 @@
 		<th scope="row" valign="top">
 			<label for="mail_format"><?php _e('Mail format', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<select name="default_mail_format" style="width: 158px;">
+			<select name="default_mail_format" style="width: 235px;">
 				<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"'; ?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"'; ?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
 			</select> <?php _e('Send mails as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
+			<label for="sort_users_by"><?php _e('Sort users by', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<select name="default_sort_users_by" style="width: 235px;">
+				<option value="none" <?php if (mailusers_get_default_sort_users_by()=='none') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="dn" <?php if (mailusers_get_default_sort_users_by()=='dn') echo 'selected="true"'; ?>><?php _e('Display Name', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="dnul" <?php if (mailusers_get_default_sort_users_by()=='dnul') echo 'selected="true"'; ?>><?php _e('Display Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="fl" <?php if (mailusers_get_default_sort_users_by()=='fl') echo 'selected="true"'; ?>><?php _e('First Name Last Name', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="flul" <?php if (mailusers_get_default_sort_users_by()=='flul') echo 'selected="true"'; ?>><?php _e('First Name Last Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="lf" <?php if (mailusers_get_default_sort_users_by()=='lf') echo 'selected="true"'; ?>><?php _e('Last Name, First Name', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="lful" <?php if (mailusers_get_default_sort_users_by()=='lful') echo 'selected="true"'; ?>><?php _e('Last Name, First Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="ul" <?php if (mailusers_get_default_sort_users_by()=='ul') echo 'selected="true"'; ?>><?php _e('User Login', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="uldn" <?php if (mailusers_get_default_sort_users_by()=='uldn') echo 'selected="true"'; ?>><?php _e('User Login (Display Name)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="ulfl" <?php if (mailusers_get_default_sort_users_by()=='ulfl') echo 'selected="true"'; ?>><?php _e('User Login (First Name Last Name)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="ullf" <?php if (mailusers_get_default_sort_users_by()=='ullf') echo 'selected="true"'; ?>><?php _e('User Login (Last Name, First Name)', MAILUSERS_I18N_DOMAIN); ?></option>
+			</select> <?php _e('Determine how to sort and display names in the User selection list?', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<th scope="row" valign="top">
 			<label for="max_bcc_recipients"><?php _e('BCC limit', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<select name="max_bcc_recipients" style="width: 158px;">
+			<select name="max_bcc_recipients" style="width: 235px;">
 				<option value="0" <?php if (mailusers_get_max_bcc_recipients()=='0') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"'; ?>>30</option>
 			</select> <?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?>

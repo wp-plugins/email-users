@@ -140,12 +140,77 @@
 				</select> 
 				<select name="send_users[]" multiple="yes" size="8" style="width: 400px; height: 250px;">
 				<?php 
+					//  Display of users is based on plugin setting
+					$na = __('N/A', MAILUSERS_I18N_DOMAIN);
+					$sortby = mailusers_get_default_sort_users_by();
+	
+
+					error_log('%s::%s:  %s', basename(__FILE__), __LINE__, $sortby);
 					$users = mailusers_get_users($user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
-					foreach ($users as $user) { 
+					foreach ($users as $user) {
+						switch ($sortby) {
+							case 'fl' :  //  First Last
+								$name = sprintf('%s %s',
+									is_null($user->first_name) ? $na : $user->first_name,
+									is_null($user->last_name) ? $na : $user->last_name);
+								break;
+
+							case 'flul' :  //  First Last User Login
+								$name = sprintf('%s %s (%s)',
+									is_null($user->first_name) ? $na : $user->first_name,
+									is_null($user->last_name) ? $na : $user->last_name,
+									$user->user_login);
+								break;
+
+							case 'lf' :
+								$name = sprintf('%s, %s',
+									is_null($user->last_name) ? $na : $user->last_name,
+									is_null($user->first_name) ? $na : $user->first_name);
+								break;
+
+							case 'lful' :
+								$name = sprintf('%s, %s (%s)',
+									is_null($user->last_name) ? $na : $user->last_name,
+									is_null($user->first_name) ? $na : $user->first_name,
+									$user->user_login);
+								break;
+
+							case 'ul' :
+								$name = sprintf('%s', $user->user_login);
+								break;
+
+							case 'uldn' :
+								$name = sprintf('%s (%s)',
+									$user->user_login, $user->display_name);
+								break;
+
+							case 'ulfl' :
+								$name = sprintf('%s (%s %s)', $user->user_login,
+									is_null($user->first_name) ? $na : $user->first_name,
+									is_null($user->last_name) ? $na : $user->last_name);
+								break;
+
+							case 'ullf' :
+								$name = sprintf('%s (%s, %s)', $user->user_login,
+									is_null($user->last_name) ? $na : $user->last_name,
+									is_null($user->first_name) ? $na : $user->first_name);
+								break;
+
+							case 'dnul' :
+								$name = sprintf('%s (%s)',
+									$user->display_name, $user->user_login);
+								break;
+
+							case 'dn' :
+							case 'none' :
+							default:
+								$name = $user->display_name;
+								break;
+						}
 				?>
 					<option value="<?php echo $user->id; ?>" <?php 
 						echo (in_array($user->id, $send_users) ? ' selected="yes"' : '');?>>
-						<?php echo __('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $user->display_name; ?>
+						<?php echo __('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
 					</option>
 				<?php 
 					}

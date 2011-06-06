@@ -27,6 +27,7 @@
 	$default_subject = '';
 	$default_body = '';
 	$default_mail_format = 'html';
+	$default_sort_users_by = 'none';
 	$max_bcc_recipients = '0';
 	
 	if ( isset( $_POST['default_subject'] ) ) {
@@ -41,6 +42,10 @@
 		$default_mail_format = $_POST['default_mail_format'];
 	}
 	
+	if ( isset( $_POST['default_sort_users_by'] ) ) {
+		$default_sort_users_by = $_POST['default_sort_users_by'];
+	}
+	
 	if ( isset( $_POST['max_bcc_recipients'] ) ) {
 		$max_bcc_recipients = $_POST['max_bcc_recipients'];
 	}
@@ -48,6 +53,7 @@
 	mailusers_update_default_subject( format_to_post($default_subject) );
 	mailusers_update_default_body( $default_body );
 	mailusers_update_default_mail_format( $default_mail_format );
+	mailusers_update_default_sort_users_by( $default_sort_users_by );
 	mailusers_update_max_bcc_recipients( $max_bcc_recipients );
 ?>
 
