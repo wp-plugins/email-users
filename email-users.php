@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 3.4.0
+Version: 3.4.1
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
-Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua and Pokey.
+Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs / Vincent Prat 
 Author URI: http://www.marvinlabs.com
 */
@@ -26,7 +26,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.4.0' );
+define( 'MAILUSERS_CURRENT_VERSION', '3.4.1' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -152,7 +152,7 @@ function mailusers_add_default_user_meta() {
 	global $wpdb;
 	$users = $wpdb->get_results("SELECT id FROM $wpdb->users");
 	foreach ($users as $user) {
-		mailusers_user_register($user->id);
+		mailusers_user_register($user->ID);
 	}
 }
 

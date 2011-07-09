@@ -208,8 +208,8 @@
 								break;
 						}
 				?>
-					<option value="<?php echo $user->id; ?>" <?php 
-						echo (in_array($user->id, $send_users) ? ' selected="yes"' : '');?>>
+					<option value="<?php echo $user->ID; ?>" <?php 
+						echo (in_array($user->ID, $send_users) ? ' selected="yes"' : '');?>>
 						<?php echo __('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
 					</option>
 				<?php 

@@ -3,8 +3,8 @@ Contributors: vprat
 Donate link: http://www.marvinlabs.com
 Tags: email, users, list, admin
 Requires at least: 2.7
-Tested up to: 3.1
-Stable tag: 3.4.0
+Tested up to: 3.2
+Stable tag: 3.4.1
 
 A plugin for wordpress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
