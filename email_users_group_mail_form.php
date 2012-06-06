@@ -18,6 +18,8 @@
 ?>
 
 <?php
+	global $user_identity, $user_email, $user_ID;
+
 	if (	!current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
 		wp_die(__("You are not allowed to send emails to user groups.", MAILUSERS_I18N_DOMAIN));
 	}
@@ -39,19 +41,22 @@
 	}
 
 	get_currentuserinfo();
+
 	$from_name = $user_identity;
 	$from_address = $user_email;
 ?>
 
 <div class="wrap">
-	<h2><?php _e('Write an email to user groups', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<div id="icon-users" class="icon32"><br/></div>
+	<h2><?php _e('Send an Email to User Groups', MAILUSERS_I18N_DOMAIN); ?></h2>
 
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
-			<p class="error"><?php echo $err_msg; ?></p>
+			<div class="error fade"><p><?php echo $err_msg; ?><p></div>
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 	<?php	} ?>
 
-	<form name="SendEmail" action="admin.php?page=email-users/email_users_send_group_mail.php" method="post">
+	<!--<form name="SendEmail" action="admin.php?page=mailusers-send-group-mail-page" method="post">-->
+	<form name="SendEmail" action="" method="post">
 		<input type="hidden" name="send" value="true" />
 		<input type="hidden" name="fromName" value="<?php echo $from_name;?>" />
 		<input type="hidden" name="fromAddress" value="<?php echo $from_address;?>" />
@@ -113,7 +118,7 @@
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+			<input class="button-primary" type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 		</p>
 	</form>
 </div>

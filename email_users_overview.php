@@ -27,12 +27,13 @@
 
 <div class="wrap">
 
-	<h2><?php _e('Send an email', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<div id="icon-users" class="icon32"><br/></div>
+	<h2><?php _e('Send an Email', MAILUSERS_I18N_DOMAIN); ?></h2>
 	<br/>
 
 	<?php if (current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
 		|| 	current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) { ?>
-	<div style="float:left"><a href="admin.php?page=email-users/email_users_user_mail_form.php">
+	<div style="float:left"><a href="admin.php?page=mailusers-send-to-user-page">
 		<img src="<?php echo WP_CONTENT_URL . '/plugins/email-users/images/user.png'; ?>" alt="<?php _e('Send an email to one or more individual users', MAILUSERS_I18N_DOMAIN); ?>" title="<?php _e('Send an email to one or more individual users', MAILUSERS_I18N_DOMAIN); ?>" /></a>
 	</div>
 	<p><?php _e('Send an email to one or more individual users', MAILUSERS_I18N_DOMAIN); ?></p>
@@ -41,7 +42,7 @@
 	<?php } ?>
 
 	<?php if (current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) { ?>
-	<div style="float:left"><a href="admin.php?page=email-users/email_users_group_mail_form.php">
+	<div style="float:left"><a href="admin.php?page=mailusers-send-to-group-page">
 		<img src="<?php echo WP_CONTENT_URL . '/plugins/email-users/images/group.png'; ?>" alt="<?php _e('Send an email to one or more user groups', MAILUSERS_I18N_DOMAIN); ?>" title="<?php _e('Send an email to one or more user groups', MAILUSERS_I18N_DOMAIN); ?>" /></a>
 	</div>
 	<p><?php _e('Send an email to one or more user groups', MAILUSERS_I18N_DOMAIN); ?></p>

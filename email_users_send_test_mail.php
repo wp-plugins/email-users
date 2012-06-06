@@ -24,6 +24,8 @@
 ?>
 
 <?php
+	global $wpdb, $user_identity, $user_email, $user_ID;
+
 	$err_msg = '';
 	
 	get_currentuserinfo();
@@ -41,6 +43,7 @@
 	// Replace the template variables concerning the sender details
 	// --	
 	get_currentuserinfo();
+
 	$from_name = $user_identity;
 	$from_address = $user_email;
 	$subject = mailusers_replace_sender_templates($subject, $from_name);
@@ -48,14 +51,25 @@
 
 	// Replace the template variables concerning the post
 	// --	
-	$post = get_post( $post_id );
-	$post_title = $post->post_title;
-	$post_url = get_permalink( $post_id );			
-	$post_content = explode( '<!--more-->', $post->post_content, 2 );
-	$post_excerpt = $post_content[0];
+	$post_id = $wpdb->get_var("select max(id) from $wpdb->posts where post_type='post'");
+
+	if (!isset($post_id)) {
+?>
+	<div class="error fade">
+		<?php _e('No post found in the blog in order to build a notification preview.', MAILUSERS_I18N_DOMAIN); ?>
+	</div>
+<?php
+	} else {						
+
+		$post = get_post( $post_id );
+		$post_title = $post->post_title;
+		$post_url = get_permalink( $post_id );			
+		$post_content = explode( '<!--more-->', $post->post_content, 2 );
+		$post_excerpt = $post_content[0];
 	
-	$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
-	$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
+		$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
+		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
+	}
 	
 ?>
 
@@ -76,9 +90,6 @@
 			<p><?php echo sprintf(__("Test email sent to %s.", MAILUSERS_I18N_DOMAIN), $from_address); ?></p>
 		</div>		
 <?php
-		include 'email_users_options_form.php';
 	}
 ?>
 </div>
-		
-	

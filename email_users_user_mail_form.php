@@ -18,84 +18,11 @@
 ?>
 
 <?php
+	global $user_identity, $user_email, $user_ID;
+
 	if (	!current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
 		|| 	!current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) {
 		wp_die(__("You are not allowed to send emails to users.", MAILUSERS_I18N_DOMAIN));
-	}
-
-	get_currentuserinfo();
-	$from_name = $user_identity;
-	$from_address = $user_email;
-
-	// Send the email if it has been requested
-	if($_POST['send']=="true") {
-	    // Analyse form input, check for blank fields
-	    if ( !isset( $_POST['mail_format'] ) || trim($_POST['mail_format'])=='' ) {
-		    $err_msg = $err_msg . __('You must specify the mail format.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	    } else {
-		    $mail_format = $_POST['mail_format'];
-	    }
-
-	    if ( !isset($_POST['send_users']) || !is_array($_POST['send_users']) || empty($_POST['send_users']) ) {
-		    $err_msg = $err_msg . __('You must enter at least a recipient.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	    } else {
-		    $send_users = $_POST['send_users'];
-	    }
-
-	    if ( !isset( $_POST['subject'] ) || trim($_POST['subject'])=='' ) {
-		    $err_msg = $err_msg . __('You must enter a subject.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	    } else {
-		    $subject = $_POST['subject'];
-	    }
-
-	    if ( !isset( $_POST['mailContent'] ) || trim($_POST['mailContent'])=='' ) {
-		    $err_msg = $err_msg . __('You must enter some content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	    } else {
-		    $mail_content = $_POST['mailContent'];
-	    }
-
-	    // If no error, we send the mail
-	    if ( $err_msg=='' ) {
-			// Fetch users
-			// --
-			$recipients = mailusers_get_recipients_from_ids($send_users, $user_ID);
-			
-			// Do some HTML homework if needed
-			//--
-			if ($mail_format=='html') {
-				$mail_content = wpautop($mail_content);
-			}
-
-			if (empty($recipients)) {
-				$err_msg = $err_msg . _e('No recipients were found.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-			} else {
-				$num_sent = mailusers_send_mail($recipients, $subject, $mail_content, $mail_format, $from_name, $from_address);
-				if (false === $num_sent) {
-					$err_msg = $err_msg . _e('There was a problem trying to send email to users.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-				} else if (0 === $num_sent) {
-					$err_msg = $err_msg .  _e('No email has been sent to other users. This may be because no valid email addresses were found.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-				} else if ($num_sent > 0 && $num_sent == count($recipients)){
-		?>
-			    <div class="wrap">
-				<div class="updated">
-					<p><?php echo sprintf(__("Notification sent to %s user(s).", MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
-				</div>
-			    </div>
-		<?php
-				} else if ($num_sent > count($recipients)) {
-					$err_msg = $err_msg .  _e('WARNING: More email has been sent than the number of recipients found.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-				} else {
-					?>
-			    <div class="wrap">
-				<div class="updated">
-				    <p class="updated">Email has been sent to <?php echo $num_sent; ?> users, but <?php echo count($recipients);?> recipients were originally found. Perhaps some users don't have valid email addresses?
-				    </p>
-				</div>
-			    </div>
-		<?php
-				}
-			}
-	    }
 	}
 
 	if (!isset($send_users)) {
@@ -113,17 +40,22 @@
 	if (!isset($mail_content)) {
 		$mail_content = '';
 	}
-?>
+
+	get_currentuserinfo();
+
+	$from_name = $user_identity;
+	$from_address = $user_email;?>
 
 <div class="wrap">
-	<h2><?php _e('Write an email to individual users', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<div id="icon-users" class="icon32"><br/></div>
+	<h2><?php _e('Send an Email to Individual Users', MAILUSERS_I18N_DOMAIN); ?></h2>
 
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
-			<p class="error"><?php echo $err_msg; ?></p>
+			<div class="error fade"><p><?php echo $err_msg; ?></p></div>
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 	<?php	} ?>
 
-	<form name="SendEmail" action="admin.php?page=email-users/email_users_user_mail_form.php" method="post">
+	<form name="SendEmail" action="" method="post">
 		<input type="hidden" name="send" value="true" />
 		<input type="hidden" name="fromName" value="<?php echo $from_name;?>" />
 		<input type="hidden" name="fromAddress" value="<?php echo $from_address;?>" />
@@ -252,7 +184,7 @@
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+			<input class="button-primary" type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 		</p>
 	</form>
 </div>

@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 3.4.1
+Version: 4.0.0
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
-Author: MarvinLabs / Vincent Prat 
+Author: MarvinLabs & Mike Walsh
 Author URI: http://www.marvinlabs.com
 */
 
@@ -26,7 +26,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '3.4.1' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.0.0' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -41,6 +41,9 @@ define( 'MAILUSERS_NOTIFY_USERS_CAP', 'email_users_notify' );
 define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notifications' );
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
+// Debug
+define( 'MAILUSERS_DEBUG', false);
+
 /**
  * Initialise the internationalisation domain
  */
@@ -49,15 +52,53 @@ function mailusers_init_i18n() {
 	global $is_mailusers_i18n_setup;
 
 	if ($is_mailusers_i18n_setup == false) {
-		load_plugin_textdomain(MAILUSERS_I18N_DOMAIN, 'wp-content/plugins/email-users');
+		load_plugin_textdomain(MAILUSERS_I18N_DOMAIN, false, dirname(plugin_basename(__FILE__))) ;
 		$is_mailusers_i18n_setup = true;
 	}
 }
 
 /**
+ * Default values for the plugin settings
+ */
+function mailusers_get_default_plugin_settings()
+{
+	$default_plugin_settings = array(
+		// Version of the email users plugin
+		'mailusers_version' => mailusers_get_current_version(),
+		// The default title to use when using the post notification functionality
+		'mailusers_default_subject' => __('[%BLOG_NAME%] A post of interest: "%POST_TITLE%"', MAILUSERS_I18N_DOMAIN),
+		// Mail User - The default body to use when using the post notification functionality
+		'mailusers_default_body' => __('<p>Hello, </p><p>I would like to bring your attention on a new post published on the blog. Details of the post follow; I hope you will find it interesting.</p><p>Best regards, </p><p>%FROM_NAME%</p><hr><p><strong>%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Link to the post: <a href="%POST_URL%">%POST_URL%</a></li><li>Link to %BLOG_NAME%: <a href="%BLOG_URL%">%BLOG_URL%</a></li></ul>', MAILUSERS_I18N_DOMAIN),
+		// Mail User - Default mail format (html or plain text)
+		'mailusers_default_mail_format' => 'html',
+		// Mail User - Default sort users by (none, display name, last name or first name)
+		'mailusers_default_sort_users_by' => 'none',
+		// Mail User - Maximum number of recipients in the BCC field'
+		'mailusers_max_bcc_recipients' => '0',
+		// Mail User - Maximum number of rows to show in the User Settings table'
+		'mailusers_user_settings_table_rows' => '20'
+	) ;
+
+	return $default_plugin_settings ;
+}
+
+/**
+ * Reset plugin to use default settings
+ */
+function mailusers_reset_to_default_settings() {
+	$plugin_settings = mailusers_get_default_plugin_settings() ;
+
+	//  Update the options which will add them if they don't exist
+	//  but WILL overwrite any existing settings back to the default.
+
+	foreach ($plugin_settings as $key => $value)
+		if ($key !== 'mailusers_version') update_option($key, $value) ;
+}
+
+/**
  * Set default values for the options (check against the version)
  */
-add_action('activate_email-users/email-users.php','mailusers_plugin_activation');
+register_activation_hook(__FILE__, 'mailusers_plugin_activation');
 function mailusers_plugin_activation() {
 	mailusers_init_i18n();
 
@@ -67,54 +108,26 @@ function mailusers_plugin_activation() {
 		// do nothing
 	}
 	else if ( $installed_version=='' ) {
-		add_option(
-			'mailusers_version',
-			mailusers_get_current_version(),
-			'version of the email users plugin' );
-		add_option(
-			'mailusers_default_subject',
-			__('[%BLOG_NAME%] A post of interest: "%POST_TITLE%"', MAILUSERS_I18N_DOMAIN),
-			'The default title to use when using the post notification functionality' );
-		add_option(
-			'mailusers_default_body',
-			__('<p>Hello, </p><p>I would like to bring your attention on a new post published on the blog. Details of the post follow; I hope you will find it interesting.</p><p>Best regards, </p><p>%FROM_NAME%</p><hr><p><strong>%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Link to the post: <a href="%POST_URL%">%POST_URL%</a></li><li>Link to %BLOG_NAME%: <a href="%BLOG_URL%">%BLOG_URL%</a></li></ul>', MAILUSERS_I18N_DOMAIN),
-			'Mail User - The default body to use when using the post notification functionality' );
-		add_option(
-			'mailusers_default_mail_format',
-			'html',
-			'Mail User - Default mail format (html or plain text)' );
-		add_option(
-			'mailusers_default_sort_users_by',
-			'none',
-			'Mail User - Default sort users by (none, display name, last name or first name)' );
-		add_option(
-			'mailusers_max_bcc_recipients',
-			'0',
-			'Mail User - Maximum number of recipients in the BCC field' );
+		$plugin_settings = mailusers_get_default_plugin_settings() ;
+
+		//  Add the options which will add them if they don't
+		//  exist but won't overwrite any existing settings.
+
+		foreach ($plugin_settings as $key => $value)
+			add_option($key, $value) ;
 
 		mailusers_add_default_capabilities();
 		mailusers_add_default_user_meta();
 
 	} else if ( $installed_version>='2.0' && $installed_version<'3.0.0' ) {
 		// Version 2.x, a bug was corrected in the template, update it
-		update_option(
-			'mailusers_default_subject',
-			__('[%BLOG_NAME%] A post of interest: "%POST_TITLE%"', MAILUSERS_I18N_DOMAIN) );
-		update_option(
-			'mailusers_default_body',
-			__('<p>Hello, </p><p>I would like to bring your attention on a new post published on the blog. Details of the post follow; I hope you will find it interesting.</p><p>Best regards, </p><p>%FROM_NAME%</p><hr/><p><strong>%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Link to the post: <a href="%POST_URL%">%POST_URL%</a></li><li>Link to %BLOG_NAME%: <a href="%BLOG_URL%">%BLOG_URL%</a></li></ul>', MAILUSERS_I18N_DOMAIN) );
-		add_option(
-			'mailusers_default_mail_format',
-			'html',
-			'Mail User - Default mail format (html or plain text)' );
-		add_option(
-			'mailusers_default_sort_users_by',
-			'none',
-			'Mail User - Default sort users by (none, display name, last name or first name)' );
-		add_option(
-			'mailusers_max_bcc_recipients',
-			'0',
-			'Mail User - Maximum number of recipients in the BCC field' );
+		$plugin_settings = mailusers_get_default_plugin_settings() ;
+
+		//  Add the options which will add them if they don't
+		//  exist but won't overwrite any existing settings.
+
+		foreach ($plugin_settings as $key => $value)
+			add_option($key, $value) ;
 
 		delete_option('mailusers_mail_user_level');
 		delete_option('mailusers_mail_method');
@@ -142,15 +155,15 @@ function mailusers_plugin_activation() {
 */
 register_deactivation_hook( __FILE__, 'mailusers_plugin_deactivation' );
 function mailusers_plugin_deactivation() {
-	// update_option('mailusers_version', '2.3');
+	//  Force the activation hook to run again when reactivated
+	update_option('mailusers_version', '');
 }
 
 /**
 * Add default user meta information
 */
 function mailusers_add_default_user_meta() {
-	global $wpdb;
-	$users = $wpdb->get_results("SELECT id FROM $wpdb->users");
+	$users = get_users() ;
 	foreach ($users as $user) {
 		mailusers_user_register($user->ID);
 	}
@@ -203,7 +216,7 @@ function mailusers_post_relatedlink() {
 <div class="postbox">
 <h3 class='hndle'><span>Email</span></h3>
 <div class="inside">
-<p><a href="admin.php?page=email-users/email_users_notify_form.php&post_id=<?php echo $post_ID; ?>"><?php _e('Notify users about this post', MAILUSERS_I18N_DOMAIN); ?></a></p>
+<p><img style="padding: 5px; vertical-align: middle;" src="<?php echo plugins_url('images/email.png' , __FILE__); ?>"</img><a href="admin.php?page=mailusers-send-notify-mail-post&post_id=<?php echo $post_ID; ?>"><?php _e('Notify Users About this Post', MAILUSERS_I18N_DOMAIN); ?></a></p>
 </div>
 </div>
 <?php
@@ -218,7 +231,7 @@ function mailusers_page_relatedlink() {
 <div class="postbox">
 <h3 class='hndle'><span>Email</span></h3>
 <div class="inside">
-<p><a href="admin.php?page=email-users/email_users_notify_form.php&post_id=<?php echo $post_ID; ?>"><?php _e('Notify users about this page', MAILUSERS_I18N_DOMAIN); ?></a></p>
+<p><img style="padding: 5px; vertical-align: middle;" src="<?php echo plugins_url('images/email.png' , __FILE__); ?>"</img><a href="admin.php?page=mailusers-send-notify-mail-page&post_id=<?php echo $post_ID; ?>"><?php _e('Notify Users About this Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
 </div>
 </div>
 <?php
@@ -230,56 +243,125 @@ function mailusers_page_relatedlink() {
  */
 add_action( 'admin_menu', 'mailusers_add_pages' );
 function mailusers_add_pages() {
-	mailusers_init_i18n();
+    mailusers_init_i18n();
 
-	if (current_user_can('manage_options')) {
-		add_options_page( __('Email Users', MAILUSERS_I18N_DOMAIN),
-			__('Email Users', MAILUSERS_I18N_DOMAIN),
-			0,
-			'email-users/email_users_options_form.php' );
-	}
-		
-	if (	current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP) 
-		|| 	current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)
-		||	current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
-		
-		add_menu_page(__('Email', POST_TEMPLATES_I18N_DOMAIN), 
-			__('Email', POST_TEMPLATES_I18N_DOMAIN), 
-			0, 
-			'email-users/email_users_overview.php', 
-			'', 
-			WP_CONTENT_URL . '/plugins/email-users/images/email.png' );
-		
-		if (	current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
-			|| 	current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) {
-			add_submenu_page( 'email-users/email_users_overview.php',
-				__('Send to user(s)', POST_TEMPLATES_I18N_DOMAIN), 
-				__('Send to user(s)', POST_TEMPLATES_I18N_DOMAIN), 
-				0, 
-				'admin.php?page=email-users/email_users_user_mail_form.php' );
-		}
-		
-		if (current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
-			add_submenu_page( 'email-users/email_users_overview.php',
-				__('Send to group(s)', POST_TEMPLATES_I18N_DOMAIN), 
-				__('Send to group(s)', POST_TEMPLATES_I18N_DOMAIN), 
-				0, 
-				'admin.php?page=email-users/email_users_group_mail_form.php' );
-		}
-		
-		// For WP 2.8
-		//--
-		global $_registered_pages;
+    add_posts_page(
+	__('Notify Users', MAILUSERS_I18N_DOMAIN),
+	__('Notify Users', MAILUSERS_I18N_DOMAIN),
+	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+       	'mailusers-send-notify-mail-post',
+       	'mailusers_send_notify_mail') ;
 
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_user_mail_form.php','admin.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_group_mail_form.php','admin.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_notify_form.php','admin.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_group_mail.php','admin.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_notify_mail.php','admin.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_user_mail.php','admin.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_send_test_mail.php','options-general.php')] = true;
-		$_registered_pages[get_plugin_page_hookname('email-users/email_users_set_options.php','options-general.php')] = true;
-	}
+    add_pages_page(
+	__('Notify Users', MAILUSERS_I18N_DOMAIN),
+	__('Notify Users', MAILUSERS_I18N_DOMAIN),
+	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+       	'mailusers-send-notify-mail-page',
+       	'mailusers_send_notify_mail') ;
+
+    add_options_page(
+	__('Email Users', MAILUSERS_I18N_DOMAIN),
+	__('Email Users', MAILUSERS_I18N_DOMAIN),
+	'manage_options',
+       	'mailusers-options-page',
+       	'mailusers_options_page') ;
+
+    add_menu_page(
+	__('Email Users', MAILUSERS_I18N_DOMAIN), 
+	__('Email Users', MAILUSERS_I18N_DOMAIN), 
+	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+       	plugin_basename(__FILE__),
+	'mailusers_overview_page',
+	plugins_url( 'images/email.png' , __FILE__)) ;
+
+    add_submenu_page(plugin_basename(__FILE__),
+	__('Send to User(s)', MAILUSERS_I18N_DOMAIN), 
+	__('Send to User(s)', MAILUSERS_I18N_DOMAIN), 
+	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+       	'mailusers-send-to-user-page',
+       	'mailusers_send_to_user_page') ;
+
+    add_submenu_page(plugin_basename(__FILE__),
+	__('Send to Group(s)', MAILUSERS_I18N_DOMAIN), 
+	__('Send to Group(s)', MAILUSERS_I18N_DOMAIN), 
+	MAILUSERS_EMAIL_USER_GROUPS_CAP,
+       	'mailusers-send-to-group-page',
+       	'mailusers_send_to_group_page') ;
+
+    add_submenu_page(plugin_basename(__FILE__),
+	__('User Settings', MAILUSERS_I18N_DOMAIN), 
+	__('User Settings', MAILUSERS_I18N_DOMAIN), 
+	'edit_users',
+       	'mailusers-user-settings',
+       	'mailusers_user_settings_page') ;
+}
+
+/**
+ * Wrapper for the options page menu
+ */
+function mailusers_options_page() {
+    require_once('email_users_set_options.php') ;
+}
+
+/**
+ * Wrapper for the main email users menu page
+ */
+function mailusers_overview_page()
+{
+    require_once('email_users_overview.php') ;
+}
+
+/**
+ * Wrapper for the email users send to user menu
+ */
+function mailusers_send_to_user_page()
+{
+    require_once('email_users_send_user_mail.php') ;
+}
+
+/**
+ * Wrapper for the email users send to group menu
+ */
+function mailusers_send_to_group_page()
+{
+    require_once('email_users_send_group_mail.php') ;
+}
+
+/**
+ * Wrapper for the email users noptify users menu
+ */
+function mailusers_send_notify_mail()
+{
+    require_once('email_users_send_notify_mail.php') ;
+}
+
+/**
+ * Wrapper for the email users notify group menu
+ */
+function mailusers_notify_group_page()
+{
+    require_once('email_users_notify_form.php') ;
+}
+
+function mailusers_user_settings_page()
+{
+    require_once('email_users_user_settings.php') ;
+}
+
+/**
+ * Wrapper for the email users noptify users menu
+ */
+function mailusers_set_options_page()
+{
+    require_once('email_users_set_options.php') ;
+}
+
+/**
+ * Wrapper for the email users send group mail page
+ */
+function mailusers_send_group_mail_page()
+{
+    require_once('email_users_send_group_mail.php') ;
 }
 
 /**
@@ -316,13 +398,13 @@ function mailusers_edit_any_user_profile_form($uid) {
 						name="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						value="true"
-						<?php if (get_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META)=="true") echo 'checked="checked"'; ?> ></input>
+						<?php if (get_user_meta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true)=='true') echo 'checked="checked"'; ?> ></input>
 				<?php _e('Accept to recieve post or page notification emails', MAILUSERS_I18N_DOMAIN); ?><br/>
 				<input 	type="checkbox"
 						name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						value="true"
-						<?php if (get_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META)=="true") echo 'checked="checked"'; ?> ></input>
+						<?php if (get_user_meta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true)=='true') echo 'checked="checked"'; ?> ></input>
 				<?php _e('Accept to recieve emails sent to multiple recipients (but still accept emails sent only to me)', MAILUSERS_I18N_DOMAIN); ?>
 			</td>
 		</tr>
@@ -374,9 +456,24 @@ function editor_admin_init() {
 	wp_enqueue_script('media-upload');
 }
  
-add_action('admin_head', 'editor_admin_head');
-function editor_admin_head() {
-	wp_tiny_mce();
+/**
+ * Register settings for the WordPres Options API to work
+ */
+add_action('admin_init', 'mailusers_admin_init');
+function mailusers_admin_init() {
+    register_setting('email_users', 'mailusers_version') ;
+    register_setting('email_users', 'mailusers_default_subject') ;
+    register_setting('email_users', 'mailusers_default_body') ;
+    register_setting('email_users', 'mailusers_default_mail_format') ;
+    register_setting('email_users', 'mailusers_default_sort_users_by') ;
+    register_setting('email_users', 'mailusers_max_bcc_recipients') ;
+    register_setting('email_users', 'mailusers_user_settings_table_rows') ;
+    register_setting('email_users', 'mailusers_default_subject') ;
+    register_setting('email_users', 'mailusers_default_body') ;
+    register_setting('email_users', 'mailusers_default_mail_format') ;
+    register_setting('email_users', 'mailusers_default_sort_users_by') ;
+    register_setting('email_users', 'mailusers_max_bcc_recipients') ;
+    register_setting('email_users', 'mailusers_user_settings_table_rows') ;
 }
 
 /**
@@ -457,10 +554,24 @@ function mailusers_get_max_bcc_recipients() {
 }
 
 /**
- * Wrapper for the option mail_method
+ * Wrapper for the option max bcc recipients
  */
 function mailusers_update_max_bcc_recipients( $max_bcc_recipients ) {
 	return update_option( 'mailusers_max_bcc_recipients', $max_bcc_recipients );
+}
+
+/**
+ * Wrapper for the user settings table rows option
+ */
+function mailusers_get_user_settings_table_rows() {
+	return get_option( 'mailusers_user_settings_table_rows' );
+}
+
+/**
+ * Wrapper for the user settings table rows option
+ */
+function mailusers_update_user_settings_table_rows( $user_settings_table_rows ) {
+	return update_option( 'mailusers_user_settings_table_rows', $user_settings_table_rows );
 }
 
 /**
@@ -482,7 +593,7 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 	//
 	//  See:  http://lists.automattic.com/pipermail/wp-hackers/2008-January/017199.html
 
-	$query = "SELECT DISTINCT ID, display_name, user_login, first_name, last_name "
+	$query = "SELECT DISTINCT ID, display_name, user_email, user_login, first_name, last_name "
 		. "FROM $wpdb->usermeta, $wpdb->users "
 		. "LEFT JOIN ( "
 		. "SELECT user_id AS uid, meta_value AS first_name "
@@ -495,11 +606,11 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 		. "WHERE meta_key = 'last_name' "
 		. ") AS metaL ON $wpdb->users.ID = metaL.uid ";
 
-	$additional_sql_filter = "";
+	$additional_sql_filter = '';
 
 	if ($meta_filter=='') {
 		if ($exclude_id!='') {
-			$additional_sql_filter = " WHERE (id<>" . $exclude_id . ") ";
+			$additional_sql_filter = ' WHERE (id<>' . $exclude_id . ') ';
 		}
 
 		switch ($sortby) {
@@ -507,13 +618,13 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 			case 'flul' :
 	    			$users = $wpdb->get_results($query
 					. $additional_sql_filter
-	       				. " ORDER BY first_name");
+	       				. ' ORDER BY first_name');
 				break;
 			case 'lf' :
 			case 'lful' :
 	    			$users = $wpdb->get_results($query
 					. $additional_sql_filter
-	       				. " ORDER BY last_name");
+	       				. ' ORDER BY last_name');
 				break;
 			case 'ul' :
 			case 'uldn' :
@@ -521,76 +632,68 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 			case 'ulln' :
 	    			$users = $wpdb->get_results($query
 					. $additional_sql_filter
-	       				. " ORDER BY user_login");
+	       				. ' ORDER BY user_login');
 				break;
 			case 'display name' :
 	    			$users = $wpdb->get_results($query
 					. $additional_sql_filter
-	       				. " ORDER BY display_name");
+	       				. ' ORDER BY display_name');
 				break;
 			default:
 	    			$users = $wpdb->get_results($query
 					. $additional_sql_filter
-	       				. " ORDER BY ID");
+	       				. ' ORDER BY ID');
 				break;
 		}
 	} else {
 		if ($exclude_id!='') {
-			$additional_sql_filter .= " AND (id<>" . $exclude_id . ") ";
+			$additional_sql_filter .= ' AND (id<>' . $exclude_id . ') ';
 		}
-		$additional_sql_filter .= " AND (meta_key='" . $meta_filter . "') ";
-		$additional_sql_filter .= " AND (meta_value='true') ";
+		$additional_sql_filter .= ' AND (meta_key="' . $meta_filter . '") ';
+		$additional_sql_filter .= ' AND (meta_value="true") ';
 
 		$sortby = mailusers_get_default_sort_users_by();
 
-//	    	$users = $wpdb->get_results(
-//			  "SELECT id, user_email, display_name "
-//			. "FROM $wpdb->usermeta, $wpdb->users "
-//			. "WHERE "
-//			. " (user_id = id)"
-//			. $additional_sql_filter
-//			. " ORDER BY display_name");
-		error_log(sprintf('%s::%s:  %s', basename(__FILE__), __LINE__, $sortby));
 		switch ($sortby) {
 			case 'fl' :
 			case 'flul' :
 	    			$users = $wpdb->get_results($query
-					. "WHERE "
-					. " (user_id = id)"
+					. 'WHERE '
+					. ' (user_id = id)'
 					. $additional_sql_filter
-	       				. " ORDER BY first_name");
+	       				. ' ORDER BY first_name');
 				break;
 			case 'lf' :
 			case 'lful' :
 	    			$users = $wpdb->get_results($query
-					. "WHERE "
-					. " (user_id = id)"
+					. 'WHERE '
+					. ' (user_id = id)'
 					. $additional_sql_filter
-	       				. " ORDER BY last_name");
+	       				. ' ORDER BY last_name');
 				break;
 			case 'ul' :
 			case 'uldn' :
 			case 'ulfn' :
 			case 'ulln' :
 	    			$users = $wpdb->get_results($query
-					. "WHERE "
-					. " (user_id = id)"
+					. 'WHERE '
+					. ' (user_id = id)'
 					. $additional_sql_filter
-	       				. " ORDER BY user_login");
+	       				. ' ORDER BY user_login');
 				break;
 			case 'display name' :
 	    			$users = $wpdb->get_results($query
-					. "WHERE "
-					. " (user_id = id)"
+					. 'WHERE '
+					. ' (user_id = id)'
 					. $additional_sql_filter
-	       				. " ORDER BY display_name");
+	       				. ' ORDER BY display_name');
 				break;
 			default:
 	    			$users = $wpdb->get_results($query
-					. "WHERE "
-					. " (user_id = id)"
+					. 'WHERE '
+					. ' (user_id = id)'
 					. $additional_sql_filter
-	       				. " ORDER BY ID");
+	       				. ' ORDER BY ID');
 				break;
 		}
 	}
@@ -627,33 +730,34 @@ function mailusers_get_recipients_from_ids( $ids, $exclude_id='', $meta_filter =
 		return array();
 	}
 
-	$id_filter = implode(", ", $ids);
+	$id_filter = implode(', ', $ids);
 
-	$additional_sql_filter = "";
+	$additional_sql_filter = '';
 	if ($exclude_id!='') {
-		$additional_sql_filter .= " AND (id<>" . $exclude_id . ") ";
+		$additional_sql_filter .= ' AND (id<>' . $exclude_id . ') ';
 	}
 
 	if ($meta_filter=='') {
 	    $users = $wpdb->get_results(
-			  "SELECT id, user_email, display_name "
+			  'SELECT id, user_email, display_name '
 			. "FROM $wpdb->users "
-			. "WHERE "
-			. " (id IN (" . implode(", ", $ids) . ")) "
+			. 'WHERE '
+			. ' (id IN (' . implode(', ', $ids) . ')) '
 			. $additional_sql_filter );
 	} else {
-		$additional_sql_filter .= " AND (meta_key='" . $meta_filter . "') ";
-		$additional_sql_filter .= " AND (meta_value='true') ";
+		$additional_sql_filter .= ' AND (meta_key="' . $meta_filter . '") ';
+		$additional_sql_filter .= ' AND (meta_value="true") ';
 
 	    $users = $wpdb->get_results(
-			  "SELECT id, user_email, display_name "
+			  'SELECT id, user_email, display_name '
 			. "FROM $wpdb->usermeta, $wpdb->users "
-			. "WHERE "
-			. " (user_id = id)"
+			. 'WHERE '
+			. ' (user_id = id)'
 			. $additional_sql_filter
-			. " AND (id IN (" . implode(", ", $ids) . ")) " );
+			. ' AND (id IN (' . implode(', ', $ids) . ')) ' );
 	}
 
+	//printf('<pre>%s::%s<br/>%s</pre>', basename(__FILE__), __LINE__, print_r($users, true)) ;
 	return $users;
 }
 
@@ -673,7 +777,7 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
 	$role_count = count($roles);
 	$capability_filter = '';
 	for ($i=0; $i<$role_count; $i++) {
-		$capability_filter .= "meta_value like '%" . $roles[$i] . "%'";
+		$capability_filter .= 'meta_value like "%' . $roles[$i] . '%"';
 		if ($i!=$role_count-1) {
 			$capability_filter .= ' OR ';
 		}
@@ -685,43 +789,44 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
 		// Get ids corresponding to the roles
 		//--
 	    $ids = $wpdb->get_results(
-				  "SELECT id "
+				  'SELECT id '
 				. "FROM $wpdb->usermeta, $wpdb->users "
-				. "WHERE "
-				. " (user_id = id) "
+				. 'WHERE '
+				. ' (user_id = id) '
 				. ($exclude_id!='' ? ' AND (id<>' . $exclude_id . ')' : '')
-				. " AND (meta_key = '" . $wpdb->prefix . "capabilities') "
-				. " AND (" . $capability_filter . ") " );
+				. ' AND (meta_key = "' . $wpdb->prefix . 'capabilities") '
+				. ' AND (' . $capability_filter . ') ' );
 
 		if (count($ids)<1) {
 			return array();
 		}
 				
-		$id_list = "";
+		$id_list = '';
 		for ($i=0; $i<count($ids)-1; $i++) {
-			$id_list .= $ids[$i]->id . ",";
+			$id_list .= $ids[$i]->id . ',';
 		}
 		$id_list .= $ids[count($ids)-1]->id;
 
 		$users = $wpdb->get_results(
-				  "SELECT id, user_email, display_name "
+				  'SELECT id, user_email, display_name '
 				. "FROM $wpdb->usermeta, $wpdb->users "
-				. "WHERE "
-				. " (user_id = id) "
-				. " AND (id in (" . $id_list . ")) "
-				. " AND (meta_key = '" . $meta_filter ."') "
-				. " AND (meta_value = 'true') " );
+				. 'WHERE '
+				. ' (user_id = id) '
+				. ' AND (id in (' . $id_list . ')) '
+				. ' AND (meta_key = "' . $meta_filter .'") '
+				. ' AND (meta_value = "true") ' );
 	} else {
 	    $users = $wpdb->get_results(
-				  "SELECT id, user_email, display_name "
+				  'SELECT id, user_email, display_name '
 				. "FROM $wpdb->usermeta, $wpdb->users "
-				. "WHERE "
-				. " (user_id = id) "
+				. 'WHERE '
+				. ' (user_id = id) '
 				. ( $exclude_id!='' ? ' AND (id<>' . $exclude_id . ')' : '' )
-				. " AND (meta_key = '" . $wpdb->prefix . "capabilities') "
-				. " AND (" . $capability_filter . ") " );
+				. ' AND (meta_key = "' . $wpdb->prefix . 'capabilities") '
+				. ' AND (' . $capability_filter . ') ' );
 	}
 
+	//printf('<pre>%s::%s<br/>%s</pre>', basename(__FILE__), __LINE__, print_r($users, true)) ;
 	return $users;
 }
 
@@ -806,7 +911,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			@wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
-			echo "<p class=\"error\">The email address of the user you are trying to send mail to is not a valid email address format.</p>";
+			echo '<div class="error fade">The email address of the user you are trying to send mail to is not a valid email address format.</div>';
 			return $num_sent;
 		}
 		return $num_sent;
@@ -871,4 +976,23 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 	return $num_sent;
 }
+
+if (MAILUSERS_DEBUG) :
+/**
+ * Debug functions
+ */
+function mailusers_preprint_r()
+{
+    $numargs = func_num_args() ;
+    $arg_list = func_get_args() ;
+    for ($i = 0; $i < $numargs; $i++) {
+	printf('<pre style="text-align:left;">%s</pre>', print_r($arg_list[$i], true)) ;
+    }
+}
+
+function mailusers_whereami($x, $y)
+{
+	printf('<h2>%s::%s</h2>', basename($x), $y) ;
+}
+endif;
 ?>

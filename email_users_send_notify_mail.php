@@ -24,13 +24,17 @@
 ?>
 
 <?php
+	global $user_identity, $user_email, $user_ID;
+
 	$err_msg = '';
 	
 	get_currentuserinfo();
 	$from_name = $user_identity;
 	$from_address = $user_email;
 	$mail_format = mailusers_get_default_mail_format();
-	
+
+	// Send the email if it has been requested
+	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {	
 	// Analyse form input, check for blank fields
 	if ( isset( $_POST['post_id'] ) ) {
 		$post_id = $_POST['post_id'];
@@ -54,12 +58,26 @@
 	} else {
 		$original_mail_content = $_POST['mailContent'];
 	}
+	}
+
+	if (!isset($send_roles)) {
+		$send_roles = array();
+	}
+
+	if (!isset($mail_format)) {
+		$mail_format = mailusers_get_default_mail_format();
+	}
+
+	if (!isset($original_subject)) {
+		$original_subject = '';
+	}
+
+	if (!isset($original_mail_content)) {
+		$original_mail_content = '';
+	}	
 	
 	// If error, we simply show the form again
-	if ( $err_msg!='' ) {
-		// Redirect to the form page
-		include 'email_users_notify_form.php';
-	} else {
+	if (array_key_exists('send', $_POST) && ($_POST['send']=='true') && ($err_msg == '')) {
 		// No error, send the mail
 ?>
 
@@ -88,5 +106,8 @@
 	</div>
 	
 <?php
+	} else {
+		// Redirect to the form page
+		include 'email_users_notify_form.php';
 	}
 ?>

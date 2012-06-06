@@ -25,27 +25,24 @@
 	if ( mailusers_get_installed_version() != mailusers_get_current_version() ) {
 ?>
 <div class="wrap">
-	<p style="text-color:red;">
-		<?php _e('It looks like you have an old version of the plugin activated. Please deactivate the plugin and activate it again to complete the installation of the new version.', MAILUSERS_I18N_DOMAIN); ?>
+	<div class="error fade">
+		<p><?php _e('It looks like you have an old version of the plugin activated. Please deactivate the plugin and activate it again to complete the installation of the new version.', MAILUSERS_I18N_DOMAIN); ?>
 	</p>		
 	<p>
-		<?php _e('Installed version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_installed_version(); ?> <br/>
-		<?php _e('Current version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_current_version(); ?>
+		<?php _e('Installed Version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_installed_version(); ?> <br/>
+		<?php _e('Current Version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_current_version(); ?>
 	</p>
+	</div>		
 </div>
 <?php
 	}
 ?>
 
 <div class="wrap">
-
-<h2><?php _e('Email Users', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_installed_version(); ?></h2>
-
+<div class="alignright" style="font-size: 0.75em;background:#ECECEC;border:1px solid #CCC;padding:0px 5px;margin:95px 50px 0px 0px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
 <div align="center">
-	<br class="clear"/>
-	<a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s home page', MAILUSERS_I18N_DOMAIN); ?></a>
-	<br class="clear"/>
-	<br class="clear"/>
+	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version() ; ?></b></p>
+	<p style="margin: 0.25em 0"><a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s Home Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 		<input type="hidden" name="cmd" value="_xclick">
 		<input type="hidden" name="business" value="vpratfr@yahoo.fr">
@@ -60,33 +57,36 @@
 		<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
 	</form>
 </div>
+</div>
 
-<br class="clear"/>
+<?php if (function_exists('screen_icon')) screen_icon() ; ?>
+<h2><?php _e('Email Users Settings', MAILUSERS_I18N_DOMAIN); ?></h2>
 
 <?php 	
 	if (isset($err_msg) && $err_msg!='') { ?>
-		<p class="error"><?php echo $err_msg; ?></p>
+		<div class="error fade"><p><?php echo $err_msg; ?></p></div>
 		<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 <?php	
 	} ?>
 
-<form name="SendEmail" action="options-general.php?page=email-users/email_users_set_options.php" method="post">		
-	<input type="hidden" name="send" value="true" />
-	<table class="form-table" width="100%" cellspacing="2" cellpadding="5">
+<form name="EmailUsersOptions" action="options.php" method="post">		
+	<?php settings_fields('email_users') ; ?>
+	<input type="hidden" name="mailusers_version" value="<?php echo mailusers_get_current_version(); ?>" />
+	<table class="form-table" style="clear:none;" width="100%" cellspacing="2" cellpadding="5">
 	<tr>
 		<th scope="row" valign="top">
-			<label for="mail_format"><?php _e('Mail format', MAILUSERS_I18N_DOMAIN); ?></th>
+			<label for="mail_format"><?php _e('Mail Format', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<select name="default_mail_format" style="width: 235px;">
+			<select name="mailusers_default_mail_format" style="width: 235px;">
 				<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"'; ?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"'; ?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select> <?php _e('Send mails as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></td>
+			</select><br/>&nbsp;<?php _e('Send mail as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="sort_users_by"><?php _e('Sort users by', MAILUSERS_I18N_DOMAIN); ?></th>
+			<label for="sort_users_by"><?php _e('Sort Users By', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<select name="default_sort_users_by" style="width: 235px;">
+			<select name="mailusers_default_sort_users_by" style="width: 235px;">
 				<option value="none" <?php if (mailusers_get_default_sort_users_by()=='none') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="dn" <?php if (mailusers_get_default_sort_users_by()=='dn') echo 'selected="true"'; ?>><?php _e('Display Name', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="dnul" <?php if (mailusers_get_default_sort_users_by()=='dnul') echo 'selected="true"'; ?>><?php _e('Display Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
@@ -98,37 +98,81 @@
 				<option value="uldn" <?php if (mailusers_get_default_sort_users_by()=='uldn') echo 'selected="true"'; ?>><?php _e('User Login (Display Name)', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="ulfl" <?php if (mailusers_get_default_sort_users_by()=='ulfl') echo 'selected="true"'; ?>><?php _e('User Login (First Name Last Name)', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="ullf" <?php if (mailusers_get_default_sort_users_by()=='ullf') echo 'selected="true"'; ?>><?php _e('User Login (Last Name, First Name)', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select> <?php _e('Determine how to sort and display names in the User selection list?', MAILUSERS_I18N_DOMAIN); ?></td>
+			</select><br/>&nbsp;<?php _e('Determine how to sort and display names in the User selection list?', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="max_bcc_recipients"><?php _e('BCC limit', MAILUSERS_I18N_DOMAIN); ?></th>
+			<label for="max_bcc_recipients"><?php _e('BCC Limit', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<select name="max_bcc_recipients" style="width: 235px;">
+			<select name="mailusers_max_bcc_recipients" style="width: 235px;">
 				<option value="0" <?php if (mailusers_get_max_bcc_recipients()=='0') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"'; ?>>30</option>
-			</select> <?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?>
+			</select><br/>&nbsp;<?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="default_subject"><?php _e('Default notification subject', MAILUSERS_I18N_DOMAIN); ?></th>
+			<label for="default_subject"><?php _e('Default<br/>Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<input type="text" name="default_subject" style="width: 550px;" 
+			<input type="text" name="mailusers_default_subject" style="width: 550px;" 
 				value="<?php echo format_to_edit(mailusers_get_default_subject()); ?>" 
 				size="80" /></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="default_body"><?php _e('Default notification body', MAILUSERS_I18N_DOMAIN); ?></th>
+			<label for="default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<textarea rows="10" cols="80" name="default_body" id="default_body" style="width: 550px;"><?php echo mailusers_get_default_body(); ?></textarea>
+			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: 550px;"><?php echo mailusers_get_default_body(); ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" valign="top">
+			<label for="user_settings_table_rows"><?php _e('User Settings<br/>Table Rows', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<select name="mailusers_user_settings_table_rows" style="width: 100px;">
+				<option value="10" <?php if (mailusers_get_user_settings_table_rows()=='10') echo 'selected="true"'; ?>><?php _e('10', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="20" <?php if (mailusers_get_user_settings_table_rows()=='20') echo 'selected="true"'; ?>><?php _e('20', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="40" <?php if (mailusers_get_user_settings_table_rows()=='40') echo 'selected="true"'; ?>><?php _e('40', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="50" <?php if (mailusers_get_user_settings_table_rows()=='50') echo 'selected="true"'; ?>><?php _e('50', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="75" <?php if (mailusers_get_user_settings_table_rows()=='75') echo 'selected="true"'; ?>><?php _e('75', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="100" <?php if (mailusers_get_user_settings_table_rows()=='100') echo 'selected="true"'; ?>><?php _e('100', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="200" <?php if (mailusers_get_user_settings_table_rows()=='200') echo 'selected="true"'; ?>><?php _e('200', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="500" <?php if (mailusers_get_user_settings_table_rows()=='500') echo 'selected="true"'; ?>><?php _e('500', MAILUSERS_I18N_DOMAIN); ?></option>
+			</select><br/>&nbsp;<?php _e('By default the table will display 20 rows.', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
 	</table>
 
 	<p class="submit">
-		<input type="submit" name="Submit" value="<?php _e('Save changes', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+		<input class="button-primary" type="submit" name="Submit" value="<?php _e('Save Changes', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+	</p>
+</form>	
+
+<br class="clear"/>
+<table class="widefat">
+	<thead>
+	<tr>
+		<th colspan="2"><?php _e('Plugin Default Settings', MAILUSERS_I18N_DOMAIN); ?></th>
+	</tr>
+	</thead>
+	<tbody>
+<?php
+	$default_settings = mailusers_get_default_plugin_settings();
+	foreach ($default_settings as $key => $value) {
+?>
+	<tr>
+		<td width="200px"><b><?php echo ucwords(preg_replace(array('/mailusers_/', '/_/'), array('', ' '), $key)); ?></b></td>
+		<td><?php echo htmlentities($value); ?></td>
+	</tr>
+<?php
+	}
+?>
+	</tbody>
+</table>
+<form name="ResetPluginSettings" action="" method="post">
+	<p class="submit">
+		<input type="hidden" name="resetpluginsettings" value="true" />
+		<input class="button-primary" type="submit" name="Submit" value="<?php _e('Apply Default Settings', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 	</p>
 </form>	
 
@@ -161,6 +205,8 @@
 		// Replace the template variables concerning the sender details
 		// --	
 		get_currentuserinfo();
+		global $user_identity, $user_email ;
+
 		$from_name = $user_identity;
 		$from_address = $user_email;
 		$subject = mailusers_replace_sender_templates($subject, $from_name);
@@ -188,9 +234,10 @@
 ?>
 	</tbody>
 </table>
-<form name="SendTestEmail" action="options-general.php?page=email-users/email_users_send_test_mail.php" method="post">		
+<form name="SendTestEmail" action="" method="post">
 	<p class="submit">
-		<input type="submit" name="Submit" value="<?php _e('Send test notification to yourself', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+		<input type="hidden" name="sendtestemail" value="true" />
+		<input class="button-primary" type="submit" name="Submit" value="<?php _e('Send Test Notification to Yourself', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 	</p>
 </form>	
 <br class="clear"/>
@@ -270,4 +317,5 @@
 </table>
 
 <br/>
+
 </div>

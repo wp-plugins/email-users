@@ -18,16 +18,53 @@
 ?>
 
 <?php 
+	global $user_identity, $user_email, $user_ID; 
+
 	if (!current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
 		wp_die(__("You are not allowed to notify users about posts and pages.", MAILUSERS_I18N_DOMAIN));
 	} 
 	
-	if ( !isset($_GET['post_id']) && !isset($err_msg) ) {
+	// Get the post id, look for a GET parameter followed by a POST parameter
+
+	if ( isset($_GET['post_id']) ) {
+		$post_id = $_GET['post_id'];
+	}
+	else if ( isset($_POST['post_id']) ) {
+		$post_id = $_POST['post_id'];
+	}
+
+	if ( !isset($post_id) && !isset($err_msg) ) {
 		$err_msg .= 
-			__('Trying to notify of a post without passing the post id !', 
+			__('Trying to notify of a <?php echo $post_type;?>  without passing the post id !', 
 				MAILUSERS_I18N_DOMAIN);
 	}
+
+	$screen = get_current_screen() ;
+	$post_type = $screen->post_type == '' ? 'post' : $screen->post_type ;
 		
+	if (!isset($post_id)) { ?>
+	<div class="wrap">
+	<div id="icon-users" class="icon32"><br/></div>
+	<h2><?php _e('Notify Users of a ' . ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?></h2>
+	<form name="SetPost" action="" method="post">
+	    <p>Please select the <?php echo $post_type;?> that you wish to notify users about.</p>
+	    <select style="width:300px;" name="post_id">
+		<?php
+		 global $post ;
+		 $lastposts = get_posts(array('numberposts' => 0, 'post_type' => $post_type));
+		 foreach($lastposts as $post) :
+		    setup_postdata($post);
+		 ?>
+		<option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
+		 <?php endforeach; ?>
+	    </select>
+
+	    <p class="submit">
+		    <input class="button-primary" type="submit" name="Submit" value="<?php _e('Select ' . ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+	    </p>
+	</form>
+	</div>
+	<?php } else {
 	if (!isset($send_roles)) {
 		$send_roles = array();
 	}	
@@ -50,6 +87,7 @@
 	// Replace the template variables concerning the sender details
 	// --	
 	get_currentuserinfo();
+
 	$from_name = $user_identity;
 	$from_address = $user_email;
 	$subject = mailusers_replace_sender_templates($subject, $from_name);
@@ -57,9 +95,6 @@
 		
 	// Replace the template variables concerning the post details
 	// --
-	if ( isset($_GET['post_id']) ) {
-		$post_id = $_GET['post_id'];
-	}
 	$post = get_post( $post_id );
 	$post_title = $post->post_title;
 	$post_url = get_permalink( $post_id );			
@@ -75,34 +110,18 @@
 ?>
 
 <div class="wrap">
-	<h2><?php _e('Notify users of a post or page', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<div id="icon-users" class="icon32"><br/></div>
+	<h2><?php _e('Notify Users of a ' . ucwords(get_post_type($post_id)), MAILUSERS_I18N_DOMAIN); ?></h2>
 		
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
-			<p class="error"><?php echo $err_msg; ?></p>
+			<div class="error fade"><h4><?php echo $err_msg; ?></h4></div>
 			<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 	<?php	} ?>
 	
-	<?php	
-	if (!isset($post_id)) { ?>
-	<form name="SetPost" action="admin.php?page=email-users/email_users_notify_form.php" method="post">
-	    <p>Please select the post that you wish to notify users about.</p>
-	    <select name="post_id">
-		<?php
-		 $lastposts = get_posts('numberposts=0');
-		 foreach($lastposts as $post) :
-		    setup_postdata($post);
-		 ?>
-		<option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
-		 <?php endforeach; ?>
-	    </select>
-
-	    <p class="submit">
-		    <input type="submit" name="Submit" value="<?php _e('Select post', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
-	    </p>
-	</form>
-	<?php } else { ?>
 		
-	<form name="SendEmail" action="admin.php?page=email-users/email_users_send_notify_mail.php" method="post">		
+	<!--<form name="SendEmail" action="admin.php?page=mailusers-notify-user-page" method="post">-->
+	<form name="SendEmail" action="" method="post">
+		<input type="hidden" name="send" value="true" />
 		<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
 		<input type="hidden" name="mail_format" value="<?php echo mailusers_get_default_mail_format(); ?>" />
 		<input type="hidden" name="fromName" value="<?php echo $from_name;?>" />
@@ -231,7 +250,7 @@
 		</table>
 		
 		<p class="submit">
-			<input type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+			<input class="button-primary" type="submit" name="Submit" value="<?php _e('Send Email', MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 		</p>	
 	</form>	
 	

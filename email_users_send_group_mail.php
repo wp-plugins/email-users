@@ -19,14 +19,18 @@
 
 <?php
 	if (!current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
-		wp_die(__("You are not allowed to send emails to user groups.", MAILUSERS_I18N_DOMAIN));
+		wp_die(__('You are not allowed to send emails to user groups.', MAILUSERS_I18N_DOMAIN));
 	}
 ?>
 
 <?php
+	global $user_identity, $user_email, $user_ID;
+
 	$err_msg = '';
 
-	get_currentuserinfo();
+	// Send the email if it has been requested
+	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
+		get_currentuserinfo();
 	// Use current user info only if from name and address has not been set by the form
 	if (!isset($_POST['fromName']) || !isset($_POST['fromAddress']) || empty($_POST['fromName']) || empty($_POST['fromAddress'])) {
 		$from_name = $user_identity;
@@ -60,12 +64,24 @@
 	} else {
 		$mail_content = $_POST['mailContent'];
 	}
-	
+	}
+	if (!isset($send_roles)) {
+		$send_roles = array();
+	}
+
+	if (!isset($mail_format)) {
+		$mail_format = mailusers_get_default_mail_format();
+	}
+
+	if (!isset($subject)) {
+		$subject = '';
+	}
+
+	if (!isset($mail_content)) {
+		$mail_content = '';
+	}	
 	// If error, we simply show the form again
-	if ( $err_msg!='' ) {
-		// Redirect to the form page
-		include 'email_users_group_mail_form.php';
-	} else {
+	if (array_key_exists('send', $_POST) && ($_POST['send']=='true') && ($err_msg == '')) {
 		// No error, send the mail
 		
 		// Do some HTML homework if needed
@@ -73,8 +89,7 @@
 		if ($mail_format=='html') {
 			$mail_content = wpautop($mail_content);
 		}		
-?>
-
+	?>
 	<div class="wrap">
 	<?php
 		// Fetch users
@@ -88,25 +103,28 @@
 		} else {
 			$num_sent = mailusers_send_mail($recipients, $subject, $mail_content, $mail_format, $from_name, $from_address);
 			if (false === $num_sent) {
-				echo "<p class=\"error\">There was a problem trying to send email to users.</p>";
+				echo '<div class="error fade"><p>There was a problem trying to send email to users.</p></div>';
 			} else if (0 === $num_sent) {
-				echo "<p class=\"error\">No email has been sent to other users. This may be because no valid email addresses were found.</p>";
+				echo '<div class="error fade"><p>No email has been sent to other users. This may be because no valid email addresses were found.</p></div>';
 			} else if ($num_sent > 0 && $num_sent == count($recipients)){
 	?>
 			<div class="updated fade">
-				<p><?php echo sprintf(__("Notification sent to %s user(s).", MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
+				<p><?php echo sprintf(__('Notification sent to %s user(s).', MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
 			</div>
 	<?php
 			} else if ($num_sent > count($recipients)) {
-				echo "<div class=\"error\"><p>WARNING: More email has been sent than the number of recipients found.</p></div>";
+				echo '<div class="error fade"><p>WARNING: More email has been sent than the number of recipients found.</p></div>';
 			} else {
-				echo "<p class=\"updated\">Email has been sent to $num_sent users, but ".count($recipients)." recipients were originally found. Perhaps some users don't have valid email addresses?</p>";
+				echo '<div class="updated fade\"><p>Email has been sent to $num_sent users, but '.count($recipients).' recipients were originally found. Perhaps some users don\'t have valid email addresses?</p></div>';
 			}
-			include 'email_users_group_mail_form.php';
+			include('email_users_group_mail_form.php');
 		}
 	?>
 	</div>
 
 <?php
+	} else {
+		// Redirect to the form page
+		include('email_users_group_mail_form.php');
 	}
 ?>

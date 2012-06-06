@@ -21,44 +21,22 @@
 	if (!current_user_can('manage_options')) {
 		wp_die(__("You are not allowed to change the options of this plugin.", MAILUSERS_I18N_DOMAIN));
 	} 
-?>
 
+	// Send the email if it has been requested
+	if (array_key_exists('sendtestemail', $_POST) && $_POST['sendtestemail']=='true') {
+		include('email_users_send_test_mail.php');
+	}
+
+	// Reset the plugin back to the default settings if it has been requested
+	if (array_key_exists('resetpluginsettings', $_POST) && $_POST['resetpluginsettings']=='true') {
+		mailusers_reset_to_default_settings();
+?>
+	<div class="updated fade">
+		<p><?php echo __("Plugin settings have been restored to the defaults.", MAILUSERS_I18N_DOMAIN); ?></p>
+	</div>		
 <?php
-	$default_subject = '';
-	$default_body = '';
-	$default_mail_format = 'html';
-	$default_sort_users_by = 'none';
-	$max_bcc_recipients = '0';
-	
-	if ( isset( $_POST['default_subject'] ) ) {
-		$default_subject = $_POST['default_subject'];
-	}
-	
-	if ( isset( $_POST['default_body'] ) ) {
-		$default_body = $_POST['default_body'];
-	}
-	
-	if ( isset( $_POST['default_mail_format'] ) ) {
-		$default_mail_format = $_POST['default_mail_format'];
-	}
-	
-	if ( isset( $_POST['default_sort_users_by'] ) ) {
-		$default_sort_users_by = $_POST['default_sort_users_by'];
-	}
-	
-	if ( isset( $_POST['max_bcc_recipients'] ) ) {
-		$max_bcc_recipients = $_POST['max_bcc_recipients'];
-	}
-	
-	mailusers_update_default_subject( format_to_post($default_subject) );
-	mailusers_update_default_body( $default_body );
-	mailusers_update_default_mail_format( $default_mail_format );
-	mailusers_update_default_sort_users_by( $default_sort_users_by );
-	mailusers_update_max_bcc_recipients( $max_bcc_recipients );
+}
+
+	//  Display the form
+	include('email_users_options_form.php');
 ?>
-
-<div class="updated fade">
-	<p><?php _e('Options set successfully', MAILUSERS_I18N_DOMAIN); ?></p>
-</div>
-
-<?php include 'email_users_options_form.php'; ?>
