@@ -26,7 +26,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.0.0' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.1.0' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -73,10 +73,14 @@ function mailusers_get_default_plugin_settings()
 		'mailusers_default_mail_format' => 'html',
 		// Mail User - Default sort users by (none, display name, last name or first name)
 		'mailusers_default_sort_users_by' => 'none',
-		// Mail User - Maximum number of recipients in the BCC field'
+		// Mail User - Maximum number of recipients in the BCC field
 		'mailusers_max_bcc_recipients' => '0',
-		// Mail User - Maximum number of rows to show in the User Settings table'
-		'mailusers_user_settings_table_rows' => '20'
+		// Mail User - Maximum number of rows to show in the User Settings table
+		'mailusers_user_settings_table_rows' => '20',
+		// Mail User - Default setting for Notifications
+		'mailusers_default_notifications' => 'true',
+		// Mail User - Default setting for Mass Email
+		'mailusers_default_mass_email' => 'true'
 	) ;
 
 	return $default_plugin_settings ;
@@ -194,15 +198,29 @@ function mailusers_add_default_capabilities() {
 }
 
 /**
-* Add the meta field when a user registers
-*/
+ * Add the meta field when a user registers
+ */
 add_action('user_register', 'mailusers_user_register');
 function mailusers_user_register($user_id) {
-	if (get_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META)=='')
-		update_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'true');
+	mailusers_user_meta_init($user_id);
+}
 
-	if (get_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META)=='')
-		update_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'true');
+add_action('profile_update', 'mailusers_profile_update');
+function mailusers_profile_update($user_id, $old_user_data) {
+	mailusers_user_meta_init($user_id);
+}
+
+/**
+ * Add the meta field when a user registers
+ */
+function mailusers_user_meta_init($user_id) {
+	$default = mailusers_get_default_notifications() == 'true' ? 'true' : 'false' ;
+	if (get_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true) == '')
+		update_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, $default);
+
+	$default = mailusers_get_default_mass_email() == 'true' ? 'true' : 'false' ;
+	if (get_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true) == '')
+		update_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, $default);
 }
 
 /**
@@ -474,6 +492,8 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_default_sort_users_by') ;
     register_setting('email_users', 'mailusers_max_bcc_recipients') ;
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
+    register_setting('email_users', 'mailusers_default_notifications') ;
+    register_setting('email_users', 'mailusers_default_mass_email') ;
 }
 
 /**
@@ -571,7 +591,35 @@ function mailusers_get_user_settings_table_rows() {
  * Wrapper for the user settings table rows option
  */
 function mailusers_update_user_settings_table_rows( $user_settings_table_rows ) {
-	return update_option( 'mailusers_user_settings_table_rows', $user_settings_table_rows );
+	return update_option( 'mailusers_settings_table_rows', $user_settings_table_rows );
+}
+
+/**
+ * Wrapper for the default notification setting
+ */
+function mailusers_get_default_notifications() {
+	return get_option( 'mailusers_default_notifications' );
+}
+
+/**
+ * Wrapper for the default notification setting
+ */
+function mailusers_update_default_notifications( $default_notifications ) {
+	return update_option( 'mailusers_default_notifications', $default_notifications );
+}
+
+/**
+ * Wrapper for the default mass email setting
+ */
+function mailusers_get_default_mass_email() {
+	return get_option( 'mailusers_default_mass_email' );
+}
+
+/**
+ * Wrapper for the default mass email setting
+ */
+function mailusers_update_default_mass_email( $default_mass_email ) {
+	return update_option( 'mailusers_default_mass_email', $default_mass_email );
 }
 
 /**
