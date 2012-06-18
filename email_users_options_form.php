@@ -141,6 +141,18 @@
 			</select><br/>&nbsp;<?php _e('By default the table will display 20 rows.', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
+	<tr>
+		<th>Default<br/>User Settings</th>
+		<td>
+			<input 	type="checkbox" name="mailusers_default_notifications" id="mailusers_default_notifications" value="true"
+					<?php if (mailusers_get_default_notifications()=='true') echo 'checked="checked"'; ?> ></input>
+			<?php _e('Recieve post or page notification emails.', MAILUSERS_I18N_DOMAIN); ?><br/>
+			<input 	type="checkbox"
+					name="mailusers_default_mass_email" id="mailusers_default_mass_email" value="true"
+					<?php if (mailusers_get_default_mass_email()=='true') echo 'checked="checked"'; ?> ></input>
+			<?php _e('Recieve emails sent to multiple recipients.', MAILUSERS_I18N_DOMAIN); ?>
+		</td>
+	</tr>
 	</table>
 
 	<p class="submit">
