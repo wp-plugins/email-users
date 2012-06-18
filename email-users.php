@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Email Users
-Version: 4.0.0
+Version: 4.1.0
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
