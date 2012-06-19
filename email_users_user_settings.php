@@ -97,9 +97,10 @@ class MailUsers_List_Table extends WP_List_Table {
             case 'first_name':
             case 'user_login':
             case 'user_email':
+                return $item->$column_name;
             case 'notifications':
             case 'massemail':
-                return $item[$column_name];
+                return ($item->$column_name == 'true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ;
             default:
                 return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
@@ -127,13 +128,13 @@ class MailUsers_List_Table extends WP_List_Table {
         //Build row actions
         $actions = array(
 		    'edit' => sprintf('<a href="%s%s%s">Edit User Profile</a>',
-		        get_admin_url(), 'user-edit.php?user_id=',$item['ID']),
+		        get_admin_url(), 'user-edit.php?user_id=',$item->ID),
         );
         
         //Return the last_name contents
         return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
-            /*$1%s*/ $item['last_name'],
-            /*$2%s*/ $item['ID'],
+            /*$1%s*/ $item->last_name,
+            /*$2%s*/ $item->ID,
             /*$3%s*/ $this->row_actions($actions)
         );
     }
@@ -151,7 +152,7 @@ class MailUsers_List_Table extends WP_List_Table {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("last_name")
-            /*$2%s*/ $item['ID']                //The value of the checkbox should be the record's id
+            /*$2%s*/ $item->ID                //The value of the checkbox should be the record's id
         );
     }
     
@@ -330,6 +331,8 @@ class MailUsers_List_Table extends WP_List_Table {
      * @uses $this->set_pagination_args()
      **************************************************************************/
     function prepare_items() {
+        global $wpdb, $_wp_column_headers;
+        $screen = get_current_screen() ;
         
         /**
          * First, lets decide how many records per page to show
@@ -337,7 +340,68 @@ class MailUsers_List_Table extends WP_List_Table {
         $per_page = mailusers_get_user_settings_table_rows() ;
 
         if ($per_page === false) $per_page = 10 ;
+
+        /* -- Preparing your query -- */
+        $query = "SELECT * FROM $wpdb->users";
+ 
+        /* -- Pagination parameters -- */
+        //Number of elements in your table?
+        $totalitems = $wpdb->query($query); //return the total number of affected rows
+
+        //Which page is this?
+        $paged = !empty($_GET['paged']) ? mysql_real_escape_string($_GET['paged']) : '';
+
+        //Page Number
+        if (empty($paged) || !is_numeric($paged) || $paged <= 0 ) $paged=1;
+
+        //How many pages do we have in total?
+        $totalpages = ceil($totalitems/$per_page);
+
+        /* -- Real Query -- */
         
+	    $query = "SELECT DISTINCT ID, display_name, user_email, user_login, first_name, last_name, massemail, notifications "
+		    . "FROM $wpdb->usermeta, $wpdb->users "
+		    . "LEFT JOIN ( "
+		    . "SELECT user_id AS uid, meta_value AS first_name "
+		    . "FROM $wpdb->usermeta "
+		    . "WHERE meta_key = 'first_name' "
+		    . ") AS metaF ON $wpdb->users.ID = metaF.uid "
+		    . "LEFT JOIN ( "
+		    . "SELECT user_id AS uid, meta_value AS last_name "
+		    . "FROM $wpdb->usermeta "
+		    . "WHERE meta_key = 'last_name' "
+            . ") AS metaL ON $wpdb->users.ID = metaL.uid "
+		    . "LEFT JOIN ( "
+		    . "SELECT user_id AS uid, meta_value AS massemail "
+		    . "FROM $wpdb->usermeta "
+		    . "WHERE meta_key = '" . MAILUSERS_ACCEPT_MASS_EMAIL_USER_META . "' "
+            . ") AS metaE ON $wpdb->users.ID = metaE.uid "
+		    . "LEFT JOIN ( "
+		    . "SELECT user_id AS uid, meta_value AS notifications "
+		    . "FROM $wpdb->usermeta "
+		    . "WHERE meta_key = '" . MAILUSERS_ACCEPT_NOTIFICATION_USER_META . "' "
+            . ") AS metaN ON $wpdb->users.ID = metaN.uid ";
+
+        //adjust the query to take pagination into account
+        if(!empty($paged) && !empty($per_page)){
+            $offset=($paged-1)*$per_page;
+            $query.=' LIMIT '.(int)$offset.','.(int)$per_page;
+        }
+ 
+        /* -- Ordering parameters -- */
+        //Parameters that are going to be used to order the result
+        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'ASC';
+        $order = !empty($_GET['order']) ? mysql_real_escape_string($_GET['order']) : '';
+        if(!empty($orderby) & !empty($order)){ $query.=' ORDER BY '.$orderby.' '.$order; }
+ 
+        /* -- Register the pagination -- */
+        $this->set_pagination_args( array(
+            'total_items' => $totalitems,
+            'total_pages' => $totalpages,
+            'per_page' => $per_page,
+        ) );
+        //The pagination links are automatically built according to those parameters
+ 
         /**
          * REQUIRED. Now we need to define our column headers. This includes a complete
          * array of columns to be displayed (slugs & titles), a list of columns
@@ -366,97 +430,9 @@ class MailUsers_List_Table extends WP_List_Table {
         $this->process_bulk_action();
         
         
-        /**
-         * Get the user data the same way the rest of the plugin retrieves it
-         * then process it into the format needed by the table class adding the
-         * meta data on a per user basis.
-         */
-	    $data = array() ;
-	    $rawdata = mailusers_get_users() ;
-
-	    foreach($rawdata as $key => $value)
-	    {
-            $data[] = array(
-                'ID' => $value->ID,
-		   	    'display_name' => $value->display_name,
-		   	    'first_name' => $value->first_name,
-		   	    'last_name' => $value->last_name,
-		   	    'user_login' => $value->user_login,
-		   	    'user_email' => $value->user_email,
-                'notifications' => get_user_meta($value->ID,
-                    MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true) === 'true' ? 
-                    __('Yes', MAILUSERS_I18N_DOMAIN) : __('No', MAILUSERS_I18N_DOMAIN),
-                'massemail' => get_user_meta($value->ID,
-                    MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true) === 'true' ? 
-                    __('Yes', MAILUSERS_I18N_DOMAIN) : __('No', MAILUSERS_I18N_DOMAIN)
-		    ) ;
-	    }
-        
-        /**
-         * This checks for sorting input and sorts the data in our array accordingly.
-         * 
-         * In a real-world situation involving a database, you would probably want 
-         * to handle sorting by passing the 'orderby' and 'order' values directly 
-         * to a custom query. The returned data will be pre-sorted, and this array
-         * sorting technique would be unnecessary.
-         */
-        function usort_reorder($a,$b){
-            //If no sort, default to last_name
-            $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'last_name';
-
-            //If no order, default to asc
-            $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc';
-
-            //Determine sort order
-            $result = strcmp($a[$orderby], $b[$orderby]);
-
-            //Send final sort direction to usort
-            return ($order==='asc') ? $result : -$result;
-        }
-        usort($data, 'usort_reorder');
-        
-        /**
-         * REQUIRED for pagination. Let's figure out what page the user is currently 
-         * looking at. We'll need this later, so you should always include it in 
-         * your own package classes.
-         */
-        $current_page = $this->get_pagenum();
-        
-        /**
-         * REQUIRED for pagination. Let's check how many items are in our data array. 
-         * In real-world use, this would be the total number of items in your database, 
-         * without filtering. We'll need this later, so you should always include it 
-         * in your own package classes.
-         */
-        $total_items = count($data);
-    
-        
-        /**
-         * The WP_List_Table class does not handle pagination for us, so we need
-         * to ensure that the data is trimmed to only the current page. We can use
-         * array_slice() to 
-         */
-        $data = array_slice($data,(($current_page-1)*$per_page),$per_page);
-        
-        
-        
-        /**
-         * REQUIRED. Now we can add our *sorted* data to the items property, where 
-         * it can be used by the rest of the class.
-         */
-        $this->items = $data;
-    
-    
-        /**
-         * REQUIRED. We also have to register our pagination options & calculations.
-         */
-        $this->set_pagination_args( array(
-            'total_items' => $total_items,                  //WE have to calculate the total number of items
-            'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-            'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
-        ) );
+        /* -- Fetch the items -- */
+        $this->items = $wpdb->get_results($query);
     }
-    
 }
 
 
