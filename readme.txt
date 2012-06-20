@@ -18,6 +18,9 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 == Changelog ==
 
+= Version 4.3.0 =
+* Replaced slow, inefficient SQL queries to build "nice" user names with more efficient queries.  Thanks to the WP Hackers mailing list for the assistance.
+
 = Version 4.2.0 =
 * Fixed serious flaw in User Setting implementation which uses the WP_List_Table class.  The logic was not accounting for large number of users and would slow to a crawl because it was processing the entire list of users instead of just a subset for each page.
 
