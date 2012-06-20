@@ -359,29 +359,19 @@ class MailUsers_List_Table extends WP_List_Table {
 
         /* -- Real Query -- */
         
-	    $query = "SELECT DISTINCT ID, display_name, user_email, user_login, first_name, last_name, massemail, notifications "
-		    . "FROM $wpdb->usermeta, $wpdb->users "
-		    . "LEFT JOIN ( "
-		    . "SELECT user_id AS uid, meta_value AS first_name "
-		    . "FROM $wpdb->usermeta "
-		    . "WHERE meta_key = 'first_name' "
-		    . ") AS metaF ON $wpdb->users.ID = metaF.uid "
-		    . "LEFT JOIN ( "
-		    . "SELECT user_id AS uid, meta_value AS last_name "
-		    . "FROM $wpdb->usermeta "
-		    . "WHERE meta_key = 'last_name' "
-            . ") AS metaL ON $wpdb->users.ID = metaL.uid "
-		    . "LEFT JOIN ( "
-		    . "SELECT user_id AS uid, meta_value AS massemail "
-		    . "FROM $wpdb->usermeta "
-		    . "WHERE meta_key = '" . MAILUSERS_ACCEPT_MASS_EMAIL_USER_META . "' "
-            . ") AS metaE ON $wpdb->users.ID = metaE.uid "
-		    . "LEFT JOIN ( "
-		    . "SELECT user_id AS uid, meta_value AS notifications "
-		    . "FROM $wpdb->usermeta "
-		    . "WHERE meta_key = '" . MAILUSERS_ACCEPT_NOTIFICATION_USER_META . "' "
-            . ") AS metaN ON $wpdb->users.ID = metaN.uid ";
-
+        $query = " SELECT ID, display_name, user_email, user_login, "
+            . "m1.meta_value first_name, m2.meta_value last_name, "
+            . "m3.meta_value massemail, m4.meta_value notifications "
+            . "FROM $wpdb->users u "
+            . "LEFT JOIN $wpdb->usermeta m1 ON "
+            . "(m1.user_id = u.ID AND m1.meta_key = 'first_name') "
+            . "LEFT JOIN $wpdb->usermeta m2 ON "
+            . "(m2.user_id = u.ID AND m2.meta_key = 'last_name') " 
+            . "LEFT JOIN $wpdb->usermeta m3 ON "
+            . "(m3.user_id = u.ID AND m3.meta_key = '" . MAILUSERS_ACCEPT_MASS_EMAIL_USER_META . "') "
+            . "LEFT JOIN $wpdb->usermeta m4 ON "
+            . "(m4.user_id = u.ID AND m4.meta_key = '" . MAILUSERS_ACCEPT_NOTIFICATION_USER_META . "') " ;
+ 
         //adjust the query to take pagination into account
         if(!empty($paged) && !empty($per_page)){
             $offset=($paged-1)*$per_page;
