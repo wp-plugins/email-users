@@ -1,7 +1,8 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.2.0
+Version: 4.3.0
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -26,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.2.0' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.0' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -626,6 +627,28 @@ function mailusers_update_default_mass_email( $default_mass_email ) {
  * Get the users
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
+function mailusers_get_users2( $exclude_id='', $meta_filter = '', $sortby = null) {
+	$sortby = mailusers_get_default_sort_users_by();
+    mailusers_whereami(__FILE__, __LINE__) ;
+
+    $args = array(
+        'fields' => 'all_with_meta'
+       ,'exclude' => $exclude_id
+       ,'number' => 25
+    ) ;
+	$users = get_users($args) ;
+
+    mailusers_whereami(__FILE__, __LINE__) ;
+    mailusers_preprint_r($users) ;
+    mailusers_whereami(__FILE__, __LINE__) ;
+    return array() ;
+
+}
+
+/**
+ * Get the users
+ * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ */
 function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 	global $wpdb;
 
@@ -641,6 +664,9 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 	//
 	//  See:  http://lists.automattic.com/pipermail/wp-hackers/2008-January/017199.html
 
+    /*  This query is really slow with lots of users!  Using a new query from the
+     *  WP Hackers mailing list.
+     *
 	$query = "SELECT DISTINCT ID, display_name, user_email, user_login, first_name, last_name "
 		. "FROM $wpdb->usermeta, $wpdb->users "
 		. "LEFT JOIN ( "
@@ -653,100 +679,103 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '') {
 		. "FROM $wpdb->usermeta "
 		. "WHERE meta_key = 'last_name' "
 		. ") AS metaL ON $wpdb->users.ID = metaL.uid ";
+     */
+
+    /**  New query - 6/20/2012 **/
+    $query = " SELECT ID, display_name, user_email, user_login, "
+        . "m1.meta_value first_name, m2.meta_value last_name "
+        . "FROM $wpdb->users u "
+        . "LEFT JOIN $wpdb->usermeta m1 ON "
+        . "(m1.user_id = u.ID AND m1.meta_key = 'first_name') "
+        . "LEFT JOIN $wpdb->usermeta m2 ON "
+        . "(m2.user_id = u.ID AND m2.meta_key = 'last_name') " ;
 
 	$additional_sql_filter = '';
 
 	if ($meta_filter=='') {
 		if ($exclude_id!='') {
-			$additional_sql_filter = ' WHERE (id<>' . $exclude_id . ') ';
+			$additional_sql_filter = ' WHERE (ID<>' . $exclude_id . ') ';
 		}
 
 		switch ($sortby) {
 			case 'fl' :
 			case 'flul' :
-	    			$users = $wpdb->get_results($query
-					. $additional_sql_filter
-	       				. ' ORDER BY first_name');
+	    			$query .= $additional_sql_filter
+	       				. ' ORDER BY first_name';
 				break;
 			case 'lf' :
 			case 'lful' :
-	    			$users = $wpdb->get_results($query
-					. $additional_sql_filter
-	       				. ' ORDER BY last_name');
+	    			$query .= $additional_sql_filter
+	       				. ' ORDER BY last_name';
 				break;
 			case 'ul' :
 			case 'uldn' :
 			case 'ulfn' :
 			case 'ulln' :
-	    			$users = $wpdb->get_results($query
-					. $additional_sql_filter
-	       				. ' ORDER BY user_login');
+	    			$query .= $additional_sql_filter
+	       				. ' ORDER BY user_login';
 				break;
 			case 'display name' :
-	    			$users = $wpdb->get_results($query
-					. $additional_sql_filter
-	       				. ' ORDER BY display_name');
+	    			$query .= $additional_sql_filter
+	       				. ' ORDER BY display_name';
 				break;
 			default:
-	    			$users = $wpdb->get_results($query
-					. $additional_sql_filter
-	       				. ' ORDER BY ID');
+	    			$query .= $additional_sql_filter
+	       				. ' ORDER BY ID';
 				break;
 		}
 	} else {
+        $query .= "LEFT JOIN $wpdb->usermeta m3 ON "
+            . "(m3.user_id = u.ID AND m3.meta_key = '" . $meta_filter . "') " ;
+
 		if ($exclude_id!='') {
-			$additional_sql_filter .= ' AND (id<>' . $exclude_id . ') ';
+			$additional_sql_filter .= ' AND (ID<>' . $exclude_id . ') ';
 		}
-		$additional_sql_filter .= ' AND (meta_key="' . $meta_filter . '") ';
-		$additional_sql_filter .= ' AND (meta_value="true") ';
+		$additional_sql_filter .= ' AND (m3.meta_key="' . $meta_filter . '") ';
+		$additional_sql_filter .= ' AND (m3.meta_value="true") ';
 
 		$sortby = mailusers_get_default_sort_users_by();
 
 		switch ($sortby) {
 			case 'fl' :
 			case 'flul' :
-	    			$users = $wpdb->get_results($query
-					. 'WHERE '
-					. ' (user_id = id)'
+	    			$query .= 'WHERE '
+					. ' (m1.user_id = ID)'
 					. $additional_sql_filter
-	       				. ' ORDER BY first_name');
+	       				. ' ORDER BY first_name';
 				break;
 			case 'lf' :
 			case 'lful' :
-	    			$users = $wpdb->get_results($query
-					. 'WHERE '
-					. ' (user_id = id)'
+	    			$query .= 'WHERE '
+					. ' (m1.user_id = ID)'
 					. $additional_sql_filter
-	       				. ' ORDER BY last_name');
+	       				. ' ORDER BY last_name';
 				break;
 			case 'ul' :
 			case 'uldn' :
 			case 'ulfn' :
 			case 'ulln' :
-	    			$users = $wpdb->get_results($query
-					. 'WHERE '
-					. ' (user_id = id)'
+	    			$query .= 'WHERE '
+					. ' (m1.user_id = ID)'
 					. $additional_sql_filter
-	       				. ' ORDER BY user_login');
+	       				. ' ORDER BY user_login';
 				break;
 			case 'display name' :
-	    			$users = $wpdb->get_results($query
-					. 'WHERE '
-					. ' (user_id = id)'
+	    			$query .= 'WHERE '
+					. ' (m1.user_id = ID)'
 					. $additional_sql_filter
-	       				. ' ORDER BY display_name');
+	       				. ' ORDER BY display_name';
 				break;
 			default:
-	    			$users = $wpdb->get_results($query
-					. 'WHERE '
-					. ' (user_id = id)'
+	    			$query .= 'WHERE '
+					. ' (m1.user_id = ID)'
 					. $additional_sql_filter
-	       				. ' ORDER BY ID');
+	       				. ' ORDER BY ID';
 				break;
 		}
 	}
 
-	return $users;
+	return $wpdb->get_results($query);
 }
 
 /**
@@ -805,7 +834,6 @@ function mailusers_get_recipients_from_ids( $ids, $exclude_id='', $meta_filter =
 			. ' AND (id IN (' . implode(', ', $ids) . ')) ' );
 	}
 
-	//printf('<pre>%s::%s<br/>%s</pre>', basename(__FILE__), __LINE__, print_r($users, true)) ;
 	return $users;
 }
 
