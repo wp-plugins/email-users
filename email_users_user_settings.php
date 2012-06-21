@@ -315,8 +315,11 @@ class MailUsers_List_Table extends WP_List_Table {
         }
     }
     
-    
-    /** ************************************************************************
+    //  This is a work-in-progress function which uses get_users()
+    //  instead of an SQL query.  The sorting doesn't work correctly
+    //  so it may not work as a replacemetn for the SQL based version.
+
+    /***************************************************************************
      * REQUIRED! This is where you prepare your data for display. This method will
      * usually be used to query the database, sort and filter the data, and generally
      * get it ready to be displayed. At a minimum, we should set $this->items and
@@ -330,7 +333,7 @@ class MailUsers_List_Table extends WP_List_Table {
      * @uses $this->get_pagenum()
      * @uses $this->set_pagination_args()
      **************************************************************************/
-    function prepare_items() {
+    function prepare_items_wip() {
         global $wpdb, $_wp_column_headers;
         $screen = get_current_screen() ;
         
@@ -341,12 +344,10 @@ class MailUsers_List_Table extends WP_List_Table {
 
         if ($per_page === false) $per_page = 10 ;
 
-        /* -- Preparing your query -- */
-        $query = "SELECT * FROM $wpdb->users";
- 
         /* -- Pagination parameters -- */
         //Number of elements in your table?
-        $totalitems = $wpdb->query($query); //return the total number of affected rows
+        $totalitems = count_users() ;
+        //mailusers_preprint_r($totalitems) ;
 
         //Which page is this?
         $paged = !empty($_GET['paged']) ? mysql_real_escape_string($_GET['paged']) : '';
@@ -355,34 +356,18 @@ class MailUsers_List_Table extends WP_List_Table {
         if (empty($paged) || !is_numeric($paged) || $paged <= 0 ) $paged=1;
 
         //How many pages do we have in total?
-        $totalpages = ceil($totalitems/$per_page);
+        $totalpages = ceil($totalitems['total_users']/$per_page);
 
-        /* -- Real Query -- */
-        
-        $query = " SELECT ID, display_name, user_email, user_login, "
-            . "m1.meta_value first_name, m2.meta_value last_name, "
-            . "m3.meta_value massemail, m4.meta_value notifications "
-            . "FROM $wpdb->users u "
-            . "LEFT JOIN $wpdb->usermeta m1 ON "
-            . "(m1.user_id = u.ID AND m1.meta_key = 'first_name') "
-            . "LEFT JOIN $wpdb->usermeta m2 ON "
-            . "(m2.user_id = u.ID AND m2.meta_key = 'last_name') " 
-            . "LEFT JOIN $wpdb->usermeta m3 ON "
-            . "(m3.user_id = u.ID AND m3.meta_key = '" . MAILUSERS_ACCEPT_MASS_EMAIL_USER_META . "') "
-            . "LEFT JOIN $wpdb->usermeta m4 ON "
-            . "(m4.user_id = u.ID AND m4.meta_key = '" . MAILUSERS_ACCEPT_NOTIFICATION_USER_META . "') " ;
- 
         //adjust the query to take pagination into account
         if(!empty($paged) && !empty($per_page)){
             $offset=($paged-1)*$per_page;
-            $query.=' LIMIT '.(int)$offset.','.(int)$per_page;
+            //$query.=' LIMIT '.(int)$offset.','.(int)$per_page;
         }
  
         /* -- Ordering parameters -- */
         //Parameters that are going to be used to order the result
-        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'ASC';
-        $order = !empty($_GET['order']) ? mysql_real_escape_string($_GET['order']) : '';
-        if(!empty($orderby) & !empty($order)){ $query.=' ORDER BY '.$orderby.' '.$order; }
+        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'last_name';
+        $order = !empty($_GET['order']) ? mysql_real_escape_string($_GET['order']) : 'ASC';
  
         /* -- Register the pagination -- */
         $this->set_pagination_args( array(
@@ -419,6 +404,120 @@ class MailUsers_List_Table extends WP_List_Table {
          */
         $this->process_bulk_action();
         
+        
+        /* -- Fetch the items -- */
+        $args = array(
+            'fields' => 'all_with_meta'
+           ,'order' => $order
+           ,'orderby' => $orderby
+           ,'number' => (int)$per_page
+           ,'offset' => (int)$offset
+        );
+
+        //mailusers_preprint_r($args) ;
+        $this->items = get_users($args) ;
+    }
+
+    /** ************************************************************************
+     * REQUIRED! This is where you prepare your data for display. This method will
+     * usually be used to query the database, sort and filter the data, and generally
+     * get it ready to be displayed. At a minimum, we should set $this->items and
+     * $this->set_pagination_args(), although the following properties and methods
+     * are frequently interacted with here...
+     * 
+     * @uses $this->_column_headers
+     * @uses $this->items
+     * @uses $this->get_columns()
+     * @uses $this->get_sortable_columns()
+     * @uses $this->get_pagenum()
+     * @uses $this->set_pagination_args()
+     **************************************************************************/
+
+    function prepare_items() {
+        global $wpdb, $_wp_column_headers;
+        $screen = get_current_screen() ;
+        
+        /**
+         * First, lets decide how many records per page to show
+         */
+        $per_page = mailusers_get_user_settings_table_rows() ;
+
+        if ($per_page === false) $per_page = 10 ;
+
+        /* -- Pagination parameters -- */
+        //Number of elements in your table?
+        $totalitems = count_users() ;
+
+        //Which page is this?
+        $paged = !empty($_GET['paged']) ? mysql_real_escape_string($_GET['paged']) : '';
+
+        //Page Number
+        if (empty($paged) || !is_numeric($paged) || $paged <= 0 ) $paged=1;
+
+        //How many pages do we have in total?
+        $totalpages = ceil($totalitems['total_users']/$per_page);
+
+        /* -- Preparing the query -- */
+        
+        $query = " SELECT ID, display_name, user_email, user_login, "
+            . "m1.meta_value first_name, m2.meta_value last_name, "
+            . "m3.meta_value massemail, m4.meta_value notifications "
+            . "FROM $wpdb->users u "
+            . "LEFT JOIN $wpdb->usermeta m1 ON "
+            . "(m1.user_id = u.ID AND m1.meta_key = 'first_name') "
+            . "LEFT JOIN $wpdb->usermeta m2 ON "
+            . "(m2.user_id = u.ID AND m2.meta_key = 'last_name') " 
+            . "LEFT JOIN $wpdb->usermeta m3 ON "
+            . "(m3.user_id = u.ID AND m3.meta_key = '" . MAILUSERS_ACCEPT_MASS_EMAIL_USER_META . "') "
+            . "LEFT JOIN $wpdb->usermeta m4 ON "
+            . "(m4.user_id = u.ID AND m4.meta_key = '" . MAILUSERS_ACCEPT_NOTIFICATION_USER_META . "') " ;
+ 
+        /* -- Ordering parameters -- */
+        //Parameters that are going to be used to order the result
+        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'last_name';
+        $order = !empty($_GET['order']) ? mysql_real_escape_string($_GET['order']) : 'ASC';
+        if(!empty($orderby) & !empty($order)){ $query.=' ORDER BY '.$orderby.' '.$order; }
+ 
+        //adjust the query to take pagination into account
+        if(!empty($paged) && !empty($per_page)){
+            $offset=($paged-1)*$per_page;
+            $query.=' LIMIT '.(int)$offset.','.(int)$per_page;
+        }
+ 
+        /* -- Register the pagination -- */
+        $this->set_pagination_args( array(
+            'total_items' => $totalitems,
+            'total_pages' => $totalpages,
+            'per_page' => $per_page,
+        ) );
+        //The pagination links are automatically built according to those parameters
+ 
+        /**
+         * REQUIRED. Now we need to define our column headers. This includes a complete
+         * array of columns to be displayed (slugs & titles), a list of columns
+         * to keep hidden, and a list of columns that are sortable. Each of these
+         * can be defined in another method (as we've done here) before being
+         * used to build the value for our _column_headers property.
+         */
+        $columns = $this->get_columns();
+        $hidden = array();
+        $sortable = $this->get_sortable_columns();
+        
+        
+        /**
+         * REQUIRED. Finally, we build an array to be used by the class for column 
+         * headers. The $this->_column_headers property takes an array which contains
+         * 3 other arrays. One for all columns, one for hidden columns, and one
+         * for sortable columns.
+         */
+        $this->_column_headers = array($columns, $hidden, $sortable);
+        
+        
+        /**
+         * Optional. You can handle your bulk actions however you see fit. In this
+         * case, we'll handle them within our package just to keep things clean.
+         */
+        $this->process_bulk_action();
         
         /* -- Fetch the items -- */
         $this->items = $wpdb->get_results($query);
