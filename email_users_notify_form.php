@@ -1,4 +1,5 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
@@ -164,7 +165,6 @@
 					$sortby = mailusers_get_default_sort_users_by();
 	
 
-					error_log('%s::%s:  %s', basename(__FILE__), __LINE__, $sortby);
 					$users = mailusers_get_users($user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
 					foreach ($users as $user) {
 						switch ($sortby) {

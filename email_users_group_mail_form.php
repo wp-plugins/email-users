@@ -1,4 +1,5 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*  Copyright 2006 Vincent Prat  
 
     This program is free software; you can redistribute it and/or modify
