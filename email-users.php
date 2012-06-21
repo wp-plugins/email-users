@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.0
+Version: 4.3.1
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.0' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.1' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
 
 /**
  * Initialise the internationalisation domain
@@ -627,159 +627,108 @@ function mailusers_update_default_mass_email( $default_mass_email ) {
  * Get the users
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
-function mailusers_get_users2( $exclude_id='', $meta_filter = '', $sortby = null) {
-	$sortby = mailusers_get_default_sort_users_by();
-    mailusers_whereami(__FILE__, __LINE__) ;
+function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array(), $sortby = null) {
 
-    $args = array(
-        'fields' => 'all_with_meta'
-       ,'exclude' => $exclude_id
-       ,'number' => 25
-    ) ;
+	if ($sortby == null) $sortby = mailusers_get_default_sort_users_by();
+
+    //  Set up the arguments for get_users()
+
+    $args['exclude'] = $exclude_id ;
+    $args['fields'] = 'all_with_meta' ;
+
+    //  Apply the meta filter
+
+    if ($meta_filter != '')
+    {
+        $args['meta_key'] = $meta_filter ;
+        $args['meta_value'] = 'true' ;
+    }
+
+    //  Retrieve the list of users
+
 	$users = get_users($args) ;
 
-    mailusers_whereami(__FILE__, __LINE__) ;
-    mailusers_preprint_r($users) ;
-    mailusers_whereami(__FILE__, __LINE__) ;
-    return array() ;
+    //mailusers_preprint_r($args, $users) ;
+    //  Sort the users based on the plugin settings
 
+    if ( ! empty( $users) ) {
+		switch ($sortby) {
+			case 'fl' :
+			case 'flul' :
+                usort( $users, 'mailusers_sort_users_by_first_name' );
+				break;
+			case 'lf' :
+			case 'lful' :
+                usort( $users, 'mailusers_sort_users_by_last_name' );
+				break;
+			case 'ul' :
+			case 'uldn' :
+			case 'ulfn' :
+			case 'ulln' :
+                usort( $users, 'mailusers_sort_users_by_user_login' );
+				break;
+			case 'display name' :
+                usort( $users, 'mailusers_sort_users_by_display_name' );
+				break;
+			default:
+				break;
+		}
+
+    }
+
+    return $users ;
 }
 
 /**
- * Get the users
- * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ * Sort by last name
  */
-function mailusers_get_users( $exclude_id='', $meta_filter = '') {
-	global $wpdb;
+function mailusers_sort_users_by_last_name( $a, $b ) {
 
-	$sortby = mailusers_get_default_sort_users_by();
+    if ( $a->last_name == $b->last_name ) {
+        return 0;
+    }
 
-	//  This query pulls out the ID, display name, user login,
-	//  first name, and last name from the WordPress user and
-	//  user meta table.  Wish I could take credit for it but
-	//  it came from the WP Hackers mailing list a while back
-	//  when I needed this same information for another project.
-	//
-	//  MPW
-	//
-	//  See:  http://lists.automattic.com/pipermail/wp-hackers/2008-January/017199.html
-
-    /*  This query is really slow with lots of users!  Using a new query from the
-     *  WP Hackers mailing list.
-     *
-	$query = "SELECT DISTINCT ID, display_name, user_email, user_login, first_name, last_name "
-		. "FROM $wpdb->usermeta, $wpdb->users "
-		. "LEFT JOIN ( "
-		. "SELECT user_id AS uid, meta_value AS first_name "
-		. "FROM $wpdb->usermeta "
-		. "WHERE meta_key = 'first_name' "
-		. ") AS metaF ON $wpdb->users.ID = metaF.uid "
-		. "LEFT JOIN ( "
-		. "SELECT user_id AS uid, meta_value AS last_name "
-		. "FROM $wpdb->usermeta "
-		. "WHERE meta_key = 'last_name' "
-		. ") AS metaL ON $wpdb->users.ID = metaL.uid ";
-     */
-
-    /**  New query - 6/20/2012 **/
-    $query = " SELECT ID, display_name, user_email, user_login, "
-        . "m1.meta_value first_name, m2.meta_value last_name "
-        . "FROM $wpdb->users u "
-        . "LEFT JOIN $wpdb->usermeta m1 ON "
-        . "(m1.user_id = u.ID AND m1.meta_key = 'first_name') "
-        . "LEFT JOIN $wpdb->usermeta m2 ON "
-        . "(m2.user_id = u.ID AND m2.meta_key = 'last_name') " ;
-
-	$additional_sql_filter = '';
-
-	if ($meta_filter=='') {
-		if ($exclude_id!='') {
-			$additional_sql_filter = ' WHERE (ID<>' . $exclude_id . ') ';
-		}
-
-		switch ($sortby) {
-			case 'fl' :
-			case 'flul' :
-	    			$query .= $additional_sql_filter
-	       				. ' ORDER BY first_name';
-				break;
-			case 'lf' :
-			case 'lful' :
-	    			$query .= $additional_sql_filter
-	       				. ' ORDER BY last_name';
-				break;
-			case 'ul' :
-			case 'uldn' :
-			case 'ulfn' :
-			case 'ulln' :
-	    			$query .= $additional_sql_filter
-	       				. ' ORDER BY user_login';
-				break;
-			case 'display name' :
-	    			$query .= $additional_sql_filter
-	       				. ' ORDER BY display_name';
-				break;
-			default:
-	    			$query .= $additional_sql_filter
-	       				. ' ORDER BY ID';
-				break;
-		}
-	} else {
-        $query .= "LEFT JOIN $wpdb->usermeta m3 ON "
-            . "(m3.user_id = u.ID AND m3.meta_key = '" . $meta_filter . "') " ;
-
-		if ($exclude_id!='') {
-			$additional_sql_filter .= ' AND (ID<>' . $exclude_id . ') ';
-		}
-		$additional_sql_filter .= ' AND (m3.meta_key="' . $meta_filter . '") ';
-		$additional_sql_filter .= ' AND (m3.meta_value="true") ';
-
-		$sortby = mailusers_get_default_sort_users_by();
-
-		switch ($sortby) {
-			case 'fl' :
-			case 'flul' :
-	    			$query .= 'WHERE '
-					. ' (m1.user_id = ID)'
-					. $additional_sql_filter
-	       				. ' ORDER BY first_name';
-				break;
-			case 'lf' :
-			case 'lful' :
-	    			$query .= 'WHERE '
-					. ' (m1.user_id = ID)'
-					. $additional_sql_filter
-	       				. ' ORDER BY last_name';
-				break;
-			case 'ul' :
-			case 'uldn' :
-			case 'ulfn' :
-			case 'ulln' :
-	    			$query .= 'WHERE '
-					. ' (m1.user_id = ID)'
-					. $additional_sql_filter
-	       				. ' ORDER BY user_login';
-				break;
-			case 'display name' :
-	    			$query .= 'WHERE '
-					. ' (m1.user_id = ID)'
-					. $additional_sql_filter
-	       				. ' ORDER BY display_name';
-				break;
-			default:
-	    			$query .= 'WHERE '
-					. ' (m1.user_id = ID)'
-					. $additional_sql_filter
-	       				. ' ORDER BY ID';
-				break;
-		}
-	}
-
-	return $wpdb->get_results($query);
+    return ( $a->last_name < $b->last_name ) ? -1 : 1;
 }
 
 /**
- * Get the users
+ * Sort by first name
+ */
+function mailusers_sort_users_by_first_name( $a, $b ) {
+
+    if ( $a->first_name == $b->first_name ) {
+        return 0;
+    }
+
+    return ( $a->first_name < $b->first_name ) ? -1 : 1;
+}
+
+/**
+ * Sort by display name
+ */
+function mailusers_sort_users_by_display_name( $a, $b ) {
+
+    if ( $a->display_name == $b->display_name ) {
+        return 0;
+    }
+
+    return ( $a->display_name < $b->display_name ) ? -1 : 1;
+}
+
+/**
+ * Sort by user login
+ */
+function mailusers_sort_users_by_user_login( $a, $b ) {
+
+    if ( $a->user_login == $b->user_login ) {
+        return 0;
+    }
+
+    return ( $a->user_login < $b->user_login ) ? -1 : 1;
+}
+
+/**
+ * Get the users based on roles
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_roles( $exclude_id='', $meta_filter = '') {
@@ -801,6 +750,15 @@ function mailusers_get_roles( $exclude_id='', $meta_filter = '') {
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_recipients_from_ids( $ids, $exclude_id='', $meta_filter = '') {
+
+    return mailusers_get_users($exclude_id, $meta_filter, array('include' => $ids)) ;
+}
+
+/**
+ * Get the users given a role or an array of ids
+ * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ */
+function mailusers_get_recipients_from_ids2( $ids, $exclude_id='', $meta_filter = '') {
 	global $wpdb;
 
 	if (empty($ids)) {
@@ -842,6 +800,20 @@ function mailusers_get_recipients_from_ids( $ids, $exclude_id='', $meta_filter =
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filter = '') {
+
+    $users = array() ;
+
+    foreach ($roles as $role)
+        $users = array_merge($users, mailusers_get_users($exclude_id, $meta_filter, array('role' => $role))) ;
+
+    return $users ;
+}
+
+/**
+ * Get the users given a role or an array of roles
+ * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ */
+function mailusers_get_recipients_from_roles2($roles, $exclude_id='', $meta_filter = '') {
 	global $wpdb;
 
 	if (empty($roles)) {
@@ -984,7 +956,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		if (mailusers_is_valid_email($recipients[0]->user_email)) {
 			$headers .= "To: \"" . $recipients[0]->display_name . "\" <" . $recipients[0]->user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
-			@wp_mail($sender_email, $subject, $mailtext, $headers);
+			@mailusers_preprint_r($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
 			echo '<div class="error fade">The email address of the user you are trying to send mail to is not a valid email address format.</div>';
@@ -1023,7 +995,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
 				}
-				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				@mailusers_preprint_r($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
@@ -1047,7 +1019,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
-		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+		@mailusers_preprint_r($sender_email, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;
