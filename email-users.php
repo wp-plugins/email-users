@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', true);
+define( 'MAILUSERS_DEBUG', false);
 
 /**
  * Initialise the internationalisation domain
@@ -755,47 +755,6 @@ function mailusers_get_recipients_from_ids( $ids, $exclude_id='', $meta_filter =
 }
 
 /**
- * Get the users given a role or an array of ids
- * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
- */
-function mailusers_get_recipients_from_ids2( $ids, $exclude_id='', $meta_filter = '') {
-	global $wpdb;
-
-	if (empty($ids)) {
-		return array();
-	}
-
-	$id_filter = implode(', ', $ids);
-
-	$additional_sql_filter = '';
-	if ($exclude_id!='') {
-		$additional_sql_filter .= ' AND (id<>' . $exclude_id . ') ';
-	}
-
-	if ($meta_filter=='') {
-	    $users = $wpdb->get_results(
-			  'SELECT id, user_email, display_name '
-			. "FROM $wpdb->users "
-			. 'WHERE '
-			. ' (id IN (' . implode(', ', $ids) . ')) '
-			. $additional_sql_filter );
-	} else {
-		$additional_sql_filter .= ' AND (meta_key="' . $meta_filter . '") ';
-		$additional_sql_filter .= ' AND (meta_value="true") ';
-
-	    $users = $wpdb->get_results(
-			  'SELECT id, user_email, display_name '
-			. "FROM $wpdb->usermeta, $wpdb->users "
-			. 'WHERE '
-			. ' (user_id = id)'
-			. $additional_sql_filter
-			. ' AND (id IN (' . implode(', ', $ids) . ')) ' );
-	}
-
-	return $users;
-}
-
-/**
  * Get the users given a role or an array of roles
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
@@ -807,75 +766,6 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
         $users = array_merge($users, mailusers_get_users($exclude_id, $meta_filter, array('role' => $role))) ;
 
     return $users ;
-}
-
-/**
- * Get the users given a role or an array of roles
- * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
- */
-function mailusers_get_recipients_from_roles2($roles, $exclude_id='', $meta_filter = '') {
-	global $wpdb;
-
-	if (empty($roles)) {
-		return array();
-	}
-
-	// Build role filter for the list of roles
-	//--
-	$role_count = count($roles);
-	$capability_filter = '';
-	for ($i=0; $i<$role_count; $i++) {
-		$capability_filter .= 'meta_value like "%' . $roles[$i] . '%"';
-		if ($i!=$role_count-1) {
-			$capability_filter .= ' OR ';
-		}
-	}
-
-	// Additional filter on the meta_filters if necessary
-	//--
-	if ($meta_filter!='') {
-		// Get ids corresponding to the roles
-		//--
-	    $ids = $wpdb->get_results(
-				  'SELECT id '
-				. "FROM $wpdb->usermeta, $wpdb->users "
-				. 'WHERE '
-				. ' (user_id = id) '
-				. ($exclude_id!='' ? ' AND (id<>' . $exclude_id . ')' : '')
-				. ' AND (meta_key = "' . $wpdb->prefix . 'capabilities") '
-				. ' AND (' . $capability_filter . ') ' );
-
-		if (count($ids)<1) {
-			return array();
-		}
-				
-		$id_list = '';
-		for ($i=0; $i<count($ids)-1; $i++) {
-			$id_list .= $ids[$i]->id . ',';
-		}
-		$id_list .= $ids[count($ids)-1]->id;
-
-		$users = $wpdb->get_results(
-				  'SELECT id, user_email, display_name '
-				. "FROM $wpdb->usermeta, $wpdb->users "
-				. 'WHERE '
-				. ' (user_id = id) '
-				. ' AND (id in (' . $id_list . ')) '
-				. ' AND (meta_key = "' . $meta_filter .'") '
-				. ' AND (meta_value = "true") ' );
-	} else {
-	    $users = $wpdb->get_results(
-				  'SELECT id, user_email, display_name '
-				. "FROM $wpdb->usermeta, $wpdb->users "
-				. 'WHERE '
-				. ' (user_id = id) '
-				. ( $exclude_id!='' ? ' AND (id<>' . $exclude_id . ')' : '' )
-				. ' AND (meta_key = "' . $wpdb->prefix . 'capabilities") '
-				. ' AND (' . $capability_filter . ') ' );
-	}
-
-	//printf('<pre>%s::%s<br/>%s</pre>', basename(__FILE__), __LINE__, print_r($users, true)) ;
-	return $users;
 }
 
 /**
