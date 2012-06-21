@@ -207,7 +207,7 @@ function mailusers_user_register($user_id) {
 }
 
 add_action('profile_update', 'mailusers_profile_update');
-function mailusers_profile_update($user_id, $old_user_data) {
+function mailusers_profile_update($user_id) {
 	mailusers_user_meta_init($user_id);
 }
 
