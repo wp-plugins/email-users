@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.2
+Version: 4.3.3
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -81,7 +81,9 @@ function mailusers_get_default_plugin_settings()
 		// Mail User - Default setting for Notifications
 		'mailusers_default_notifications' => 'true',
 		// Mail User - Default setting for Mass Email
-		'mailusers_default_mass_email' => 'true'
+		'mailusers_default_mass_email' => 'true',
+		// Mail User - Default setting for User Control
+		'mailusers_default_user_control' => 'true'
 	) ;
 
 	return $default_plugin_settings ;
@@ -389,7 +391,9 @@ function mailusers_send_group_mail_page()
 add_action('show_user_profile', 'mailusers_user_profile_form');
 function mailusers_user_profile_form() {
 	global $user_ID;
-	mailusers_edit_any_user_profile_form($user_ID);
+    //  Do we let users control their own settings?
+    if ((mailusers_get_default_user_control()=='true') || current_user_can('edit_users'))
+	    mailusers_edit_any_user_profile_form($user_ID);
 }
 
 /**
@@ -398,7 +402,10 @@ function mailusers_user_profile_form() {
 add_action('edit_user_profile', 'mailusers_edit_user_profile_form');
 function mailusers_edit_user_profile_form() {
 	global $profileuser;
-	mailusers_edit_any_user_profile_form($profileuser->ID);
+
+    //  Do we let users control their own settings?
+    if ((mailusers_get_default_user_control()=='true') || current_user_can('edit_users'))
+	    mailusers_edit_any_user_profile_form($profileuser->ID);
 }
 
 /**
@@ -418,13 +425,13 @@ function mailusers_edit_any_user_profile_form($uid) {
 						id="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						value="true"
 						<?php if (get_user_meta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true)=='true') echo 'checked="checked"'; ?> ></input>
-				<?php _e('Accept to recieve post or page notification emails', MAILUSERS_I18N_DOMAIN); ?><br/>
+				<?php _e('Accept to receive post or page notification emails', MAILUSERS_I18N_DOMAIN); ?><br/>
 				<input 	type="checkbox"
 						name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						value="true"
 						<?php if (get_user_meta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true)=='true') echo 'checked="checked"'; ?> ></input>
-				<?php _e('Accept to recieve emails sent to multiple recipients (but still accept emails sent only to me)', MAILUSERS_I18N_DOMAIN); ?>
+				<?php _e('Accept to receive emails sent to multiple recipients (but still accept emails sent only to me)', MAILUSERS_I18N_DOMAIN); ?>
 			</td>
 		</tr>
 	</tbody>
@@ -495,6 +502,7 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
     register_setting('email_users', 'mailusers_default_notifications') ;
     register_setting('email_users', 'mailusers_default_mass_email') ;
+    register_setting('email_users', 'mailusers_default_user_control') ;
 }
 
 /**
@@ -621,6 +629,20 @@ function mailusers_get_default_mass_email() {
  */
 function mailusers_update_default_mass_email( $default_mass_email ) {
 	return update_option( 'mailusers_default_mass_email', $default_mass_email );
+}
+
+/**
+ * Wrapper for the default mass email setting
+ */
+function mailusers_get_default_user_control() {
+	return get_option( 'mailusers_default_user_control' );
+}
+
+/**
+ * Wrapper for the default mass email setting
+ */
+function mailusers_update_default_user_control( $default_user_control ) {
+	return update_option( 'mailusers_default_user_control', $default_user_control );
 }
 
 /**
