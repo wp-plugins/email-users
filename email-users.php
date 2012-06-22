@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', true);
+define( 'MAILUSERS_DEBUG', false);
 
 /**
  * Initialise the internationalisation domain
@@ -267,14 +267,14 @@ function mailusers_add_pages() {
     add_posts_page(
 	__('Notify Users', MAILUSERS_I18N_DOMAIN),
 	__('Notify Users', MAILUSERS_I18N_DOMAIN),
-	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+	MAILUSERS_NOTIFY_USERS_CAP,
        	'mailusers-send-notify-mail-post',
        	'mailusers_send_notify_mail') ;
 
     add_pages_page(
 	__('Notify Users', MAILUSERS_I18N_DOMAIN),
 	__('Notify Users', MAILUSERS_I18N_DOMAIN),
-	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+	MAILUSERS_NOTIFY_USERS_CAP,
        	'mailusers-send-notify-mail-page',
        	'mailusers_send_notify_mail') ;
 
@@ -648,7 +648,6 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
 	$users = get_users($args) ;
 
-    //mailusers_preprint_r($args, $users) ;
     //  Sort the users based on the plugin settings
 
     if ( ! empty( $users) ) {
@@ -846,7 +845,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		if (mailusers_is_valid_email($recipients[0]->user_email)) {
 			$headers .= "To: \"" . $recipients[0]->display_name . "\" <" . $recipients[0]->user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
-			@wp_mail($sender_email, $subject, $mailtext, $headers);
+			wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
 			echo '<div class="error fade">The email address of the user you are trying to send mail to is not a valid email address format.</div>';
@@ -885,7 +884,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
 				}
-				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
@@ -909,7 +908,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
-		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+		wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;
