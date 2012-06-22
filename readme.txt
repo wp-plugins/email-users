@@ -19,6 +19,7 @@ This plugin is available under the GPL license, which means that it's free. If y
 == Changelog ==
 
 = Version 4.3.2 =
+* Hid "Notify Users" submenu on Pages and Posts Menu for users who don't have the proper capability.
 * Fixed problem where debug code was preventing mail from being sent to users.
 
 = Version 4.3.1 =
