@@ -143,7 +143,7 @@
 			<br/><br/>
 			<small><?php _e('Use CTRL key to select/deselect multiple items', MAILUSERS_I18N_DOMAIN); ?></small>
 			<br/><br/>
-			<small><?php _e('The users that did not agree to recieve notifications do not appear here.', MAILUSERS_I18N_DOMAIN); ?></small></label></th>
+			<small><?php _e('The users that did not agree to receive notifications do not appear here.', MAILUSERS_I18N_DOMAIN); ?></small></label></th>
 			<td>
 				<select name="send_roles[]" multiple="yes" size="8" style="width: 250px; height: 250px;">
 				<?php 
