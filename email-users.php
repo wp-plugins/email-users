@@ -663,10 +663,6 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     //  Retrieve the list of users
 
 	$users = get_users($args) ;
-    if (MAILUSERS_DEBUG)
-        mailusers_preprint_r(array_keys($users)) ;
-    //if (MAILUSERS_DEBUG)
-        //mailusers_preprint_r($users) ;
 
     //  Sort the users based on the plugin settings
 
@@ -694,8 +690,6 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 		}
 
     }
-    if (MAILUSERS_DEBUG)
-        mailusers_preprint_r(array_keys($users)) ;
 
     return $users ;
 }
@@ -794,17 +788,9 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
  */
 function mailusers_is_valid_email($email) {
 	if (function_exists('is_email')) {
-        if (MAILUSERS_DEBUG) {
-            mailusers_preprint_r($email, is_email($email));
-            mailusers_whereami(__FILE__, __LINE__) ;
-        }
 		return is_email($email);
 	}
 
-    if (MAILUSERS_DEBUG) {
-        mailusers_preprint_r($email, is_email($email));
-        mailusers_whereami(__FILE__, __LINE__) ;
-    }
 	$regex = '/^[A-z0-9][\w.+-]*@[A-z0-9][\w\-\.]+\.[A-z0-9]{2,6}$/';
 	return (preg_match($regex, $email));
 }
@@ -876,14 +862,10 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		if (mailusers_is_valid_email($recipient->user_email)) {
 			$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipients>user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
-            if (MAILUSERS_DEBUG)
-			    mailusers_preprint_r($recipients, $sender_email, $subject, $mailtext, htmlentities($headers));
 			@wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
-            if (MAILUSERS_DEBUG)
-			    mailusers_preprint_r($recipients);
-			echo '<div class="error fade">The email address of the user you are trying to send mail to is not a valid email address format.</div>';
+			echo '<div class="error fade"><p>' . __(sprintf('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', $recipient->user_email), MAILUSERS_I18N_DOMAIN) . '</p></div>';
 			return $num_sent;
 		}
 		return $num_sent;
@@ -904,13 +886,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$recipient = $recipients[$key]->user_email;
 
             if (!mailusers_is_valid_email($recipient)) {
-                if (MAILUSERS_DEBUG) {
-                    mailusers_whereami(__FILE__, __LINE__) ;
-                    mailusers_preprint_r($recipient) ;
-                }
                 continue;
             }
-			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
+            if ( empty($recipient) || ($sender_email == $recipient) ) {
+                continue;
+            }
 
 			if ($bcc=='') {
 				$bcc = "Bcc: $recipient";
@@ -927,8 +907,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
 				}
-                if (MAILUSERS_DEBUG)
-			        mailusers_preprint_r($sender_email, $subject, $mailtext, htmlentities($newheaders));
 				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
@@ -939,14 +917,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	} else {
 		$headers .= "To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
 
-		//for ($i=0; $i<count($recipients); $i++) {
         foreach ($recipients as $key=> $value) {
 			$recipient = $recipients[$key]->user_email;
 
             if (!mailusers_is_valid_email($recipient)) {
-                if (MAILUSERS_DEBUG)
-                    mailusers_preprint_r($recipients) ;
-                echo "$recipient email not valid";
+                echo '<div class="error fade"><p>' . __(sprintf('Invalid email address ("%s") found.', $recipient), MAILUSERS_I18N_DOMAIN) . '</p></div>';
                 continue;
             }
 
@@ -960,8 +935,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
-        if (MAILUSERS_DEBUG)
-            mailusers_preprint_r($sender_email, $subject, $mailtext, htmlentities($newheaders));
 		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
