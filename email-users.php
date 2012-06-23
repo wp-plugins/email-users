@@ -487,22 +487,16 @@ function editor_admin_init() {
  */
 add_action('admin_init', 'mailusers_admin_init');
 function mailusers_admin_init() {
-    register_setting('email_users', 'mailusers_version') ;
-    register_setting('email_users', 'mailusers_default_subject') ;
     register_setting('email_users', 'mailusers_default_body') ;
     register_setting('email_users', 'mailusers_default_mail_format') ;
-    register_setting('email_users', 'mailusers_default_sort_users_by') ;
-    register_setting('email_users', 'mailusers_max_bcc_recipients') ;
-    register_setting('email_users', 'mailusers_user_settings_table_rows') ;
-    register_setting('email_users', 'mailusers_default_subject') ;
-    register_setting('email_users', 'mailusers_default_body') ;
-    register_setting('email_users', 'mailusers_default_mail_format') ;
-    register_setting('email_users', 'mailusers_default_sort_users_by') ;
-    register_setting('email_users', 'mailusers_max_bcc_recipients') ;
-    register_setting('email_users', 'mailusers_user_settings_table_rows') ;
-    register_setting('email_users', 'mailusers_default_notifications') ;
     register_setting('email_users', 'mailusers_default_mass_email') ;
+    register_setting('email_users', 'mailusers_default_notifications') ;
+    register_setting('email_users', 'mailusers_default_sort_users_by') ;
+    register_setting('email_users', 'mailusers_default_subject') ;
     register_setting('email_users', 'mailusers_default_user_control') ;
+    register_setting('email_users', 'mailusers_max_bcc_recipients') ;
+    register_setting('email_users', 'mailusers_user_settings_table_rows') ;
+    register_setting('email_users', 'mailusers_version') ;
 }
 
 /**
@@ -669,6 +663,10 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     //  Retrieve the list of users
 
 	$users = get_users($args) ;
+    if (MAILUSERS_DEBUG)
+        mailusers_preprint_r(array_keys($users)) ;
+    //if (MAILUSERS_DEBUG)
+        //mailusers_preprint_r($users) ;
 
     //  Sort the users based on the plugin settings
 
@@ -696,6 +694,8 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 		}
 
     }
+    if (MAILUSERS_DEBUG)
+        mailusers_preprint_r(array_keys($users)) ;
 
     return $users ;
 }
@@ -794,9 +794,17 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
  */
 function mailusers_is_valid_email($email) {
 	if (function_exists('is_email')) {
+        if (MAILUSERS_DEBUG) {
+            mailusers_preprint_r($email, is_email($email));
+            mailusers_whereami(__FILE__, __LINE__) ;
+        }
 		return is_email($email);
 	}
 
+    if (MAILUSERS_DEBUG) {
+        mailusers_preprint_r($email, is_email($email));
+        mailusers_whereami(__FILE__, __LINE__) ;
+    }
 	$regex = '/^[A-z0-9][\w.+-]*@[A-z0-9][\w\-\.]+\.[A-z0-9]{2,6}$/';
 	return (preg_match($regex, $email));
 }
@@ -864,12 +872,17 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	// If unique recipient, send mail using to field.
 	//--
 	if (count($recipients)==1) {
-		if (mailusers_is_valid_email($recipients[0]->user_email)) {
-			$headers .= "To: \"" . $recipients[0]->display_name . "\" <" . $recipients[0]->user_email . ">\n";
+        $recipient = reset($recipients) ; // reset will return first value of the array!
+		if (mailusers_is_valid_email($recipient->user_email)) {
+			$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipients>user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
-			wp_mail($sender_email, $subject, $mailtext, $headers);
+            if (MAILUSERS_DEBUG)
+			    mailusers_preprint_r($recipients, $sender_email, $subject, $mailtext, htmlentities($headers));
+			@wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
+            if (MAILUSERS_DEBUG)
+			    mailusers_preprint_r($recipients);
 			echo '<div class="error fade">The email address of the user you are trying to send mail to is not a valid email address format.</div>';
 			return $num_sent;
 		}
@@ -885,10 +898,18 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		$count = 0;
 		$sender_emailed = false;
 
-		for ($i=0; $i<count($recipients); $i++) {
-			$recipient = $recipients[$i]->user_email;
+		//for ($i=0; $i<count($recipients); $i++) {
+			//$recipient = $recipients[$i]->user_email;
+        foreach ($recipients as $key=> $value) {
+			$recipient = $recipients[$key]->user_email;
 
-			if (!mailusers_is_valid_email($recipient)) { continue; }
+            if (!mailusers_is_valid_email($recipient)) {
+                if (MAILUSERS_DEBUG) {
+                    mailusers_whereami(__FILE__, __LINE__) ;
+                    mailusers_preprint_r($recipient) ;
+                }
+                continue;
+            }
 			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
 
 			if ($bcc=='') {
@@ -906,7 +927,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
 				}
-				wp_mail($sender_email, $subject, $mailtext, $newheaders);
+                if (MAILUSERS_DEBUG)
+			        mailusers_preprint_r($sender_email, $subject, $mailtext, htmlentities($newheaders));
+				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
@@ -916,10 +939,17 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	} else {
 		$headers .= "To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
 
-		for ($i=0; $i<count($recipients); $i++) {
-			$recipient = $recipients[$i]->user_email;
+		//for ($i=0; $i<count($recipients); $i++) {
+        foreach ($recipients as $key=> $value) {
+			$recipient = $recipients[$key]->user_email;
 
-			if (!mailusers_is_valid_email($recipient)) { echo "$recipient email not valid"; continue; }
+            if (!mailusers_is_valid_email($recipient)) {
+                if (MAILUSERS_DEBUG)
+                    mailusers_preprint_r($recipients) ;
+                echo "$recipient email not valid";
+                continue;
+            }
+
 			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
 
 			if ($bcc=='') {
@@ -930,7 +960,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
-		wp_mail($sender_email, $subject, $mailtext, $newheaders);
+        if (MAILUSERS_DEBUG)
+            mailusers_preprint_r($sender_email, $subject, $mailtext, htmlentities($newheaders));
+		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;
@@ -945,7 +977,7 @@ function mailusers_preprint_r()
     $numargs = func_num_args() ;
     $arg_list = func_get_args() ;
     for ($i = 0; $i < $numargs; $i++) {
-	printf('<pre style="text-align:left;">%s</pre>', print_r($arg_list[$i], true)) ;
+	    printf('<pre style="text-align:left;">%s</pre>', print_r($arg_list[$i], true)) ;
     }
 }
 
