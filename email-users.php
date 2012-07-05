@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.5' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.6' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
 
 /**
  * Initialise the internationalisation domain
@@ -76,6 +76,10 @@ function mailusers_get_default_plugin_settings()
 		'mailusers_default_sort_users_by' => 'none',
 		// Mail User - Maximum number of recipients in the BCC field
 		'mailusers_max_bcc_recipients' => '0',
+		// Mail User - Default setting for From Sender Name Override
+		'mailusers_from_sender_name_override' => '',
+		// Mail User - Default setting for From Sender Address Override
+		'mailusers_from_sender_address_override' => '',
 		// Mail User - Maximum number of rows to show in the User Settings table
 		'mailusers_user_settings_table_rows' => '20',
 		// Mail User - Default setting for Notifications
@@ -83,7 +87,9 @@ function mailusers_get_default_plugin_settings()
 		// Mail User - Default setting for Mass Email
 		'mailusers_default_mass_email' => 'true',
 		// Mail User - Default setting for User Control
-		'mailusers_default_user_control' => 'true'
+		'mailusers_default_user_control' => 'true',
+		// Mail User - Default setting for Short Code Processing
+		'mailusers_shortcode_processing' => 'false'
 	) ;
 
 	return $default_plugin_settings ;
@@ -496,6 +502,10 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_default_user_control') ;
     register_setting('email_users', 'mailusers_max_bcc_recipients') ;
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
+    register_setting('email_users', 'mailusers_shortcode_processing') ;
+    register_setting('email_users', 'mailusers_from_sender_name_override') ;
+    register_setting('email_users',
+        'mailusers_from_sender_address_override', 'mailusers_from_sender_address_override_validate') ;
     register_setting('email_users', 'mailusers_version') ;
 }
 
@@ -594,7 +604,42 @@ function mailusers_get_user_settings_table_rows() {
  * Wrapper for the user settings table rows option
  */
 function mailusers_update_user_settings_table_rows( $user_settings_table_rows ) {
-	return update_option( 'mailusers_settings_table_rows', $user_settings_table_rows );
+	return update_option( 'mailusers_user_settings_table_rows', $user_settings_table_rows );
+}
+
+/**
+ * Wrapper for the from sender name override option
+ */
+function mailusers_get_from_sender_name_override() {
+	return get_option( 'mailusers_from_sender_name_override' );
+}
+
+/**
+ * Wrapper for the from sender name override option
+ */
+function mailusers_update_from_sender_name_override( $from_sender_name_override ) {
+	return update_option( 'mailusers_from_sender_name_override', $from_sender_name_override );
+}
+
+/**
+ * Wrapper for the from sender address override option
+ */
+function mailusers_get_from_sender_address_override() {
+	return get_option( 'mailusers_from_sender_address_override' );
+}
+
+/**
+ * Wrapper for the from sender address override option
+ */
+function mailusers_update_from_sender_address_override( $from_sender_address_override ) {
+	return update_option( 'mailusers_from_sender_address_override', $from_sender_address_override );
+}
+
+/**
+ * Wrapper for the from sender address override option validation
+ */
+function mailusers_from_sender_address_override_validate( $from_sender_address_override ) {
+	return is_email($from_sender_address_override ) ? $from_sender_address_override : false ;
 }
 
 /**
@@ -637,6 +682,20 @@ function mailusers_get_default_user_control() {
  */
 function mailusers_update_default_user_control( $default_user_control ) {
 	return update_option( 'mailusers_default_user_control', $default_user_control );
+}
+
+/**
+ * Wrapper for the short code processing setting
+ */
+function mailusers_get_shortcode_processing() {
+	return get_option( 'mailusers_shortcode_processing' );
+}
+
+/**
+ * Wrapper for the short code processing setting
+ */
+function mailusers_update_shortcode_processing( $shortcode_processing ) {
+	return update_option( 'mailusers_shortcode_processing', $shortcode_processing );
 }
 
 /**
@@ -860,14 +919,14 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	if (count($recipients)==1) {
         $recipient = reset($recipients) ; // reset will return first value of the array!
 		if (mailusers_is_valid_email($recipient->user_email)) {
-			$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipients>user_email . ">\n";
+			$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipient->user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
 			
 			if (MAILUSERS_DEBUG) {
 				mailusers_preprint_r($headers);
 			}
 			
-			@wp_mail($sender_email, $subject, $mailtext, $headers);
+			//@wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
 			echo '<div class="error fade"><p>' . __(sprintf('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', $recipient->user_email), MAILUSERS_I18N_DOMAIN) . '</p></div>';
@@ -917,7 +976,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					mailusers_preprint_r($newheaders);
 				}
 			
-				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
@@ -950,7 +1009,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			mailusers_preprint_r($newheaders);
 		}
 				
-		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+		//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;

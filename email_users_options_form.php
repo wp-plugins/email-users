@@ -124,9 +124,33 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
+			<label for="from_sender_name_override"><?php _e('From Sender<br/>Name Override', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input type="text" name="mailusers_from_sender_name_override" style="width: 235px;" 
+				value="<?php echo format_to_edit(mailusers_get_from_sender_name_override()); ?>" 
+				size="80" id="from_sender_name_override"/><br/>&nbsp;<?php _e('A name that can be used in place of the logged in user\'s name when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<th scope="row" valign="top">
+			<label for="from_sender_address_override"><?php _e('From Sender Email<br/>Address Override', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input type="text" name="mailusers_from_sender_address_override" style="width: 235px;" 
+				value="<?php echo format_to_edit(mailusers_get_from_sender_address_override()); ?>" 
+                size="80" id="from_sender_address_override"/><br/>&nbsp;<?php _e('An email address that can be used in place of the logged in user\'s email address when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?><br/><b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></td>
+	</tr>
+	<tr>
+		<th scope="row" valign="top">
 			<label for="default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: 550px;"><?php echo mailusers_get_default_body(); ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>Short Code<br/>Processing</th>
+		<td>
+			<input 	type="checkbox" name="mailusers_shortcode_processing" id="mailusers_shortcode_processing" value="true"
+					<?php if (mailusers_get_shortcode_processing()=='true') echo 'checked="checked"'; ?> ></input>
+			<?php _e('Process short codes embdedded in posts or pages.', MAILUSERS_I18N_DOMAIN); ?><br/>
 		</td>
 	</tr>
 	<tr>

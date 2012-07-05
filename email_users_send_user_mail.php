@@ -29,37 +29,46 @@
 	global $user_identity, $user_email, $user_ID;
 
 	$err_msg = '';
+	$from_sender = 0;
 	
 	// Send the email if it has been requested
 	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
-	get_currentuserinfo();
-	$from_name = $user_identity;
-	$from_address = $user_email;
+		get_currentuserinfo();
+		$from_name = $user_identity;
+		$from_address = $user_email;
+	    $override_name = mailusers_get_from_sender_name_override() ;
+        $override_address = mailusers_get_from_sender_address_override() ;
 	
-	// Analyse form input, check for blank fields
-	if ( !isset( $_POST['mail_format'] ) || trim($_POST['mail_format'])=='' ) {
-		$err_msg = $err_msg . __('You must specify the mail format.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	} else {
-		$mail_format = $_POST['mail_format'];
-	}
-	
-	if ( !isset($_POST['send_users']) || !is_array($_POST['send_users']) || empty($_POST['send_users']) ) {
-		$err_msg = $err_msg . __('You must enter at least a recipient.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	} else {
-		$send_users = $_POST['send_users'];
-	}
-	
-	if ( !isset( $_POST['subject'] ) || trim($_POST['subject'])=='' ) {
-		$err_msg = $err_msg . __('You must enter a subject.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	} else {
-		$subject = $_POST['subject'];
-	}
-	
-	if ( !isset( $_POST['mailContent'] ) || trim($_POST['mailContent'])=='' ) {
-		$err_msg = $err_msg . __('You must enter some content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
-	} else {
-		$mail_content = $_POST['mailContent'];
-	}
+		// Analyse form input, check for blank fields
+		if ( !isset( $_POST['mail_format'] ) || trim($_POST['mail_format'])=='' ) {
+			$err_msg = $err_msg . __('You must specify the mail format.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+		} else {
+			$mail_format = $_POST['mail_format'];
+		}
+		
+		if ( !isset($_POST['send_users']) || !is_array($_POST['send_users']) || empty($_POST['send_users']) ) {
+			$err_msg = $err_msg . __('You must enter at least a recipient.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+		} else {
+			$send_users = $_POST['send_users'];
+		}
+		
+		if ( !isset( $_POST['subject'] ) || trim($_POST['subject'])=='' ) {
+			$err_msg = $err_msg . __('You must enter a subject.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+		} else {
+			$subject = $_POST['subject'];
+		}
+		
+		if ( !isset( $_POST['mailContent'] ) || trim($_POST['mailContent'])=='' ) {
+			$err_msg = $err_msg . __('You must enter some content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+		} else {
+			$mail_content = $_POST['mailContent'];
+		}
+		
+		if ( !isset( $_POST['from_sender'] ) || trim($_POST['from_sender'])=='' ) {
+			$from_sender = 0;
+		} else {
+			$from_sender = $_POST['from_sender'];
+		}
 	}
 	if (!isset($send_users)) {
 		$send_users = array();
@@ -77,6 +86,11 @@
 		$mail_content = '';
 	}	
 	
+    //  Override the send from address?
+    if (($from_sender == 1) && !empty($override_address) && is_email($override_address)) {
+        $from_address = $override_address ;
+        if (!empty($override_name)) $from_name = $override_name ;
+    }
 
 	// If error, we simply show the form again
 	if (array_key_exists('send', $_POST) && ($_POST['send']=='true') && ($err_msg == '')) {

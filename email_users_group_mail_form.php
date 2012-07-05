@@ -45,6 +45,8 @@
 
 	$from_name = $user_identity;
 	$from_address = $user_email;
+    $override_name = mailusers_get_from_sender_name_override() ;
+    $override_address = mailusers_get_from_sender_address_override() ;
 ?>
 
 <div class="wrap">
@@ -72,7 +74,11 @@
 		</tr>
 		<tr>
 			<th scope="row" valign="top"><label><?php _e('Sender', MAILUSERS_I18N_DOMAIN); ?></label></th>
+            <?php if (empty($override_address)) { ?>
 			<td><?php echo $from_name;?> &lt;<?php echo $from_address;?>&gt;</td>
+            <?php } else { ?>
+            <td><input name="from_sender" type="radio" value="0" checked/><?php echo $from_name;?> &lt;<?php echo $from_address;?>&gt;<br/><input name="from_sender" type="radio" value="1"/><?php echo $override_name;?> &lt;<?php echo $override_address;?>&gt;</td>
+            <?php }?>
 		</tr>
 		<tr>
 			<th scope="row" valign="top"><label for="send_roles"><?php _e('Recipients', MAILUSERS_I18N_DOMAIN); ?>

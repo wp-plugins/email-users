@@ -91,6 +91,8 @@
 
 	$from_name = $user_identity;
 	$from_address = $user_email;
+    $override_name = mailusers_get_from_sender_name_override() ;
+    $override_address = mailusers_get_from_sender_address_override() ;
 	$subject = mailusers_replace_sender_templates($subject, $from_name);
 	$mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
 		
@@ -102,9 +104,13 @@
 	$post_content = explode( '<!--more-->', $post->post_content, 2 );
 	$post_excerpt = $post_content[0];
 
-        if (mailusers_get_default_mail_format()=='html') {
+    if (mailusers_get_default_mail_format()=='html') {
 		$post_excerpt = wpautop($post_excerpt);
-        }
+    }
+    // Process short codes?
+    if (mailusers_get_shortcode_processing() == 'true') {
+        $post_excerpt = do_shortcode($post_excerpt) ;
+    }
 	
 	$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
 	$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
@@ -136,7 +142,11 @@
 		</tr>
 		<tr>
 			<th scope="row" valign="top"><label for="fromName"><?php _e('Sender', MAILUSERS_I18N_DOMAIN); ?></label></th>
+            <?php if (empty($override_address)) { ?>
 			<td><?php echo $from_name;?> &lt;<?php echo $from_address;?>&gt;</td>
+            <?php } else { ?>
+            <td><input name="from_sender" type="radio" value="0" checked/><?php echo $from_name;?> &lt;<?php echo $from_address;?>&gt;<br/><input name="from_sender" type="radio" value="1"/><?php echo $override_name;?> &lt;<?php echo $override_address;?>&gt;</td>
+            <?php }?>
 		</tr>
 		<tr>
 			<th scope="row" valign="top"><label for="send_roles"><?php _e('Recipients', MAILUSERS_I18N_DOMAIN); ?>

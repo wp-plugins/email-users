@@ -45,8 +45,10 @@
 	get_currentuserinfo();
 
 	$from_name = $user_identity;
-	$from_address = $user_email;?>
-
+	$from_address = $user_email;
+    $override_name = mailusers_get_from_sender_name_override() ;
+    $override_address = mailusers_get_from_sender_address_override() ;
+?>
 <div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
 	<h2><?php _e('Send an Email to Individual Users', MAILUSERS_I18N_DOMAIN); ?></h2>
@@ -70,10 +72,14 @@
 			</select></td>
 		</tr>
 		<tr>
-			<th scope="row" valign="top"><label><?php _e('Sender', MAILUSERS_I18N_DOMAIN); ?></label></th>
+			<th scope="row" valign="top"><label for="fromName"><?php _e('Sender', MAILUSERS_I18N_DOMAIN); ?></label></th>
+            <?php if (empty($override_address)) { ?>
 			<td><?php echo $from_name;?> &lt;<?php echo $from_address;?>&gt;</td>
-		</tr>
-		<tr>
+            <?php } else { ?>
+            <td><input name="from_sender" type="radio" value="0" checked/><?php echo $from_name;?> &lt;<?php echo $from_address;?>&gt;<br/><input name="from_sender" type="radio" value="1"/><?php echo $override_name;?> &lt;<?php echo $override_address;?>&gt;</td>
+            <?php }?>
+        </tr>
+        <tr>
 			<th scope="row" valign="top"><label for="send_users"><?php _e('Recipients', MAILUSERS_I18N_DOMAIN); ?>
 			<br/><br/>
 			<small><?php
