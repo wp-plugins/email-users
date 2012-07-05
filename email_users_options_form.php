@@ -107,7 +107,10 @@
 		<td>
 			<select name="mailusers_max_bcc_recipients" style="width: 235px;">
 				<option value="0" <?php if (mailusers_get_max_bcc_recipients()=='0') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="1" <?php if (mailusers_get_max_bcc_recipients()=='1') echo 'selected="true"'; ?>>1</option>
+				<option value="10" <?php if (mailusers_get_max_bcc_recipients()=='10') echo 'selected="true"'; ?>>10</option>
 				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"'; ?>>30</option>
+				<option value="100" <?php if (mailusers_get_max_bcc_recipients()=='100') echo 'selected="true"'; ?>>100</option>
 			</select><br/>&nbsp;<?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>

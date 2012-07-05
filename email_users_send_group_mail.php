@@ -110,7 +110,7 @@
 			} else if ($num_sent > 0 && $num_sent == count($recipients)){
 	?>
 			<div class="updated fade">
-				<p><?php echo sprintf(__('Notification sent to %s user(s).', MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
+				<p><?php echo sprintf(__('Email sent to %s user(s).', MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
 			</div>
 	<?php
 			} else if ($num_sent > count($recipients)) {

@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.4
+Version: 4.3.5
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.2' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.5' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -862,6 +862,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		if (mailusers_is_valid_email($recipient->user_email)) {
 			$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipients>user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
+			
+			if (MAILUSERS_DEBUG) {
+				mailusers_preprint_r($headers);
+			}
+			
 			@wp_mail($sender_email, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
@@ -907,6 +912,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
 				}
+					
+				if (MAILUSERS_DEBUG) {
+					mailusers_preprint_r($newheaders);
+				}
+			
 				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
@@ -935,6 +945,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 		$newheaders = $headers . "$bcc\n\n";
+					
+		if (MAILUSERS_DEBUG) {
+			mailusers_preprint_r($newheaders);
+		}
+				
 		@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 	}
 
