@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.6' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.6-beta' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -287,8 +287,10 @@ function mailusers_add_pages() {
        	'mailusers_send_notify_mail') ;
 
     add_options_page(
-	__('Email Users', MAILUSERS_I18N_DOMAIN),
-	__('Email Users', MAILUSERS_I18N_DOMAIN),
+	'Email Users',
+	'Email Users',
+	//__('Email Users', MAILUSERS_I18N_DOMAIN),
+	//__('Email Users', MAILUSERS_I18N_DOMAIN),
 	'manage_options',
        	'mailusers-options-page',
        	'mailusers_options_page') ;

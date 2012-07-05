@@ -116,7 +116,7 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-            <label for="default_subject"><?php _e('Default', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="default_subject"><?php _e('Default<br/>Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input type="text" name="mailusers_default_subject" style="width: 550px;" 
 				value="<?php echo format_to_edit(mailusers_get_default_subject()); ?>" 
@@ -124,7 +124,7 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-            <label for="from_sender_name_override"><?php _e('From Sender', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Name Override', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="from_sender_name_override"><?php _e('From Sender<br/>Name Override', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input type="text" name="mailusers_from_sender_name_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_name_override()); ?>" 
@@ -132,7 +132,7 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-            <label for="from_sender_address_override"><?php _e('From Sender Email', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Address Override', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="from_sender_address_override"><?php _e('From Sender Email<br/>Address Override', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input type="text" name="mailusers_from_sender_address_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_address_override()); ?>" 
@@ -146,7 +146,7 @@
 		</td>
 	</tr>
 	<tr>
-        <th><?php _e('Short Code', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Processing', MAILUSERS_I18N_DOMAIN); ?></th>
+        <th><?php _e('Short Code<br/>Processing', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input 	type="checkbox" name="mailusers_shortcode_processing" id="mailusers_shortcode_processing" value="true"
 					<?php if (mailusers_get_shortcode_processing()=='true') echo 'checked="checked"';?> ></input>
@@ -170,7 +170,7 @@
 		</td>
 	</tr>
 	<tr>
-    <th><?php _e('Default', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('User Settings', MAILUSERS_I18N_DOMAIN); ?></th>
+    <th><?php _e('Default<br/>User Settings', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input 	type="checkbox" name="mailusers_default_notifications" id="mailusers_default_notifications" value="true"
 					<?php if (mailusers_get_default_notifications()=='true') echo 'checked="checked"';?> ></input>
