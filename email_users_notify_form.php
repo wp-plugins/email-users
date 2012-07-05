@@ -47,7 +47,7 @@
 	<div id="icon-users" class="icon32"><br/></div>
 	<h2><?php _e('Notify Users of a ', MAILUSERS_I18N_DOMAIN) . _e(ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?></h2>
 	<form name="SetPost" action="" method="post">
-        <p><?php _e('Please select the ', MAILUSERS_I18N_DOMAIN); _e($post_type, MAILUSERS_I18N_DOMAIN); _e(' that you wish to notify users about.', MAILUSERS_I18N_DOMAIN); ?></p>
+        <p><?php _e('Please select the ', MAILUSERS_I18N_DOMAIN) . _e($post_type, MAILUSERS_I18N_DOMAIN) . _e(' that you wish to notify users about.', MAILUSERS_I18N_DOMAIN); ?></p>
 	    <select style="width:300px;" name="post_id">
 		<?php
 		 global $post ;

@@ -140,7 +140,7 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-            <label for="default_body"><?php _e('Default', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: 550px;"><?php echo mailusers_get_default_body(); ?></textarea>
 		</td>
@@ -150,12 +150,12 @@
 		<td>
 			<input 	type="checkbox" name="mailusers_shortcode_processing" id="mailusers_shortcode_processing" value="true"
 					<?php if (mailusers_get_shortcode_processing()=='true') echo 'checked="checked"';?> ></input>
-			<?php _e('Process short codes embdedded in posts or pages.', MAILUSERS_I18N_DOMAIN); ?><br/>
+			<?php _e('Process short codes embedded in posts or pages.', MAILUSERS_I18N_DOMAIN); ?><br/>
 		</td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-            <label for="user_settings_table_rows"><?php _e('User Settings', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Table Rows', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="user_settings_table_rows"><?php _e('User Settings<br/>Table Rows', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<select name="mailusers_user_settings_table_rows" style="width: 100px;">
                 <option value="10" <?php if (mailusers_get_user_settings_table_rows()=='10') echo 'selected="true"'; ?>><?php _e('10', MAILUSERS_I18N_DOMAIN); ?></option>
