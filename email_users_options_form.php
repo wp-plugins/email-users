@@ -42,7 +42,7 @@
 <div class="wrap">
 <div class="alignright" style="font-size: 0.75em;background:#ECECEC;border:1px solid #CCC;padding:0px 5px;margin:95px 50px 0px 0px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
 <div align="center">
-	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version() ; ?></b></p>
+	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
 	<p style="margin: 0.25em 0"><a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s Home Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 		<input type="hidden" name="cmd" value="_xclick">
@@ -60,18 +60,18 @@
 </div>
 </div>
 
-<?php if (function_exists('screen_icon')) screen_icon() ; ?>
+<?php if (function_exists('screen_icon')) screen_icon(); ?>
 <h2><?php _e('Email Users Settings', MAILUSERS_I18N_DOMAIN); ?></h2>
 
 <?php 	
 	if (isset($err_msg) && $err_msg!='') { ?>
-		<div class="error fade"><p><?php echo $err_msg; ?></p></div>
+		<div class="error fade"><p><?php echo $err_msg;?></p></div>
 		<p><?php _e('Please correct the errors displayed above and try again.', MAILUSERS_I18N_DOMAIN); ?></p>
 <?php	
 	} ?>
 
 <form name="EmailUsersOptions" action="options.php" method="post">		
-	<?php settings_fields('email_users') ; ?>
+	<?php settings_fields('email_users') ;?>
 	<input type="hidden" name="mailusers_version" value="<?php echo mailusers_get_current_version(); ?>" />
 	<table class="form-table" style="clear:none;" width="100%" cellspacing="2" cellpadding="5">
 	<tr>
@@ -79,8 +79,8 @@
 			<label for="mail_format"><?php _e('Mail Format', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<select name="mailusers_default_mail_format" style="width: 235px;">
-				<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"'; ?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"'; ?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"';?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"';?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
 			</select><br/>&nbsp;<?php _e('Send mail as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
@@ -88,17 +88,17 @@
 			<label for="sort_users_by"><?php _e('Sort Users By', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<select name="mailusers_default_sort_users_by" style="width: 235px;">
-				<option value="none" <?php if (mailusers_get_default_sort_users_by()=='none') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="dn" <?php if (mailusers_get_default_sort_users_by()=='dn') echo 'selected="true"'; ?>><?php _e('Display Name', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="dnul" <?php if (mailusers_get_default_sort_users_by()=='dnul') echo 'selected="true"'; ?>><?php _e('Display Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="fl" <?php if (mailusers_get_default_sort_users_by()=='fl') echo 'selected="true"'; ?>><?php _e('First Name Last Name', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="flul" <?php if (mailusers_get_default_sort_users_by()=='flul') echo 'selected="true"'; ?>><?php _e('First Name Last Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="lf" <?php if (mailusers_get_default_sort_users_by()=='lf') echo 'selected="true"'; ?>><?php _e('Last Name, First Name', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="lful" <?php if (mailusers_get_default_sort_users_by()=='lful') echo 'selected="true"'; ?>><?php _e('Last Name, First Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="ul" <?php if (mailusers_get_default_sort_users_by()=='ul') echo 'selected="true"'; ?>><?php _e('User Login', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="uldn" <?php if (mailusers_get_default_sort_users_by()=='uldn') echo 'selected="true"'; ?>><?php _e('User Login (Display Name)', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="ulfl" <?php if (mailusers_get_default_sort_users_by()=='ulfl') echo 'selected="true"'; ?>><?php _e('User Login (First Name Last Name)', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="ullf" <?php if (mailusers_get_default_sort_users_by()=='ullf') echo 'selected="true"'; ?>><?php _e('User Login (Last Name, First Name)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="none" <?php if (mailusers_get_default_sort_users_by()=='none') echo 'selected="true"';?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="dn" <?php if (mailusers_get_default_sort_users_by()=='dn') echo 'selected="true"';?>><?php _e('Display Name', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="dnul" <?php if (mailusers_get_default_sort_users_by()=='dnul') echo 'selected="true"';?>><?php _e('Display Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="fl" <?php if (mailusers_get_default_sort_users_by()=='fl') echo 'selected="true"';?>><?php _e('First Name Last Name', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="flul" <?php if (mailusers_get_default_sort_users_by()=='flul') echo 'selected="true"';?>><?php _e('First Name Last Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="lf" <?php if (mailusers_get_default_sort_users_by()=='lf') echo 'selected="true"';?>><?php _e('Last Name, First Name', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="lful" <?php if (mailusers_get_default_sort_users_by()=='lful') echo 'selected="true"';?>><?php _e('Last Name, First Name (User Login)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="ul" <?php if (mailusers_get_default_sort_users_by()=='ul') echo 'selected="true"';?>><?php _e('User Login', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="uldn" <?php if (mailusers_get_default_sort_users_by()=='uldn') echo 'selected="true"';?>><?php _e('User Login (Display Name)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="ulfl" <?php if (mailusers_get_default_sort_users_by()=='ulfl') echo 'selected="true"';?>><?php _e('User Login (First Name Last Name)', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="ullf" <?php if (mailusers_get_default_sort_users_by()=='ullf') echo 'selected="true"';?>><?php _e('User Login (Last Name, First Name)', MAILUSERS_I18N_DOMAIN); ?></option>
 			</select><br/>&nbsp;<?php _e('Determine how to sort and display names in the User selection list?', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
@@ -106,17 +106,17 @@
 			<label for="max_bcc_recipients"><?php _e('BCC Limit', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<select name="mailusers_max_bcc_recipients" style="width: 235px;">
-				<option value="0" <?php if (mailusers_get_max_bcc_recipients()=='0') echo 'selected="true"'; ?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="1" <?php if (mailusers_get_max_bcc_recipients()=='1') echo 'selected="true"'; ?>>1</option>
-				<option value="10" <?php if (mailusers_get_max_bcc_recipients()=='10') echo 'selected="true"'; ?>>10</option>
-				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"'; ?>>30</option>
-				<option value="100" <?php if (mailusers_get_max_bcc_recipients()=='100') echo 'selected="true"'; ?>>100</option>
+				<option value="0" <?php if (mailusers_get_max_bcc_recipients()=='0') echo 'selected="true"';?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
+				<option value="1" <?php if (mailusers_get_max_bcc_recipients()=='1') echo 'selected="true"';?>>1</option>
+				<option value="10" <?php if (mailusers_get_max_bcc_recipients()=='10') echo 'selected="true"';?>>10</option>
+				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"';?>>30</option>
+				<option value="100" <?php if (mailusers_get_max_bcc_recipients()=='100') echo 'selected="true"';?>>100</option>
 			</select><br/>&nbsp;<?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="default_subject"><?php _e('Default<br/>Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="default_subject"><?php _e('Default', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input type="text" name="mailusers_default_subject" style="width: 550px;" 
 				value="<?php echo format_to_edit(mailusers_get_default_subject()); ?>" 
@@ -124,7 +124,7 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="from_sender_name_override"><?php _e('From Sender<br/>Name Override', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="from_sender_name_override"><?php _e('From Sender', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Name Override', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input type="text" name="mailusers_from_sender_name_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_name_override()); ?>" 
@@ -132,7 +132,7 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="from_sender_address_override"><?php _e('From Sender Email<br/>Address Override', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="from_sender_address_override"><?php _e('From Sender Email', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Address Override', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input type="text" name="mailusers_from_sender_address_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_address_override()); ?>" 
@@ -140,48 +140,48 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="default_body"><?php _e('Default', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: 550px;"><?php echo mailusers_get_default_body(); ?></textarea>
 		</td>
 	</tr>
 	<tr>
-		<th>Short Code<br/>Processing</th>
+        <th><?php _e('Short Code', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Processing', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input 	type="checkbox" name="mailusers_shortcode_processing" id="mailusers_shortcode_processing" value="true"
-					<?php if (mailusers_get_shortcode_processing()=='true') echo 'checked="checked"'; ?> ></input>
+					<?php if (mailusers_get_shortcode_processing()=='true') echo 'checked="checked"';?> ></input>
 			<?php _e('Process short codes embdedded in posts or pages.', MAILUSERS_I18N_DOMAIN); ?><br/>
 		</td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="user_settings_table_rows"><?php _e('User Settings<br/>Table Rows', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="user_settings_table_rows"><?php _e('User Settings', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('Table Rows', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<select name="mailusers_user_settings_table_rows" style="width: 100px;">
-				<option value="10" <?php if (mailusers_get_user_settings_table_rows()=='10') echo 'selected="true"'; ?>><?php _e('10', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="20" <?php if (mailusers_get_user_settings_table_rows()=='20') echo 'selected="true"'; ?>><?php _e('20', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="40" <?php if (mailusers_get_user_settings_table_rows()=='40') echo 'selected="true"'; ?>><?php _e('40', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="50" <?php if (mailusers_get_user_settings_table_rows()=='50') echo 'selected="true"'; ?>><?php _e('50', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="75" <?php if (mailusers_get_user_settings_table_rows()=='75') echo 'selected="true"'; ?>><?php _e('75', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="100" <?php if (mailusers_get_user_settings_table_rows()=='100') echo 'selected="true"'; ?>><?php _e('100', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="200" <?php if (mailusers_get_user_settings_table_rows()=='200') echo 'selected="true"'; ?>><?php _e('200', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="500" <?php if (mailusers_get_user_settings_table_rows()=='500') echo 'selected="true"'; ?>><?php _e('500', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="10" <?php if (mailusers_get_user_settings_table_rows()=='10') echo 'selected="true"'; ?>><?php _e('10', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="20" <?php if (mailusers_get_user_settings_table_rows()=='20') echo 'selected="true"'; ?>><?php _e('20', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="40" <?php if (mailusers_get_user_settings_table_rows()=='40') echo 'selected="true"'; ?>><?php _e('40', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="50" <?php if (mailusers_get_user_settings_table_rows()=='50') echo 'selected="true"'; ?>><?php _e('50', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="75" <?php if (mailusers_get_user_settings_table_rows()=='75') echo 'selected="true"'; ?>><?php _e('75', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="100" <?php if (mailusers_get_user_settings_table_rows()=='100') echo 'selected="true"'; ?>><?php _e('100', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="200" <?php if (mailusers_get_user_settings_table_rows()=='200') echo 'selected="true"'; ?>><?php _e('200', MAILUSERS_I18N_DOMAIN); ?></option>
+                <option value="500" <?php if (mailusers_get_user_settings_table_rows()=='500') echo 'selected="true"'; ?>><?php _e('500', MAILUSERS_I18N_DOMAIN); ?></option>
 			</select><br/>&nbsp;<?php _e('By default the table will display 20 rows.', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
 	<tr>
-		<th>Default<br/>User Settings</th>
+    <th><?php _e('Default', MAILUSERS_I18N_DOMAIN); ?><br/><?php _e('User Settings', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
 			<input 	type="checkbox" name="mailusers_default_notifications" id="mailusers_default_notifications" value="true"
-					<?php if (mailusers_get_default_notifications()=='true') echo 'checked="checked"'; ?> ></input>
+					<?php if (mailusers_get_default_notifications()=='true') echo 'checked="checked"';?> ></input>
 			<?php _e('Recieve post or page notification emails.', MAILUSERS_I18N_DOMAIN); ?><br/>
 			<input 	type="checkbox"
 					name="mailusers_default_mass_email" id="mailusers_default_mass_email" value="true"
-					<?php if (mailusers_get_default_mass_email()=='true') echo 'checked="checked"'; ?> ></input>
+					<?php if (mailusers_get_default_mass_email()=='true') echo 'checked="checked"';?> ></input>
 			<?php _e('Recieve emails sent to multiple recipients.', MAILUSERS_I18N_DOMAIN); ?><br/>
 			<input 	type="checkbox"
 					name="mailusers_default_user_control" id="mailusers_default_user_control" value="true"
-					<?php if (mailusers_get_default_user_control()=='true') echo 'checked="checked"'; ?> ></input>
+					<?php if (mailusers_get_default_user_control()=='true') echo 'checked="checked"';?> ></input>
 			<?php _e('Allow Users to control their own Email Users settings.', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
@@ -338,7 +338,7 @@
 		<td><?php _e('Administrators only.', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
-		<td><b><?php echo MAILUSERS_EMAIL_SINGLE_USER_CAP; ?></b></td>
+		<td><b><?php echo MAILUSERS_EMAIL_SINGLE_USER_CAP;?></b></td>
 		<td><?php _e('Send an email to a single user.', MAILUSERS_I18N_DOMAIN); ?></td>
 		<td><?php _e('Administrators, editors, authors and contributors.', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>

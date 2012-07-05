@@ -53,7 +53,7 @@ function mailusers_init_i18n() {
 	global $is_mailusers_i18n_setup;
 
 	if ($is_mailusers_i18n_setup == false) {
-		load_plugin_textdomain(MAILUSERS_I18N_DOMAIN, false, dirname(plugin_basename(__FILE__))) ;
+		load_plugin_textdomain(MAILUSERS_I18N_DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages/') ;
 		$is_mailusers_i18n_setup = true;
 	}
 }
@@ -241,7 +241,7 @@ function mailusers_post_relatedlink() {
 	if (isset($post_ID) && current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
 ?>
 <div class="postbox">
-<h3 class='hndle'><span>Email</span></h3>
+<h3 class='hndle'><span><?php _e('Email Users', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
 <p><img style="padding: 5px; vertical-align: middle;" src="<?php echo plugins_url('images/email.png' , __FILE__); ?>"</img><a href="admin.php?page=mailusers-send-notify-mail-post&post_id=<?php echo $post_ID; ?>"><?php _e('Notify Users About this Post', MAILUSERS_I18N_DOMAIN); ?></a></p>
 </div>
@@ -256,7 +256,7 @@ function mailusers_page_relatedlink() {
 	if (isset($post_ID) && current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
 ?>
 <div class="postbox">
-<h3 class='hndle'><span>Email</span></h3>
+<h3 class='hndle'><span><?php e_('Email Users', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
 <p><img style="padding: 5px; vertical-align: middle;" src="<?php echo plugins_url('images/email.png' , __FILE__); ?>"</img><a href="admin.php?page=mailusers-send-notify-mail-page&post_id=<?php echo $post_ID; ?>"><?php _e('Notify Users About this Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
 </div>

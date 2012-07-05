@@ -23,6 +23,8 @@ This plugin is available under the GPL license, which means that it's free. If y
 * Added options to set an "override" From Name and/or From Email Address which can be used when sending Mass or Post/Page Notifications.
 * Added ability to override sender name and/or email address when sending Mass Email or Post/Page Notifications.  The default remains to use the name and email address from the currently logged in user.
 * Added new option to enable process short codes embedded in posts and pages when sending notifications.
+* Fixed a bunch of text messages to support translation.
+* Initial inclusion of French language translation files.
 
 = Version 4.3.5 =
 * Added some more values for the BCC limit setting
