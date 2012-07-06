@@ -35,8 +35,8 @@
 	}
 
 	if ( !isset($post_id) && !isset($err_msg) ) {
-		$err_msg .= __('Trying to notify users of a ', MAILUSERS_I18N_DOMAIN) .  __($post_type,
-                MAILUSERS_I18N_DOMAIN) . __(' without passing the post id !', MAILUSERS_I18N_DOMAIN);
+		$err_msg .= __('Trying to notify users of a ' .  $post_type,
+                ' without passing the ' . $post_type . ' id!', MAILUSERS_I18N_DOMAIN);
 	}
 
 	$screen = get_current_screen() ;
@@ -45,9 +45,9 @@
 	if (!isset($post_id)) { ?>
 	<div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php _e('Notify Users of a ', MAILUSERS_I18N_DOMAIN) . _e(ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?></h2>
+	<h2><?php _e('Notify Users of a ' . ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?></h2>
 	<form name="SetPost" action="" method="post">
-        <p><?php _e('Please select the ', MAILUSERS_I18N_DOMAIN) . _e($post_type, MAILUSERS_I18N_DOMAIN) . _e(' that you wish to notify users about.', MAILUSERS_I18N_DOMAIN); ?></p>
+        <p><?php _e('Please select the ' . $post_type . ' that you wish to notify users about.', MAILUSERS_I18N_DOMAIN); ?></p>
 	    <select style="width:300px;" name="post_id">
 		<?php
 		 global $post ;
@@ -60,7 +60,7 @@
 	    </select>
 
 	    <p class="submit">
-		    <input class="button-primary" type="submit" name="Submit" value="<?php _e('Select ', MAILUSERS_I18N_DOMAIN) . _e(ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+		    <input class="button-primary" type="submit" name="Submit" value="<?php _e('Select ' . ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
 	    </p>
 	</form>
 	</div>
