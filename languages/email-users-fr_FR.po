@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Email Users v4.3.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-07-05 22:40:41+0000\n"
+"PO-Revision-Date: 2012-07-06 01:27:19+0000\n"
 "Last-Translator: dcclxi\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -50,6 +50,7 @@ msgid "Notify Users"
 msgstr "Envoi notification"
 
 #: email-users.php:244
+#: email-users.php:259
 #: email-users.php:299
 #: email-users.php:300
 #@ email-users
@@ -70,7 +71,6 @@ msgstr "Envoi à des groupes"
 
 #: email-users.php:321
 #: email-users.php:322
-#: email_users_options_form.php:158
 #@ email-users
 msgid "User Settings"
 msgstr "Préférences utilisateurs"
@@ -333,7 +333,7 @@ msgstr "Spécifier les options de tri et d'affichage de la liste des destinatair
 #: email_users_options_form.php:106
 #@ email-users
 msgid "BCC Limit"
-msgstr "Nombre maximal de BCC pour le courriel"
+msgstr "Nombre maximal de BCC"
 
 #: email_users_options_form.php:114
 #@ email-users
@@ -771,33 +771,28 @@ msgstr "Lors de l'envoi d'un courriel de notification, utiliser cette adèle à 
 msgid "Note:  Invalid email addresses are not saved."
 msgstr "Remarque : les adèles invalides ne sont pas sauvegardées."
 
-#: email_users_options_form.php:143
-#@ email-users
-msgid "Default"
-msgstr "Par défaut"
-
-#: email_users_options_form.php:143
-#@ email-users
-msgid "Notification Body"
-msgstr "Message du courriel"
-
 #: email_users_options_form.php:149
 #@ email-users
 msgid "Short Code<br/>Processing"
 msgstr "Traitement des shortcodes"
 
-#: email_users_options_form.php:153
-#@ email-users
-msgid "Process short codes embdedded in posts or pages."
-msgstr "Ne pas ignorer les shortcodes trouvés dans les articles ou les pages."
-
-#: email_users_options_form.php:158
-#@ email-users
-msgid "Table Rows"
-msgstr "<em>Ligne de la table</em>"
-
 #: email_users_options_form.php:173
 #@ email-users
 msgid "Default<br/>User Settings"
-msgstr "Préférences utilisateurs<br /><em>Choix par défaut</em>"
+msgstr "Préférences utilisateurs<br /><em>Sélection par défaut</em>"
+
+#: email_users_options_form.php:143
+#@ email-users
+msgid "Default<br/>Notification Body"
+msgstr "Message du courriel<br /><em>Valeur par défaut</em>"
+
+#: email_users_options_form.php:153
+#@ email-users
+msgid "Process short codes embedded in posts or pages."
+msgstr "Ne pas ignorer les shortcodes des articles ou pages."
+
+#: email_users_options_form.php:158
+#@ email-users
+msgid "User Settings<br/>Table Rows"
+msgstr "Préférences utilisateurs<br /><em>Nombre de lignes à afficher</em>"
 
