@@ -26,6 +26,7 @@ This plugin is available under the GPL license, which means that it's free. If y
 * Fixed a bunch of text messages to support translation.
 * Initial inclusion of French language translation files (courtesy of Emilie DCCLXI).
 * Inclusion of Persian language translation files.
+* Fixed bug on User Settings page where number_format() warning was issued.  Reported on the WordPress.org Support Forum.
 
 = Version 4.3.5 =
 * Added some more values for the BCC limit setting
