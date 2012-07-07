@@ -21,7 +21,7 @@ This plugin is available under the GPL license, which means that it's free. If y
 = Version 4.3.6 =
 * Fixed bug in User Settings Table Rows setting which stored number of rows in the wrong option field.
 * Added options to set an "override" From Name and/or From Email Address which can be used when sending Mass or Post/Page Notifications.
-* Added ability to override sender name and/or email address when sending Mass Email or Post/Page Notifications.  The default remains to use the name and email address from the currently logged in user.
+* Added ability to override sender name and/or email address when sending Mass Email or Post/Page Notifications.  The default remains to use the name and email address from the currently logged in user.  Whent the Override Address is set on the Email Users Plugin Settings Page, the user will be presented with a Radio Button choice on email and notification pages where they can send the email using their login (default behavior) or select the Override Address and From Name.
 * Added new option to enable process short codes embedded in posts and pages when sending notifications.
 * Fixed a bunch of text messages to support translation.
 * Initial inclusion of French language translation files (courtesy of Emilie DCCLXI).
