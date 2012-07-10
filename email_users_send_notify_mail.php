@@ -118,10 +118,6 @@
 
 		$recipients = array_merge($users_from_roles, $users_from_ids);
 
-        mailusers_preprint_r($users_from_roles) ;
-        mailusers_whereami(__FILE__, __LINE__) ;
-        mailusers_preprint_r($users_from_ids) ;
-        mailusers_whereami(__FILE__, __LINE__) ;
 		if (empty($recipients)) {
 	?>
 			<p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN); ?></strong></p>

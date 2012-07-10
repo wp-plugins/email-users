@@ -347,7 +347,6 @@ class MailUsers_List_Table extends WP_List_Table {
         /* -- Pagination parameters -- */
         //Number of elements in your table?
         $totalitems = count_users() ;
-        //mailusers_preprint_r($totalitems) ;
 
         //Which page is this?
         $paged = !empty($_GET['paged']) ? mysql_real_escape_string($_GET['paged']) : '';
@@ -414,7 +413,6 @@ class MailUsers_List_Table extends WP_List_Table {
            ,'offset' => (int)$offset
         );
 
-        //mailusers_preprint_r($args) ;
         $this->items = get_users($args) ;
     }
 
