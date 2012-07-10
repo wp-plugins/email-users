@@ -86,7 +86,7 @@
 				if (!current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP))
 					_e('You are only allowed to select one user at a time.', MAILUSERS_I18N_DOMAIN);
 				else
-					_e('You can select multiple users by pressing the CTRL key.', MAILUSERS_I18N_DOMAIN);
+					_e('You can select multiple users by pressing the CTRL key.  When selecting multiple users, any user who should not receive Mass Email will be filtered from the recipient list.', MAILUSERS_I18N_DOMAIN);
 				?>
 			</small></label></th>
 			<td>
@@ -97,6 +97,7 @@
 					$sortby = mailusers_get_default_sort_users_by();
 	
 					$users = mailusers_get_users($user_ID);
+                    
 					foreach ($users as $user) {
 						switch ($sortby) {
 							case 'fl' :  //  First Last
