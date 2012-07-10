@@ -106,28 +106,41 @@
 	<?php 
 		// Fetch users
 		// --
-		$recipients = mailusers_get_recipients_from_ids($send_users, $user_ID);
+
+        //  Don't want to spam people so if more than one user was selected,
+        //  drop all of the users who don't want to receive Mass Email!
+
+        if (count($send_users) == 1) {
+		    $recipients = mailusers_get_recipients_from_ids($send_users, $user_ID);
+            $filtered_recipients_message = '';
+        }
+        else {
+		    $recipients = mailusers_get_recipients_from_ids($send_users, $user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+            $filtered_recipients_message = sprintf(__('<br/>%d users who should not to receive Mass Email were filtered from the recipient list.', MAILUSERS_I18N_DOMAIN), count($send_users) - count($recipients));
+        }
+        
 
 		if (empty($recipients)) {
 	?>
-			<p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN); ?></strong></p>
+			<div class="error fade"><p><strong><?php echo __('No recipients were found.', MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message ; ?></strong></p></div>
 	<?php
+		    include('email_users_user_mail_form.php');
 		} else {
 			$num_sent = mailusers_send_mail($recipients, $subject, $mail_content, $mail_format, $from_name, $from_address);
 			if (false === $num_sent) {
-				echo '<div class="error fade"><p>There was a problem trying to send email to users.</p></div>';
+                echo '<div class="error fade"><p><strong>' . __('There was a problem trying to send email to users.', MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message . '</strong></p></div>';
 			} else if (0 === $num_sent) {
-				echo '<div class="error fade"><p>No email has been sent to other users. This may be because no valid email addresses were found.</p></div>';
+                echo '<div class="error fade"><p><strong>' . __('No email has been sent to other users. This may be because no valid email addresses were found.', MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message . '</strong></p></div>';
 			} else if ($num_sent > 0 && $num_sent == count($recipients)){
 	?>
 			<div class="updated fade">
-				<p><?php echo sprintf(__('Email sent to %s user(s).', MAILUSERS_I18N_DOMAIN), $num_sent); ?></p>
+				<p><strong><?php echo sprintf(__('Email sent to %s user(s).', MAILUSERS_I18N_DOMAIN), $num_sent) . $filtered_recipients_message; ?></strong></p>
 			</div>
 	<?php
 			} else if ($num_sent > count($recipients)) {
-				echo '<div class="error fade"><p>WARNING: More email has been sent than the number of recipients found.</p></div>';
+                echo '<div class="error fade"><p><strong>' . __('WARNING: More email has been sent than the number of recipients found.', MAILUSERS_I18N_DOMAIN) . '</strong></p></div>';
 			} else {
-				echo '<div class="updated fade"><p>Email has been sent to $num_sent users, but '.count($recipients).' recipients were originally found. Perhaps some users don\'t have valid email addresses?</p></div>';
+				echo '<div class="updated fade"><p><strong>' . sprintf(__('Email has been sent to %d users, but %d recipients were originally found. Perhaps some users don\'t have valid email addresses?', $num_sent, count($recipients)), MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message . '</strong></p></div>';
 			}
 			include('email_users_user_mail_form.php');
 		}
