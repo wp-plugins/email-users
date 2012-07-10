@@ -23,6 +23,7 @@ This plugin is available under the GPL license, which means that it's free. If y
 * Added messages to alert user when addresses were filtered out due to Mass Email setting.
 * Added internationalization support for some additional messages.
 * Inclusion of Russian language translation files.
+* Fixed bug which resulted in duplicate emails for recipients when both roles and users were selected.
 
 = Version 4.3.7 =
 * Fixed minor typos.
