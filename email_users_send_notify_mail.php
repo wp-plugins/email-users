@@ -74,6 +74,10 @@
 		$send_roles = array();
 	}
 
+	if (!isset($send_users)) {
+		$send_users = array();
+	}
+
 	if (!isset($mail_format)) {
 		$mail_format = mailusers_get_default_mail_format();
 	}
@@ -95,16 +99,29 @@
 	// If error, we simply show the form again
 	if (array_key_exists('send', $_POST) && ($_POST['send']=='true') && ($err_msg == '')) {
 		// No error, send the mail
+
 ?>
 
 	<div class="wrap">
 	<?php 
 		// Fetch users
 		// --
-		$users_from_roles = mailusers_get_recipients_from_roles($send_roles, $user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
-		$users_from_ids = mailusers_get_recipients_from_ids($send_users, $user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
+        if (!empty($send_roles))
+		    $users_from_roles = mailusers_get_recipients_from_roles($send_roles, $user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
+        else
+            $users_from_roles = array() ;
+
+        if (!empty($send_users))
+		    $users_from_ids = mailusers_get_recipients_from_ids($send_users, $user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
+        else
+            $users_from_ids = array() ;
+
 		$recipients = array_merge($users_from_roles, $users_from_ids);
 
+        mailusers_preprint_r($users_from_roles) ;
+        mailusers_whereami(__FILE__, __LINE__) ;
+        mailusers_preprint_r($users_from_ids) ;
+        mailusers_whereami(__FILE__, __LINE__) ;
 		if (empty($recipients)) {
 	?>
 			<p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN); ?></strong></p>
