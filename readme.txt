@@ -18,6 +18,9 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 == Changelog ==
 
+= Version 4.3.11 =
+* Fixed problem when using BCC limits where the last "chunk" of addresses were never sent the email.
+
 = Version 4.3.10 =
 * Fixed a problem with the "To:" header when sending email to a single user which appeared on some platforms (e.g. one IIS system that I know of).
 
