@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.9
+Version: 4.3.10
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.9' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.10' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -920,14 +920,15 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	if (count($recipients)==1) {
         $recipient = reset($recipients) ; // reset will return first value of the array!
 		if (mailusers_is_valid_email($recipient->user_email)) {
-			$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipient->user_email . ">\n";
+            $to = sprintf("%s <%s>", $recipient->display_name, $recipient->user_email) . "\r\n" ;
+			//$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipient->user_email . ">\n";
 			$headers .= "Cc: " . $sender_email . "\n\n";
 			
 			if (MAILUSERS_DEBUG) {
-				mailusers_preprint_r($headers);
+				mailusers_preprint_r(htmlentities($headers));
 			}
 			
-			@wp_mail($sender_email, $subject, $mailtext, $headers);
+			@wp_mail($to, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
 			echo '<div class="error fade"><p>' . __(sprintf('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', $recipient->user_email), MAILUSERS_I18N_DOMAIN) . '</p></div>';
