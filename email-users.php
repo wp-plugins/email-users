@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.10
+Version: 4.3.11
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.10' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.11' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -966,7 +966,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 			$count++;
 
-			if (($bcc_limit == $count) || ($i==count($recipients)-1)) {
+			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
 				if (!$sender_emailed) {
 					$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
 					$sender_emailed = true;
