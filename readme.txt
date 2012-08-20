@@ -4,7 +4,7 @@ Donate link: http://www.marvinlabs.com
 Tags: email, users, list, admin
 Requires at least: 3.3
 Tested up to: 3.3.2
-Stable tag: 4.3.10
+Stable tag: 4.3.12
 
 A plugin for wordpress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
@@ -17,6 +17,11 @@ All the instructions for installation, the support forums, a FAQ, etc. can be fo
 This plugin is available under the GPL license, which means that it's free. If you use it for a commercial web site, if you appreciate my efforts or if you want to encourage me to develop and maintain it, please consider making a donation using Paypal, a secured payment solution. You just need to click the donate button on the [plugin home page](http://www.marvinlabs.com) and follow the instructions.
 
 == Changelog ==
+
+= Version 4.3.12 =
+* Fixed bug(s) which prevented users with capabilities to email other users from doing so.
+* Initial inclusion of Spanish language translation files (courtesy of Ponç J. Llaneras).
+* Updated French language translation files.
 
 = Version 4.3.11 =
 * Fixed problem when using BCC limits where the last "chunk" of addresses were never sent the email.
