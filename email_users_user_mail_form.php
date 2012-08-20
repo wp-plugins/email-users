@@ -22,8 +22,9 @@
 	global $user_identity, $user_email, $user_ID;
 
 	if (	!current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
-		|| 	!current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) {
-		wp_die(__("You are not allowed to send emails to users.", MAILUSERS_I18N_DOMAIN));
+		&& 	!current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) {
+		wp_die(__('<div class="error fade"><p>You are not allowed to send emails to users.</p></div>', MAILUSERS_I18N_DOMAIN));
+
 	}
 
 	if (!isset($send_users)) {
