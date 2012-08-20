@@ -18,6 +18,9 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 == Changelog ==
 
+= Version 4.3.13 =
+* Bump in version number because one was missed in 4.3.12 preventing automatic updates from the WordPress plugin repository.
+
 = Version 4.3.12 =
 * Fixed bug(s) which prevented users with capabilities to email other users from doing so.
 * Initial inclusion of Spanish language translation files (courtesy of Ponç J. Llaneras).
