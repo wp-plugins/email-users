@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Email Users v4.3.5\n"
+"Project-Id-Version: Email Users v4.3.11\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-07-06 01:27:19+0000\n"
+"PO-Revision-Date: 2012-07-30 20:36:39+0000\n"
 "Last-Translator: dcclxi\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -88,7 +88,7 @@ msgstr "Accepter de recevoir des courriels de notification d'articles et pages"
 #: email-users.php:442
 #@ email-users
 msgid "Accept to receive emails sent to multiple recipients (but still accept emails sent only to me)"
-msgstr "Accepter de recevoir des courriels envoyés en masse (mais continuer à recevoir les courriels envoyés à moi uniquement)"
+msgstr "Accepter de recevoir des courriels envoyés en masse (mais continuer à recevoir les courriels envoyés uniquement à moi )"
 
 #: email_users_group_mail_form.php:25
 #: email_users_send_group_mail.php:23
@@ -164,7 +164,7 @@ msgstr "Rôle"
 #: email_users_group_mail_form.php:106
 #: email_users_notify_form.php:250
 #: email_users_options_form.php:269
-#: email_users_user_mail_form.php:172
+#: email_users_user_mail_form.php:173
 #@ email-users
 msgid "Subject"
 msgstr "Sujet"
@@ -172,14 +172,14 @@ msgstr "Sujet"
 #: email_users_group_mail_form.php:110
 #: email_users_notify_form.php:254
 #: email_users_options_form.php:273
-#: email_users_user_mail_form.php:176
+#: email_users_user_mail_form.php:177
 #@ email-users
 msgid "Message"
 msgstr "Message"
 
 #: email_users_group_mail_form.php:128
 #: email_users_notify_form.php:262
-#: email_users_user_mail_form.php:194
+#: email_users_user_mail_form.php:195
 #@ email-users
 msgid "Send Email"
 msgstr "Envoyer"
@@ -212,7 +212,7 @@ msgid "N/A"
 msgstr "Indisponible"
 
 #: email_users_notify_form.php:241
-#: email_users_user_mail_form.php:163
+#: email_users_user_mail_form.php:164
 #@ email-users
 msgid "User"
 msgstr "Utilisateur"
@@ -589,14 +589,14 @@ msgid "You must enter some content."
 msgstr "Veuillez écrire un message."
 
 #: email_users_send_group_mail.php:118
-#: email_users_send_notify_mail.php:110
+#: email_users_send_notify_mail.php:123
 #: email_users_send_test_mail.php:85
-#: email_users_send_user_mail.php:113
+#: email_users_send_user_mail.php:125
 #@ email-users
 msgid "No recipients were found."
 msgstr "Aucun destinataire n'a été trouvé."
 
-#: email_users_send_notify_mail.php:116
+#: email_users_send_notify_mail.php:129
 #, php-format
 #@ email-users
 msgid "Notification sent to %s user(s)."
@@ -630,7 +630,7 @@ msgid "You must enter at least a recipient."
 msgstr "Veuillez définir au moins un destinataire."
 
 #: email_users_send_group_mail.php:129
-#: email_users_send_user_mail.php:124
+#: email_users_send_user_mail.php:137
 #, php-format
 #@ email-users
 msgid "Email sent to %s user(s)."
@@ -650,11 +650,6 @@ msgstr "Envoyer un courriel à des utilisateurs"
 #@ email-users
 msgid "You are only allowed to select one user at a time."
 msgstr "Vous ne pouvez sélectionner qu'un utilisateur à la fois."
-
-#: email_users_user_mail_form.php:89
-#@ email-users
-msgid "You can select multiple users by pressing the CTRL key."
-msgstr "Sélectionnez plusieurs utilisateurs en utilisant la touche CTRL."
 
 #: email_users_user_settings.php:29
 #@ email-users
@@ -717,34 +712,9 @@ msgid "No users selected"
 msgstr "Aucun utilisateur sélectionné"
 
 #: email_users_notify_form.php:38
-#@ email-users
+#@ without passing the  id!
 msgid "Trying to notify users of a "
 msgstr "Essayer d'envoyer un courriel de notification au sujet d'un "
-
-#: email_users_notify_form.php:39
-#@ email-users
-msgid " without passing the post id !"
-msgstr "sans transmettre le post id !"
-
-#: email_users_notify_form.php:48
-#@ email-users
-msgid "Notify Users of a "
-msgstr "Envoyer un courriel de notification au sujet d'un "
-
-#: email_users_notify_form.php:50
-#@ email-users
-msgid "Please select the "
-msgstr "Veuillez sélectionner le "
-
-#: email_users_notify_form.php:50
-#@ email-users
-msgid " that you wish to notify users about."
-msgstr "au sujet duquel vous souhaitez envoyer un courriel de notification."
-
-#: email_users_notify_form.php:63
-#@ email-users
-msgid "Select "
-msgstr "Sélectionner "
 
 #: email_users_options_form.php:127
 #@ email-users
@@ -795,4 +765,41 @@ msgstr "Ne pas ignorer les shortcodes des articles ou pages."
 #@ email-users
 msgid "User Settings<br/>Table Rows"
 msgstr "Préférences utilisateurs<br /><em>Nombre de lignes à afficher</em>"
+
+#: email_users_notify_form.php:50
+#@ email-users
+msgid "Please select the  that you wish to notify users about."
+msgstr "Veuillez sélectionner le ? au sujet duquel vous souhaitez envoyer un courriel de notification."
+
+#: email_users_send_user_mail.php:119
+#, php-format
+#@ email-users
+msgid "<br/>%d users who should not to receive Mass Email were filtered from the recipient list."
+msgstr "<br/>%d utilisateurs ne souhaitant pas recevoir de courriels en masse ont été enlevés de la liste des destinataires."
+
+#: email_users_send_user_mail.php:131
+#@ email-users
+msgid "There was a problem trying to send email to users."
+msgstr "Un problème est survenu lors de l'envoi du ou des courriels."
+
+#: email_users_send_user_mail.php:133
+#@ email-users
+msgid "No email has been sent to other users. This may be because no valid email addresses were found."
+msgstr "Aucun courriel n'a été envoyé. Cela pourrait être dû au fait qu'il n'y avait aucune adèle valide."
+
+#: email_users_send_user_mail.php:141
+#@ email-users
+msgid "WARNING: More email has been sent than the number of recipients found."
+msgstr "ALERTE : plus de courriels ont été envoyés qu'il n'y a de destinataires."
+
+#: email_users_send_user_mail.php:143
+#, php-format
+#@ default
+msgid "Email has been sent to %d users, but %d recipients were originally found. Perhaps some users don't have valid email addresses?"
+msgstr ""
+
+#: email_users_user_mail_form.php:89
+#@ email-users
+msgid "You can select multiple users by pressing the CTRL key.  When selecting multiple users, any user who should not receive Mass Email will be filtered from the recipient list."
+msgstr "Sélectionnez plusieurs destinataires en utilisant la touche CTRL. Tous les utilisateurs ne souhaitant pas recevoir de courriels de masse seront enlevés de la liste des destinataires."
 
