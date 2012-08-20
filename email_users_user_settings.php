@@ -26,7 +26,7 @@
 
 <?php 
     if (!current_user_can('manage_options')) {
-	wp_die(__("You are not allowed to view the user settings.", MAILUSERS_I18N_DOMAIN));
+		wp_die(__('<div class="error fade"><p>You are not allowed to view the user settings.</p></div>', MAILUSERS_I18N_DOMAIN));
     } 
 
 /*************************** LOAD THE BASE CLASS *******************************

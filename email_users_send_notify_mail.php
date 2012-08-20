@@ -20,7 +20,7 @@
 
 <?php 
 	if (!current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {		
-		wp_die(__("You are not allowed to notify users about posts and pages.", MAILUSERS_I18N_DOMAIN));
+		wp_die(__('<div class="error fade"><p>You are not allowed to notify users about posts and pages.</p></div>', MAILUSERS_I18N_DOMAIN));
 	} 
 ?>
 

@@ -187,23 +187,35 @@ function mailusers_add_default_user_meta() {
 */
 function mailusers_add_default_capabilities() {
 	$role = get_role('contributor');
-	$role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
+
+    if ($role !== null) {
+	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
+    }
 
 	$role = get_role('author');
-	$role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
+
+    if ($role !== null) {
+	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
+    }
 
 	$role = get_role('editor');
-	$role->add_cap(MAILUSERS_NOTIFY_USERS_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_USER_GROUPS_CAP);
+
+    if ($role !== null) {
+	    $role->add_cap(MAILUSERS_NOTIFY_USERS_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_USER_GROUPS_CAP);
+    }
 
 	$role = get_role('administrator');
-	$role->add_cap(MAILUSERS_NOTIFY_USERS_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
-	$role->add_cap(MAILUSERS_EMAIL_USER_GROUPS_CAP);
+
+    if ($role !== null) {
+	    $role->add_cap(MAILUSERS_NOTIFY_USERS_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
+	    $role->add_cap(MAILUSERS_EMAIL_USER_GROUPS_CAP);
+    }
 }
 
 /**

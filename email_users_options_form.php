@@ -20,7 +20,7 @@
 
 <?php 
 	if (!current_user_can('manage_options')) {
-		wp_die(__("You are not allowed to change the options of this plugin.", MAILUSERS_I18N_DOMAIN));
+		wp_die(__('<div class="error fade"><p>You are not allowed to change the options of this plugin.</p></div>', MAILUSERS_I18N_DOMAIN));
 	} 
 	
 	if ( mailusers_get_installed_version() != mailusers_get_current_version() ) {
