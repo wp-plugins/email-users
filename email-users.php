@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.14
+Version: 4.3.15-beta
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.13' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.15-beta' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
 
 /**
  * Initialise the internationalisation domain
@@ -61,7 +61,7 @@ function mailusers_init_i18n() {
 /**
  * Default values for the plugin settings
  */
-function mailusers_get_default_plugin_settings()
+function mailusers_get_default_plugin_settings($option = null)
 {
 	$default_plugin_settings = array(
 		// Version of the email users plugin
@@ -89,10 +89,15 @@ function mailusers_get_default_plugin_settings()
 		// Mail User - Default setting for User Control
 		'mailusers_default_user_control' => 'true',
 		// Mail User - Default setting for Short Code Processing
-		'mailusers_shortcode_processing' => 'false'
+		'mailusers_shortcode_processing' => 'false',
+		// Mail User - Default setting for Short Code Processing
+		'mailusers_from_sender_exclude' => 'true'
 	) ;
 
-	return $default_plugin_settings ;
+    if (array_key_exists($option, $default_plugin_settings))
+        return $default_plugin_settings[$option] ;
+    else
+	    return $default_plugin_settings ;
 }
 
 /**
@@ -299,10 +304,10 @@ function mailusers_add_pages() {
        	'mailusers_send_notify_mail') ;
 
     add_options_page(
-	'Email Users',
-	'Email Users',
-	//__('Email Users', MAILUSERS_I18N_DOMAIN),
-	//__('Email Users', MAILUSERS_I18N_DOMAIN),
+	//'Email Users',
+	//'Email Users',
+	__('Email Users', MAILUSERS_I18N_DOMAIN),
+	__('Email Users', MAILUSERS_I18N_DOMAIN),
 	'manage_options',
        	'mailusers-options-page',
        	'mailusers_options_page') ;
@@ -411,9 +416,8 @@ function mailusers_send_group_mail_page()
 add_action('show_user_profile', 'mailusers_user_profile_form');
 function mailusers_user_profile_form() {
 	global $user_ID;
-    //  Do we let users control their own settings?
-    if ((mailusers_get_default_user_control()=='true') || current_user_can('edit_users'))
-	    mailusers_edit_any_user_profile_form($user_ID);
+
+    mailusers_edit_any_user_profile_form($user_ID);
 }
 
 /**
@@ -423,15 +427,18 @@ add_action('edit_user_profile', 'mailusers_edit_user_profile_form');
 function mailusers_edit_user_profile_form() {
 	global $profileuser;
 
-    //  Do we let users control their own settings?
-    if ((mailusers_get_default_user_control()=='true') || current_user_can('edit_users'))
-	    mailusers_edit_any_user_profile_form($profileuser->ID);
+    mailusers_edit_any_user_profile_form($profileuser->ID);
 }
 
 /**
  * Add a form to change user preferences in the profile
  */
 function mailusers_edit_any_user_profile_form($uid) {
+ 
+    //  Do we let users control their own settings?  If so, show the
+    //  checkboxes as part of the profile.  If not, settings are hidden.
+ 
+    if ((mailusers_get_default_user_control()=='true') || current_user_can('edit_users')) {
 ?>
 	<h3><?php _e('Email Preferences', MAILUSERS_I18N_DOMAIN); ?></h3>
 
@@ -457,6 +464,13 @@ function mailusers_edit_any_user_profile_form($uid) {
 	</tbody>
 	</table>
 <?php
+    }
+    else {
+?>
+<input 	type="hidden" name="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>" id="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>" value="<?php echo (get_user_meta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true) === 'true') ? "true" : "false"; ?>"></input>
+<input 	type="hidden" name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>" id="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>" value="<?php echo (get_user_meta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true) === 'true') ? "true" : "false"; ?>"></input>
+<?php
+    }
 }
 
 /**
@@ -482,19 +496,21 @@ function mailusers_edit_user_profile_update($uid) {
 function mailusers_any_user_profile_update($uid) {
 
 	if (isset($_POST[MAILUSERS_ACCEPT_NOTIFICATION_USER_META])) {
-		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'true');
+	    $value = $_POST[MAILUSERS_ACCEPT_NOTIFICATION_USER_META] ;
+		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, $value);
 	} else {
 		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'false');
 	}
 
 	if (isset($_POST[MAILUSERS_ACCEPT_MASS_EMAIL_USER_META])) {
-		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'true');
+	    $value = $_POST[MAILUSERS_ACCEPT_MASS_EMAIL_USER_META];
+		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, $value);
 	} else {
 		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'false');
 	}
 }
 
-add_action('admin_init', 'editor_admin_init');
+//add_action('admin_init', 'editor_admin_init');
 function editor_admin_init() {
 	wp_enqueue_script('word-count');
 	wp_enqueue_script('post');
@@ -502,6 +518,18 @@ function editor_admin_init() {
 	wp_enqueue_script('media-upload');
 }
  
+function email_users_enqueue_scripts($hook) {
+    if (('email-users_page_mailusers-send-to-users-page' == $hook) ||
+        ('email-users_page_mailusers-send-to-group-page' == $hook))
+    {
+	    wp_enqueue_script('word-count');
+	    wp_enqueue_script('post');
+	    wp_enqueue_script('editor');
+	    wp_enqueue_script('media-upload');
+    }
+}
+add_action('admin_enqueue_scripts', 'email_users_enqueue_scripts') ;
+
 /**
  * Register settings for the WordPres Options API to work
  */
@@ -517,6 +545,7 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_max_bcc_recipients') ;
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
     register_setting('email_users', 'mailusers_shortcode_processing') ;
+    register_setting('email_users', 'mailusers_from_sender_exclude') ;
     register_setting('email_users', 'mailusers_from_sender_name_override') ;
     register_setting('email_users',
         'mailusers_from_sender_address_override', 'mailusers_from_sender_address_override_validate') ;
@@ -713,6 +742,25 @@ function mailusers_update_shortcode_processing( $shortcode_processing ) {
 }
 
 /**
+ * Wrapper for the from send exclude setting
+ */
+function mailusers_get_from_sender_exclude() {
+    $option = get_option( 'mailusers_from_sender_exclude' );
+
+    if ($option === false)
+        $option = mailusers_get_default_plugin_settings( 'mailusers_from_sender_exclude' );
+
+    return $option;
+}
+
+/**
+ * Wrapper for the from sender exclude setting
+ */
+function mailusers_update_from_sender_exclude( $from_sender_exclude ) {
+	return update_option( 'mailusers_from_sender_exclude', $from_sender_exclude );
+}
+
+/**
  * Get the users
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
@@ -868,12 +916,22 @@ function mailusers_is_valid_email($email) {
 }
 
 /**
+ * Protect against special characters (e.g. $) in the post content
+ * being processed as part of the preg_replace() replacement string.
+ *
+ * @see http://www.procata.com/blog/archives/2005/11/13/two-preg_replace-escaping-gotchas/
+ */
+function mailusers_preg_quote($str) {
+    return preg_replace('/(\$|\\\\)(?=\d)/', '\\\\\1', $str);
+}
+
+/**
  * Replace the template variables in a given text.
  */
 function mailusers_replace_post_templates($text, $post_title, $post_excerpt, $post_url) {
-	$text = preg_replace( '/%POST_TITLE%/', $post_title, $text );
-	$text = preg_replace( '/%POST_EXCERPT%/', $post_excerpt, $text );
-	$text = preg_replace( '/%POST_URL%/', $post_url, $text );
+	$text = preg_replace( '/%POST_TITLE%/', mailusers_preg_quote($post_title), $text );
+	$text = preg_replace( '/%POST_EXCERPT%/', mailusers_preg_quote($post_excerpt), $text );
+	$text = preg_replace( '/%POST_URL%/', mailusers_preg_quote($post_url), $text );
 	return $text;
 }
 
@@ -884,8 +942,8 @@ function mailusers_replace_blog_templates($text) {
 	$blog_url = get_option( 'home' );
 	$blog_name = get_option( 'blogname' );
 
-	$text = preg_replace( '/%BLOG_URL%/', $blog_url, $text );
-	$text = preg_replace( '/%BLOG_NAME%/', $blog_name, $text );
+	$text = preg_replace( '/%BLOG_URL%/', mailusers_preg_quote($blog_url), $text );
+	$text = preg_replace( '/%BLOG_NAME%/', mailusers_preg_quote($blog_name), $text );
 	return $text;
 }
 
@@ -893,7 +951,7 @@ function mailusers_replace_blog_templates($text) {
  * Replace the template variables in a given text.
  */
 function mailusers_replace_sender_templates($text, $sender_name) {
-	$text = preg_replace( '/%FROM_NAME%/', $sender_name, $text );
+	$text = preg_replace( '/%FROM_NAME%/', mailusers_preg_quote($sender_name), $text );
 	return $text;
 }
 
@@ -943,7 +1001,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			@wp_mail($to, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
-			echo '<div class="error fade"><p>' . __(sprintf('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', $recipient->user_email), MAILUSERS_I18N_DOMAIN) . '</p></div>';
+			echo '<div class="error fade"><p>' . sprintf(__('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', MAILUSERS_I18N_DOMAIN), $recipient->user_email) . '</p></div>';
 			return $num_sent;
 		}
 		return $num_sent;
@@ -1004,7 +1062,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$recipient = $recipients[$key]->user_email;
 
             if (!mailusers_is_valid_email($recipient)) {
-                echo '<div class="error fade"><p>' . __(sprintf('Invalid email address ("%s") found.', $recipient), MAILUSERS_I18N_DOMAIN) . '</p></div>';
+                echo '<div class="error fade"><p>' . sprintf(__('Invalid email address ("%s") found.', MAILUSERS_I18N_DOMAIN), $recipient) . '</p></div>';
                 continue;
             }
 
