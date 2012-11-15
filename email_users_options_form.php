@@ -123,6 +123,14 @@
 				size="80" /></td>
 	</tr>
 	<tr>
+        <th><?php _e('From Sender<br/>Exclude', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input 	type="checkbox" name="mailusers_from__sender_exclude" id="mailusers_from__sender_exclude" value="true"
+					<?php if (mailusers_get_from_sender_exclude()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Exclude sender from email recipient list.', MAILUSERS_I18N_DOMAIN); ?><br/>
+		</td>
+	</tr>
+	<tr>
 		<th scope="row" valign="top">
             <label for="from_sender_name_override"><?php _e('From Sender<br/>Name Override', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
