@@ -34,10 +34,11 @@
 		$post_id = $_POST['post_id'];
 	}
 
-	if ( !isset($post_id) && !isset($err_msg) ) {
-		$err_msg .= __('Trying to notify users of a ' .  $post_type,
-                ' without passing the ' . $post_type . ' id!', MAILUSERS_I18N_DOMAIN);
+    if ( !isset($post_id) && !isset($err_msg) ) {
+        $err_msg .= sprintf(__('Trying to notify users of a %s without passing the %s id!',
+            MAILUSERS_I18N_DOMAIN), $post_type, $post_type);
 	}
+    
 
 	$screen = get_current_screen() ;
 	$post_type = $screen->post_type == '' ? 'post' : $screen->post_type ;
@@ -45,9 +46,9 @@
 	if (!isset($post_id)) { ?>
 	<div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php _e('Notify Users of a ' . ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?></h2>
+	<h2><?php printf(__('Notify Users of a %s', MAILUSERS_I18N_DOMAIN), ucwords($post_type)); ?></h2>
 	<form name="SetPost" action="" method="post">
-        <p><?php _e('Please select the ' . $post_type . ' that you wish to notify users about.', MAILUSERS_I18N_DOMAIN); ?></p>
+        <p><?php printf(__('Please select the %s that you wish to notify users about.', MAILUSERS_I18N_DOMAIN), $post_type); ?></p>
 	    <select style="width:300px;" name="post_id">
 		<?php
 		 global $post ;
@@ -60,7 +61,7 @@
 	    </select>
 
 	    <p class="submit">
-		    <input class="button-primary" type="submit" name="Submit" value="<?php _e('Select ' . ucwords($post_type), MAILUSERS_I18N_DOMAIN); ?> &raquo;" />
+		    <input class="button-primary" type="submit" name="Submit" value="<?php printf(__('Select %s', MAILUSERS_I18N_DOMAIN), ucwords($post_type)); ?> &raquo;" />
 	    </p>
 	</form>
 	</div>
@@ -93,7 +94,6 @@
     $override_name = mailusers_get_from_sender_name_override() ;
     $override_address = mailusers_get_from_sender_address_override() ;
 	$subject = mailusers_replace_sender_templates($subject, $from_name);
-	$mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
 		
 	// Replace the template variables concerning the post details
 	// --
@@ -117,7 +117,7 @@
 
 <div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php _e('Notify Users of a ' . ucwords(get_post_type($post_id)), MAILUSERS_I18N_DOMAIN); ?></h2>
+	<h2><?php printf(__('Notify Users of a %s' , MAILUSERS_I18N_DOMAIN), ucwords(get_post_type($post_id))); ?></h2>
 		
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
 			<div class="error fade"><h4><?php echo $err_msg; ?></h4></div>

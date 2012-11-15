@@ -175,15 +175,16 @@
 			<td><input type="text" id="subject" name="subject" value="<?php echo format_to_edit($subject);?>" style="width: 647px;" /></td>
 		</tr>
 		<tr>
-			<th scope="row" valign="top"><label for="mailContent"><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></label></th>
+			<th scope="row" valign="top"><label for="mailcontent"><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></label></th>
 			<td>
 				<div id="mail-content-editor" style="width: 647px;">
 				<?php
 					if ($mail_format=='html') {
-						the_editor(stripslashes($mail_content), "mailContent", "subject", true);
+						//the_editor(stripslashes($mail_content), "mailcontent", "subject", true);
+						wp_editor(stripslashes($mail_content), "mailcontent");
 					} else {
 				?>
-					<textarea rows="10" cols="80" name="mailContent" id="mailContent" style="width: 647px;"><?php echo stripslashes($mail_content);?></textarea>
+					<textarea rows="10" cols="80" name="mailcontent" id="mailcontent" style="width: 647px;"><?php echo stripslashes($mail_content);?></textarea>
 				<?php 
 					}
 				?>

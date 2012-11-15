@@ -35,6 +35,8 @@
 	$from_address = $user_email;
     $override_name = mailusers_get_from_sender_name_override() ;
     $override_address = mailusers_get_from_sender_address_override() ;
+    $exclude_sender = mailusers_get_from_sender_exclude() ;
+    $exclude_id = ($exclude_sender) ? '' : $user_ID ;
 	$mail_format = mailusers_get_default_mail_format();
 
 	// Send the email if it has been requested
@@ -107,12 +109,12 @@
 		// Fetch users
 		// --
         if (!empty($send_roles))
-		    $users_from_roles = mailusers_get_recipients_from_roles($send_roles, $user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
+		    $users_from_roles = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
         else
             $users_from_roles = array() ;
 
         if (!empty($send_users))
-		    $users_from_ids = mailusers_get_recipients_from_ids($send_users, $user_ID, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
+		    $users_from_ids = mailusers_get_recipients_from_ids($send_users, $exclude_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META);
         else
             $users_from_ids = array() ;
 

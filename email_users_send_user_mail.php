@@ -38,6 +38,8 @@
 		$from_address = $user_email;
 	    $override_name = mailusers_get_from_sender_name_override() ;
         $override_address = mailusers_get_from_sender_address_override() ;
+        $exclude_sender = mailusers_get_from_sender_exclude() ;
+        $exclude_id = ($exclude_sender) ? '' : $user_ID ;
 	
 		// Analyse form input, check for blank fields
 		if ( !isset( $_POST['mail_format'] ) || trim($_POST['mail_format'])=='' ) {
@@ -111,11 +113,11 @@
         //  drop all of the users who don't want to receive Mass Email!
 
         if (count($send_users) == 1) {
-		    $recipients = mailusers_get_recipients_from_ids($send_users, $user_ID);
+		    $recipients = mailusers_get_recipients_from_ids($send_users, $exclude_id);
             $filtered_recipients_message = '';
         }
         else {
-		    $recipients = mailusers_get_recipients_from_ids($send_users, $user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+		    $recipients = mailusers_get_recipients_from_ids($send_users, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
             $filtered_recipients_message = sprintf(__('<br/>%d users who should not to receive Mass Email were filtered from the recipient list.', MAILUSERS_I18N_DOMAIN), count($send_users) - count($recipients));
         }
         
@@ -140,7 +142,7 @@
 			} else if ($num_sent > count($recipients)) {
                 echo '<div class="error fade"><p><strong>' . __('WARNING: More email has been sent than the number of recipients found.', MAILUSERS_I18N_DOMAIN) . '</strong></p></div>';
 			} else {
-				echo '<div class="updated fade"><p><strong>' . sprintf(__('Email has been sent to %d users, but %d recipients were originally found. Perhaps some users don\'t have valid email addresses?', $num_sent, count($recipients)), MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message . '</strong></p></div>';
+				echo '<div class="updated fade"><p><strong>' . sprintf(__('Email has been sent to %d users, but %d recipients were originally found. Perhaps some users don\'t have valid email addresses?', MAILUSERS_I18N_DOMAIN), $num_sent, count($recipients)) . $filtered_recipients_message . '</strong></p></div>';
 			}
 			include('email_users_user_mail_form.php');
 		}

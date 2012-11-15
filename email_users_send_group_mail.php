@@ -44,6 +44,8 @@
 		}
 	    $override_name = mailusers_get_from_sender_name_override() ;
         $override_address = mailusers_get_from_sender_address_override() ;
+        $exclude_sender = mailusers_get_from_sender_exclude() ;
+        $exclude_id = ($exclude_sender) ? '' : $user_ID ;
 	
 		// Analyse form input, check for blank fields
 		if ( !isset( $_POST['mail_format'] ) || trim($_POST['mail_format'])=='' ) {
@@ -112,7 +114,7 @@
 	<?php
 		// Fetch users
 		// --
-		$recipients = mailusers_get_recipients_from_roles($send_roles, $user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+		$recipients = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
 
 		if (empty($recipients)) {
 	?>
