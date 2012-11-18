@@ -26,7 +26,8 @@
 
 <?php 
     if (!current_user_can('manage_options')) {
-		wp_die(__('<div class="error fade"><p>You are not allowed to view the user settings.</p></div>', MAILUSERS_I18N_DOMAIN));
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to view the user settings.', MAILUSERS_I18N_DOMAIN));
     } 
 
 /*************************** LOAD THE BASE CLASS *******************************
@@ -173,12 +174,12 @@ class MailUsers_List_Table extends WP_List_Table {
     function get_columns(){
         $columns = array(
             'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
-            'last_name'     => 'Last Name',
-            'first_name'    => 'First Name',
-            'user_login'    => 'Username',
-            'user_email'    => 'E-Mail Address',
-            'notifications' => 'Notifications',
-            'massemail'     => 'Mass Email'
+            'last_name'     => __('Last Name', MAILUSERS_I18N_DOMAIN),
+            'first_name'    => __('First Name', MAILUSERS_I18N_DOMAIN),
+            'user_login'    => __('Username', MAILUSERS_I18N_DOMAIN),
+            'user_email'    => __('E-Mail Address', MAILUSERS_I18N_DOMAIN),
+            'notifications' => __('Notifications', MAILUSERS_I18N_DOMAIN),
+            'massemail'     => __('Mass Email, MAILUSERS_I18N_DOMAIN)'
         );
         return $columns;
     }

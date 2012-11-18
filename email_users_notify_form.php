@@ -22,7 +22,8 @@
 	global $user_identity, $user_email, $user_ID; 
 
 	if (!current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
-		wp_die(__('<div class="error fade"><p>You are not allowed to notify users about posts and pages.</p></div>', MAILUSERS_I18N_DOMAIN));
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to notify users about posts and pages.', MAILUSERS_I18N_DOMAIN));
 	} 
 	
 	// Get the post id, look for a GET parameter followed by a POST parameter
@@ -46,9 +47,9 @@
 	if (!isset($post_id)) { ?>
 	<div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php printf(__('Notify Users of a %s', MAILUSERS_I18N_DOMAIN), ucwords($post_type)); ?></h2>
+	<h2><?php printf(__('Notify Users of a %s', MAILUSERS_I18N_DOMAIN), ucwords(__($post_type, MAILUSERS_I18N_DOMAIN))); ?></h2>
 	<form name="SetPost" action="" method="post">
-        <p><?php printf(__('Please select the %s that you wish to notify users about.', MAILUSERS_I18N_DOMAIN), $post_type); ?></p>
+        <p><?php printf(__('Please select the %s that you wish to notify users about.', MAILUSERS_I18N_DOMAIN), __($post_type, MAILUSERS_I18N_DOMAIN)); ?></p>
 	    <select style="width:300px;" name="post_id">
 		<?php
 		 global $post ;
@@ -61,7 +62,7 @@
 	    </select>
 
 	    <p class="submit">
-		    <input class="button-primary" type="submit" name="Submit" value="<?php printf(__('Select %s', MAILUSERS_I18N_DOMAIN), ucwords($post_type)); ?> &raquo;" />
+		    <input class="button-primary" type="submit" name="Submit" value="<?php printf(__('Select %s', MAILUSERS_I18N_DOMAIN), ucwords(__($post_type, MAILUSERS_I18N_DOMAIN))); ?> &raquo;" />
 	    </p>
 	</form>
 	</div>
@@ -117,7 +118,7 @@
 
 <div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php printf(__('Notify Users of a %s' , MAILUSERS_I18N_DOMAIN), ucwords(get_post_type($post_id))); ?></h2>
+	<h2><?php printf(__('Notify Users of a %s' , MAILUSERS_I18N_DOMAIN), ucwords(__(get_post_type($post_id), MAILUSERS_I18N_DOMAIN))); ?></h2>
 		
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
 			<div class="error fade"><h4><?php echo $err_msg; ?></h4></div>
@@ -161,7 +162,7 @@
 				?>
 					<option value="<?php echo $key; ?>"	<?php 
 						echo (in_array($key, $send_roles) ? ' selected="yes"' : '');?>>
-						<?php echo __('Role', MAILUSERS_I18N_DOMAIN) . ' - ' . $value; ?>
+						<?php _e('Role', MAILUSERS_I18N_DOMAIN) . ' - ' . $value; ?>
 					</option>
 				<?php 
 					}
@@ -238,7 +239,7 @@
 				?>
 					<option value="<?php echo $user->ID; ?>" <?php 
 						echo (in_array($user->ID, $send_users) ? ' selected="yes"' : '');?>>
-						<?php echo __('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
+						<?php _e('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
 					</option>
 				<?php 
 					}

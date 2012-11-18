@@ -19,9 +19,10 @@
 ?>
 
 <?php 
-	if (	!current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
+	if (!current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
 		&& 	!current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) {	
-		wp_die(__('<div class="error fade"><p>You are not allowed to send emails to users.</p></div>', MAILUSERS_I18N_DOMAIN));
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to send emails to users.', MAILUSERS_I18N_DOMAIN)));
 	} 
 ?>
 
@@ -124,7 +125,7 @@
 
 		if (empty($recipients)) {
 	?>
-			<div class="error fade"><p><strong><?php echo __('No recipients were found.', MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message ; ?></strong></p></div>
+			<div class="error fade"><p><strong><?php _e('No recipients were found.', MAILUSERS_I18N_DOMAIN) . $filtered_recipients_message ; ?></strong></p></div>
 	<?php
 		    include('email_users_user_mail_form.php');
 		} else {

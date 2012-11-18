@@ -20,8 +20,8 @@
 
 <?php 
 	if (!current_user_can('manage_options')) {
-		wp_die(__('<div class="error fade"><p>You are not allowed to change the options of this plugin.</p></div>', MAILUSERS_I18N_DOMAIN));
-        
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to change the options of this plugin.', MAILUSERS_I18N_DOMAIN)));
 	} 
 
 	// Send the email if it has been requested
@@ -34,7 +34,7 @@
 		mailusers_reset_to_default_settings();
 ?>
 	<div class="updated fade">
-		<p><?php echo __("Plugin settings have been restored to the defaults.", MAILUSERS_I18N_DOMAIN); ?></p>
+		<p><?php _e("Plugin settings have been restored to the defaults.", MAILUSERS_I18N_DOMAIN); ?></p>
 	</div>		
 <?php
 }

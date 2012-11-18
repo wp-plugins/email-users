@@ -21,10 +21,10 @@
 <?php
 	global $user_identity, $user_email, $user_ID;
 
-	if (	!current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
+	if (!current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
 		&& 	!current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) {
-		wp_die(__('<div class="error fade"><p>You are not allowed to send emails to users.</p></div>', MAILUSERS_I18N_DOMAIN));
-
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to send emails to users.', MAILUSERS_I18N_DOMAIN)));
 	}
 
 	if (!isset($send_users)) {
@@ -162,7 +162,7 @@
 				?>
 					<option value="<?php echo $user->ID; ?>" <?php
 						echo (in_array($user->ID, $send_users) ? ' selected="yes"' : '');?>>
-						<?php echo __('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
+						<?php _e('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
 					</option>
 				<?php
 					}

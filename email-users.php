@@ -304,8 +304,6 @@ function mailusers_add_pages() {
        	'mailusers_send_notify_mail') ;
 
     add_options_page(
-	//'Email Users',
-	//'Email Users',
 	__('Email Users', MAILUSERS_I18N_DOMAIN),
 	__('Email Users', MAILUSERS_I18N_DOMAIN),
 	'manage_options',

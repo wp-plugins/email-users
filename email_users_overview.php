@@ -22,7 +22,8 @@
 	if (!(current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP) 
 		|| 	current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)
 		||	current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP))) {		
-		wp_die(__('<div class="error fade"><p>You are not allowed to send emails.</p></div>', MAILUSERS_I18N_DOMAIN));
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to send emails.', MAILUSERS_I18N_DOMAIN));
 	} 
 ?>
 

@@ -21,8 +21,9 @@
 <?php
 	global $user_identity, $user_email, $user_ID;
 
-	if (	!current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
-		wp_die(__('<div class="error fade"><p>You are not allowed to send emails to user groups.</p></div>', MAILUSERS_I18N_DOMAIN));
+	if (!current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
+        wp_die(printf('<div class="error fade"><p>%s</p></div>',
+            __('You are not allowed to send emails to user groups.', MAILUSERS_I18N_DOMAIN));
 	}
 
 	if (!isset($send_roles)) {
@@ -94,7 +95,7 @@
 				?>
 					<option value="<?php echo $key; ?>"	<?php
 						echo (in_array($key, $send_roles) ? ' selected="yes"' : '');?>>
-						<?php echo __('Role', MAILUSERS_I18N_DOMAIN) . ' - ' . $value; ?>
+						<?php _e('Role', MAILUSERS_I18N_DOMAIN) . ' - ' . $value; ?>
 					</option>
 				<?php
 					}
