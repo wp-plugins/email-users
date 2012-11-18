@@ -21,7 +21,7 @@
 <?php 
 	if (!current_user_can('manage_options')) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
-            __('You are not allowed to change the options of this plugin.', MAILUSERS_I18N_DOMAIN));
+            __('You are not allowed to change the options of this plugin.', MAILUSERS_I18N_DOMAIN)));
 
 	} 
 	

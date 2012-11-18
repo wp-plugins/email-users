@@ -23,7 +23,7 @@
 
 	if (!current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
-            __('You are not allowed to notify users about posts and pages.', MAILUSERS_I18N_DOMAIN));
+            __('You are not allowed to notify users about posts and pages.', MAILUSERS_I18N_DOMAIN)));
 	} 
 	
 	// Get the post id, look for a GET parameter followed by a POST parameter

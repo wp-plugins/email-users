@@ -27,7 +27,7 @@
 <?php 
     if (!current_user_can('manage_options')) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
-            __('You are not allowed to view the user settings.', MAILUSERS_I18N_DOMAIN));
+            __('You are not allowed to view the user settings.', MAILUSERS_I18N_DOMAIN)));
     } 
 
 /*************************** LOAD THE BASE CLASS *******************************
@@ -179,7 +179,7 @@ class MailUsers_List_Table extends WP_List_Table {
             'user_login'    => __('Username', MAILUSERS_I18N_DOMAIN),
             'user_email'    => __('E-Mail Address', MAILUSERS_I18N_DOMAIN),
             'notifications' => __('Notifications', MAILUSERS_I18N_DOMAIN),
-            'massemail'     => __('Mass Email, MAILUSERS_I18N_DOMAIN)'
+            'massemail'     => __('Mass Email', MAILUSERS_I18N_DOMAIN)
         );
         return $columns;
     }
