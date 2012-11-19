@@ -24,6 +24,8 @@ This plugin is available under the GPL license, which means that it's free. If y
 * Fixed bug where user settings are not saved correctly when toggling user setting control.
 * Fixed bug when the dollar sign character ($) appears in the content of a page or post.
 * Added option to include sender in recipient list.
+* Numerous updates to make translation easier.
+* Updated Spanish and French translation files.
 
 = Version 4.3.14 =
 * Bump in version number because one was missed in 4.3.13 preventing automatic updates from the WordPress plugin repository.  Duh.
