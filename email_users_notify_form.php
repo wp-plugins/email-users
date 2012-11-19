@@ -37,7 +37,7 @@
 
     if ( !isset($post_id) && !isset($err_msg) ) {
         $err_msg .= sprintf(__('Trying to notify users of a %s without passing the %s id!',
-            MAILUSERS_I18N_DOMAIN), $post_type, $post_type);
+            MAILUSERS_I18N_DOMAIN), __($post_type), __($post_type));
 	}
     
 
@@ -47,9 +47,9 @@
 	if (!isset($post_id)) { ?>
 	<div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php printf(__('Notify Users of a %s', MAILUSERS_I18N_DOMAIN), ucwords(__($post_type, MAILUSERS_I18N_DOMAIN))); ?></h2>
+	<h2><?php printf(__('Notify Users of a %s', MAILUSERS_I18N_DOMAIN), ucwords(__($post_type))); ?></h2>
 	<form name="SetPost" action="" method="post">
-        <p><?php printf(__('Please select the %s that you wish to notify users about.', MAILUSERS_I18N_DOMAIN), __($post_type, MAILUSERS_I18N_DOMAIN)); ?></p>
+        <p><?php printf(__('Please select the %s that you wish to notify users about.', MAILUSERS_I18N_DOMAIN), __($post_type)); ?></p>
 	    <select style="width:300px;" name="post_id">
 		<?php
 		 global $post ;
@@ -62,7 +62,7 @@
 	    </select>
 
 	    <p class="submit">
-		    <input class="button-primary" type="submit" name="Submit" value="<?php printf(__('Select %s', MAILUSERS_I18N_DOMAIN), ucwords(__($post_type, MAILUSERS_I18N_DOMAIN))); ?> &raquo;" />
+		    <input class="button-primary" type="submit" name="Submit" value="<?php printf(__('Select %s', MAILUSERS_I18N_DOMAIN), ucwords(__($post_type))); ?> &raquo;" />
 	    </p>
 	</form>
 	</div>
