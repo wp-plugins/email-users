@@ -95,7 +95,7 @@
 				?>
 					<option value="<?php echo $key; ?>"	<?php
 						echo (in_array($key, $send_roles) ? ' selected="yes"' : '');?>>
-						<?php _e('Role', MAILUSERS_I18N_DOMAIN) . ' - ' . $value; ?>
+                		<?php printf('%s - %s', __('Role', MAILUSERS_I18N_DOMAIN), $value); ?>
 					</option>
 				<?php
 					}

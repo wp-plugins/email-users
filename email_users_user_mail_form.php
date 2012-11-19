@@ -98,6 +98,7 @@
 					$sortby = mailusers_get_default_sort_users_by();
 	
 					$users = mailusers_get_users($user_ID);
+                    var_dump($users) ;
                     
 					foreach ($users as $user) {
 						switch ($sortby) {
@@ -162,7 +163,7 @@
 				?>
 					<option value="<?php echo $user->ID; ?>" <?php
 						echo (in_array($user->ID, $send_users) ? ' selected="yes"' : '');?>>
-						<?php _e('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
+						<?php printf('%s - %s', __('User', MAILUSERS_I18N_DOMAIN), $name); ?>
 					</option>
 				<?php
 					}

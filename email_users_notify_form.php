@@ -162,7 +162,7 @@
 				?>
 					<option value="<?php echo $key; ?>"	<?php 
 						echo (in_array($key, $send_roles) ? ' selected="yes"' : '');?>>
-						<?php _e('Role', MAILUSERS_I18N_DOMAIN) . ' - ' . $value; ?>
+               			<?php printf('%s - %s', __('Role', MAILUSERS_I18N_DOMAIN), $value); ?>
 					</option>
 				<?php 
 					}
@@ -239,7 +239,7 @@
 				?>
 					<option value="<?php echo $user->ID; ?>" <?php 
 						echo (in_array($user->ID, $send_users) ? ' selected="yes"' : '');?>>
-						<?php _e('User', MAILUSERS_I18N_DOMAIN) . ' - ' . $name; ?>
+             			<?php printf('%s - %s', __('User', MAILUSERS_I18N_DOMAIN), $name); ?>
 					</option>
 				<?php 
 					}
