@@ -98,7 +98,6 @@
 					$sortby = mailusers_get_default_sort_users_by();
 	
 					$users = mailusers_get_users($user_ID);
-                    var_dump($users) ;
                     
 					foreach ($users as $user) {
 						switch ($sortby) {
