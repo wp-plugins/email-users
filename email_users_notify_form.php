@@ -118,7 +118,7 @@
 
 <div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php printf(__('Notify Users of a %s' , MAILUSERS_I18N_DOMAIN), ucwords(__(get_post_type($post_id), MAILUSERS_I18N_DOMAIN))); ?></h2>
+	<h2><?php printf(__('Notify Users of a %s' , MAILUSERS_I18N_DOMAIN), __(ucwords(get_post_type($post_id)))); ?></h2>
 		
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
 			<div class="error fade"><h4><?php echo $err_msg; ?></h4></div>
