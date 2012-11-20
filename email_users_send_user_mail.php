@@ -61,10 +61,10 @@
 			$subject = $_POST['subject'];
 		}
 		
-		if ( !isset( $_POST['mailContent'] ) || trim($_POST['mailContent'])=='' ) {
+		if ( !isset( $_POST['mailcontent'] ) || trim($_POST['mailcontent'])=='' ) {
 			$err_msg = $err_msg . __('You must enter some content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
 		} else {
-			$mail_content = $_POST['mailContent'];
+			$mail_content = $_POST['mailcontent'];
 		}
 		
 		if ( !isset( $_POST['from_sender'] ) || trim($_POST['from_sender'])=='' ) {

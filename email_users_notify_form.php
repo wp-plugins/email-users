@@ -252,9 +252,9 @@
 			<td><?php echo mailusers_get_default_mail_format()=='html' ? $subject : '<pre>' . format_to_edit($subject) . '</pre>';?></td>
 		</tr>
 		<tr>
-			<th scope="row" valign="top"><label for="mailContent"><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></label></th>
+			<th scope="row" valign="top"><label for="mailcontent"><?php _e('Message', MAILUSERS_I18N_DOMAIN); ?></label></th>
 			<td><?php echo mailusers_get_default_mail_format()=='html' ? $mail_content : '<pre>' . wordwrap(strip_tags($mail_content), 80, "\n") . '</pre>';?>
-				<textarea rows="10" cols="80" name="mailContent" id="mailContent" style="width: 647px; display: none;" readonly="yes"><?php echo $mail_content;?></textarea>
+				<textarea rows="10" cols="80" name="mailcontent" id="mailcontent" style="width: 647px; display: none;" readonly="yes"><?php echo $mail_content;?></textarea>
 			</td>
 		</tr>
 		</table>
