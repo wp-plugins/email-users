@@ -92,9 +92,10 @@
 
 	$from_name = $user_identity;
 	$from_address = $user_email;
-    $override_name = mailusers_get_from_sender_name_override() ;
-    $override_address = mailusers_get_from_sender_address_override() ;
+    $override_name = mailusers_get_from_sender_name_override();
+    $override_address = mailusers_get_from_sender_address_override();
 	$subject = mailusers_replace_sender_templates($subject, $from_name);
+	$mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
 		
 	// Replace the template variables concerning the post details
 	// --
