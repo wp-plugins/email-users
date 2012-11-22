@@ -50,6 +50,14 @@
 	<p><?php _e('Send an email to one or more user groups', MAILUSERS_I18N_DOMAIN); ?></p>
 	<div class="clear"></div>
 	<?php } ?>
+	
+	<div style="background: #FFFBCC; border: 1px solid #E6DB55; margin: 2em; padding: 1em;">
+		<h2><?php _e('Discover other plugins by MarvinLabs:', MAILUSERS_I18N_DOMAIN); ?></h2>
+		<ul>
+			<li><?php _e('If email users is not enough, if you want to allow your users to communicate between each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
+			<li><?php _e('If you loose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
+		</ul>
+	</div>
 </div>
 		
 	
