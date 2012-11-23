@@ -65,8 +65,6 @@
 <h3 class="hndle"><span><?php _e('Email-Users Plugin Settings', MAILUSERS_I18N_DOMAIN);?></span></h3>
 <div class="inside">
 
-<?php if(1):?>
-
 <form name="EmailUsersOptions" action="options.php" method="post">		
 	<?php settings_fields('email_users') ;?>
 	<input type="hidden" name="mailusers_version" value="<?php echo mailusers_get_current_version(); ?>" />
@@ -145,9 +143,10 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
-            <label for="default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
+            <label for="mailusers_default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: auto;"><?php echo mailusers_get_default_body(); ?></textarea>
+            <?php wp_editor(stripslashes(mailusers_get_default_body()), "mailusers_default_body");?>
+
 		</td>
 	</tr>
 	<tr>
@@ -206,11 +205,12 @@
 <div class="handlediv" title="Click to toggle"><br /></div>
 <h3 class="hndle"><span><?php _e('Email-Users Defaults', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
-
+<p><?php _e('Email-Users has default values for all settings.  When reset, the following values are used.', MAILUSERS_I18N_DOMAIN); ?></p>
 <table class="widefat">
 	<thead>
 	<tr>
-		<th colspan="2"><?php _e('Plugin Default Settings', MAILUSERS_I18N_DOMAIN); ?></th>
+		<th><?php _e('Settings', MAILUSERS_I18N_DOMAIN); ?></th>
+		<th><?php _e('Default Value', MAILUSERS_I18N_DOMAIN); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -243,11 +243,11 @@
 <div class="handlediv" title="Click to toggle"><br /></div>
 <h3 class="hndle"><span><?php _e('Email-Users Test Notification Mail', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
-
+<p><?php _e('Use this Test Notification to verify proper operation of Email-Users.', MAILUSER_I18N_DOMAIN);?></p>
 <table class="widefat">
 	<thead>
 	<tr>
-		<th colspan="2"><?php _e('Notification mail preview (updated when the options are saved)', MAILUSERS_I18N_DOMAIN); ?></th>
+		<th colspan="2"><?php _e('Notification Mail Preview (updated when the options are saved)', MAILUSERS_I18N_DOMAIN); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -316,11 +316,12 @@
 <div class="handlediv" title="Click to toggle"><br /></div>
 <h3 class="hndle"><span><?php _e('Email-Users Variables', MAILUSERS_I18N_DOMAIN);?></span></h3>
 <div class="inside">
-
+<p><?php _e('Variables you can include in the subject or body templates', MAILUSERS_I18N_DOMAIN); ?></p>
 <table class="widefat">
 	<thead>
 	<tr>
-		<th colspan="2"><?php _e('Variables you can include in the subject or body templates', MAILUSERS_I18N_DOMAIN); ?></th>
+		<th><?php _e('Variable', MAILUSERS_I18N_DOMAIN); ?></th>
+		<th><?php _e('Description', MAILUSERS_I18N_DOMAIN); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -367,7 +368,7 @@
 	<tr>
 		<th><?php _e('Capability', MAILUSERS_I18N_DOMAIN); ?></th>
 		<th><?php _e('Description', MAILUSERS_I18N_DOMAIN); ?></th>
-		<th><?php _e('Default roles', MAILUSERS_I18N_DOMAIN); ?></th>
+		<th><?php _e('Default Roles', MAILUSERS_I18N_DOMAIN); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -400,13 +401,12 @@
 </table>
 
 <br/>
-<?php else: echo "PB 65%"; endif;?>
 </div><!-- inside -->
 </div><!-- postbox -->
 </div><!-- meta-box-sortables -->
 </div><!-- metabox-holder -->
 </div><!-- 65% Postbox Container -->
-<div class="postbox-container side" style="margin-left: 10px; min-width: 255px; width:25%; border: 0px dashed red;"><!-- 25% Postbox Container -->
+<div class="postbox-container side" style="margin-left: 10px; min-width: 225px; width:25%; border: 0px dashed red;"><!-- 25% Postbox Container -->
 <div class="metabox-holder">
 <div class="meta-box-sortables">
 <div class="postbox">
@@ -414,7 +414,6 @@
 <h3 class="hndle"><span><?php _e('Make a Donation', MAILUSERS_I18N_DOMAIN);?></span></h3>
 <div class="inside">
 
-<?php if(1):?>
 <div style="text-align: center; font-size: 0.75em;padding:0px 5px;margin:0px auto;"><!-- PayPal box wrapper -->
 <div><!-- PayPal box-->
 	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
@@ -444,13 +443,25 @@
 <div class="inside" style="">
 <div style="padding:0px 5px;">
 <div>
-	<ul>
-		<li>&bull; <?php _e('If Email-Users is not robust enough or if you want to allow your users to communicate with each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
-		<li>&bull; <?php _e('If you lose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
+	<ul style="list-style-type: square;margin-left: 7px;">
+		<li><?php _e('If Email-Users is not robust enough or if you want to allow your users to communicate with each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
+		<li><?php _e('If you lose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
 	</ul>
 </div>
 </div>
-<?php else: echo "PB 25%"; endif;?>
+</div><!-- inside -->
+</div><!-- postbox -->
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('More Plugins from Mike Walsh', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<div class="inside" style="">
+<div style="padding:0px 5px;">
+<div>
+	<ul style="list-style-type: square;margin-left: 7px;">
+		<li><?php _e('if you use Google Forms and want to integrate them with your WordPress site, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://michaelwalsh.org/wordpress/wordpress-plugins/wpgform/">WordPress Google Form</a></li>
+	</ul>
+</div>
+</div>
 </div><!-- inside -->
 </div><!-- postbox -->
 </div><!-- meta-box-sortables -->
