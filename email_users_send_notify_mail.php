@@ -61,7 +61,7 @@
 		}
 		
 		if ( !isset( $_POST['mailcontent'] ) || trim($_POST['mailcontent'])=='' ) {
-			$err_msg = $err_msg . __('You must enter a content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+			$err_msg = $err_msg . __('You must enter some content.', MAILUSERS_I18N_DOMAIN) . '<br/>';
 		} else {
 			$original_mail_content = $_POST['mailcontent'];
 		}
@@ -73,6 +73,7 @@
 		}
 	}
 
+    var_dump($original_mail_content) ;
 	if (!isset($send_roles)) {
 		$send_roles = array();
 	}
@@ -95,6 +96,8 @@
 	
     //  Override the send from address?
     if (($from_sender == 1) && !empty($override_address) && is_email($override_address)) {
+     	$original_mail_content = preg_replace( '/' . $from_name . '/', mailusers_preg_quote($override_name), $original_mail_content );
+
         $from_address = $override_address ;
         if (!empty($override_name)) $from_name = $override_name ;
     }
