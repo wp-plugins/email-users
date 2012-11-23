@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2012-11-23 05:45-0000\n"
-"PO-Revision-Date: 2012-11-23 05:45-0000\n"
+"POT-Creation-Date: 2012-11-23 22:18-0000\n"
+"PO-Revision-Date: 2012-11-23 22:18-0000\n"
 "Last-Translator: Mike Walsh <mpwalsh8@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,7 @@ msgstr ""
 
 #: ../email-users.php:261 ../email-users.php:276 ../email-users.php:307
 #: ../email-users.php:308 ../email-users.php:314 ../email-users.php:315
+#: ../email_users_overview.php:33
 msgid "Email Users"
 msgstr ""
 
@@ -83,6 +84,42 @@ msgstr ""
 msgid "Invalid email address (\"%s\") found."
 msgstr ""
 
+#: ../email_users_credits.php:23 ../email_users_options_form.php:414
+msgid "Make a Donation"
+msgstr ""
+
+#: ../email_users_credits.php:29 ../email_users_options_form.php:420
+msgid "Plugin's Home Page"
+msgstr ""
+
+#: ../email_users_credits.php:38 ../email_users_options_form.php:429
+msgid "EN"
+msgstr ""
+
+#: ../email_users_credits.php:51 ../email_users_options_form.php:442
+msgid "Discover other Plugins by MarvinLabs"
+msgstr ""
+
+#: ../email_users_credits.php:56 ../email_users_options_form.php:447
+msgid ""
+"If Email-Users is not robust enough or if you want to allow your users to "
+"communicate with each other, try: "
+msgstr ""
+
+#: ../email_users_credits.php:57 ../email_users_options_form.php:448
+msgid "If you lose time copy/pasting the same post structure every time, try: "
+msgstr ""
+
+#: ../email_users_credits.php:65 ../email_users_options_form.php:456
+msgid "More Plugins from Mike Walsh"
+msgstr ""
+
+#: ../email_users_credits.php:70 ../email_users_options_form.php:461
+msgid ""
+"if you use Google Forms and want to integrate them with your WordPress site, "
+"try: "
+msgstr ""
+
 #: ../email_users_group_mail_form.php:26 ../email_users_send_group_mail.php:24
 msgid "You are not allowed to send emails to user groups."
 msgstr ""
@@ -101,12 +138,12 @@ msgid "Mail format"
 msgstr ""
 
 #: ../email_users_group_mail_form.php:72 ../email_users_notify_form.php:78
-#: ../email_users_options_form.php:79 ../email_users_user_mail_form.php:71
+#: ../email_users_options_form.php:77 ../email_users_user_mail_form.php:71
 msgid "HTML"
 msgstr ""
 
 #: ../email_users_group_mail_form.php:73 ../email_users_notify_form.php:79
-#: ../email_users_options_form.php:80 ../email_users_user_mail_form.php:72
+#: ../email_users_options_form.php:78 ../email_users_user_mail_form.php:72
 msgid "Plain text"
 msgstr ""
 
@@ -145,7 +182,7 @@ msgid "Message"
 msgstr ""
 
 #: ../email_users_group_mail_form.php:130 ../email_users_notify_form.php:264
-#: ../email_users_user_mail_form.php:197
+#: ../email_users_user_mail_form.php:196
 msgid "Send Email"
 msgstr ""
 
@@ -222,190 +259,200 @@ msgstr ""
 msgid "Email-Users Plugin Settings"
 msgstr ""
 
-#: ../email_users_options_form.php:76
+#: ../email_users_options_form.php:74
 msgid "Mail Format"
 msgstr ""
 
-#: ../email_users_options_form.php:81
+#: ../email_users_options_form.php:79
 msgid "Send mail as plain text or HTML by default?"
 msgstr ""
 
-#: ../email_users_options_form.php:85
+#: ../email_users_options_form.php:83
 msgid "Sort Users By"
 msgstr ""
 
-#: ../email_users_options_form.php:88 ../email_users_options_form.php:106
+#: ../email_users_options_form.php:86 ../email_users_options_form.php:104
 msgid "None"
 msgstr ""
 
-#: ../email_users_options_form.php:89
+#: ../email_users_options_form.php:87
 msgid "Display Name"
 msgstr ""
 
-#: ../email_users_options_form.php:90
+#: ../email_users_options_form.php:88
 msgid "Display Name (User Login)"
 msgstr ""
 
-#: ../email_users_options_form.php:91
+#: ../email_users_options_form.php:89
 msgid "First Name Last Name"
 msgstr ""
 
-#: ../email_users_options_form.php:92
+#: ../email_users_options_form.php:90
 msgid "First Name Last Name (User Login)"
 msgstr ""
 
-#: ../email_users_options_form.php:93
+#: ../email_users_options_form.php:91
 msgid "Last Name, First Name"
 msgstr ""
 
-#: ../email_users_options_form.php:94
+#: ../email_users_options_form.php:92
 msgid "Last Name, First Name (User Login)"
 msgstr ""
 
-#: ../email_users_options_form.php:95
+#: ../email_users_options_form.php:93
 msgid "User Login"
 msgstr ""
 
-#: ../email_users_options_form.php:96
+#: ../email_users_options_form.php:94
 msgid "User Login (Display Name)"
 msgstr ""
 
-#: ../email_users_options_form.php:97
+#: ../email_users_options_form.php:95
 msgid "User Login (First Name Last Name)"
 msgstr ""
 
-#: ../email_users_options_form.php:98
+#: ../email_users_options_form.php:96
 msgid "User Login (Last Name, First Name)"
 msgstr ""
 
-#: ../email_users_options_form.php:99
+#: ../email_users_options_form.php:97
 msgid "Determine how to sort and display names in the User selection list?"
 msgstr ""
 
-#: ../email_users_options_form.php:103
+#: ../email_users_options_form.php:101
 msgid "BCC Limit"
 msgstr ""
 
-#: ../email_users_options_form.php:111
+#: ../email_users_options_form.php:109
 msgid ""
 "Try 30 if you have problems sending emails to many users (some providers "
 "forbid too many recipients in BCC field)."
 msgstr ""
 
-#: ../email_users_options_form.php:116
+#: ../email_users_options_form.php:114
 msgid "Default<br/>Notification Subject"
 msgstr ""
 
-#: ../email_users_options_form.php:123
+#: ../email_users_options_form.php:121
 msgid "From Sender<br/>Exclude"
 msgstr ""
 
-#: ../email_users_options_form.php:127
+#: ../email_users_options_form.php:125
 msgid "Exclude sender from email recipient list."
 msgstr ""
 
-#: ../email_users_options_form.php:132
+#: ../email_users_options_form.php:130
 msgid "From Sender<br/>Name Override"
 msgstr ""
 
-#: ../email_users_options_form.php:136
+#: ../email_users_options_form.php:134
 msgid ""
 "A name that can be used in place of the logged in user's name when sending "
 "email or notifications."
 msgstr ""
 
-#: ../email_users_options_form.php:140
+#: ../email_users_options_form.php:138
 msgid "From Sender Email<br/>Address Override"
 msgstr ""
 
-#: ../email_users_options_form.php:144
+#: ../email_users_options_form.php:142
 msgid ""
 "An email address that can be used in place of the logged in user's email "
 "address when sending email or notifications."
 msgstr ""
 
-#: ../email_users_options_form.php:144
+#: ../email_users_options_form.php:142
 msgid "Note:  Invalid email addresses are not saved."
 msgstr ""
 
-#: ../email_users_options_form.php:148
+#: ../email_users_options_form.php:146
 msgid "Default<br/>Notification Body"
 msgstr ""
 
-#: ../email_users_options_form.php:154
+#: ../email_users_options_form.php:153
 msgid "Short Code<br/>Processing"
 msgstr ""
 
-#: ../email_users_options_form.php:158
+#: ../email_users_options_form.php:157
 msgid "Process short codes embedded in posts or pages."
 msgstr ""
 
-#: ../email_users_options_form.php:163
+#: ../email_users_options_form.php:162
 msgid "User Settings<br/>Table Rows"
 msgstr ""
 
-#: ../email_users_options_form.php:166
+#: ../email_users_options_form.php:165
 msgid "10"
 msgstr ""
 
-#: ../email_users_options_form.php:167
+#: ../email_users_options_form.php:166
 msgid "20"
 msgstr ""
 
-#: ../email_users_options_form.php:168
+#: ../email_users_options_form.php:167
 msgid "40"
 msgstr ""
 
-#: ../email_users_options_form.php:169
+#: ../email_users_options_form.php:168
 msgid "50"
 msgstr ""
 
-#: ../email_users_options_form.php:170
+#: ../email_users_options_form.php:169
 msgid "75"
 msgstr ""
 
-#: ../email_users_options_form.php:171
+#: ../email_users_options_form.php:170
 msgid "100"
 msgstr ""
 
-#: ../email_users_options_form.php:172
+#: ../email_users_options_form.php:171
 msgid "200"
 msgstr ""
 
-#: ../email_users_options_form.php:173
+#: ../email_users_options_form.php:172
 msgid "500"
 msgstr ""
 
-#: ../email_users_options_form.php:174
+#: ../email_users_options_form.php:173
 msgid "By default the table will display 20 rows."
 msgstr ""
 
-#: ../email_users_options_form.php:178
+#: ../email_users_options_form.php:177
 msgid "Default<br/>User Settings"
 msgstr ""
 
-#: ../email_users_options_form.php:182
+#: ../email_users_options_form.php:181
 msgid "Recieve post or page notification emails."
 msgstr ""
 
-#: ../email_users_options_form.php:186
+#: ../email_users_options_form.php:185
 msgid "Recieve emails sent to multiple recipients."
 msgstr ""
 
-#: ../email_users_options_form.php:190
+#: ../email_users_options_form.php:189
 msgid "Allow Users to control their own Email Users settings."
 msgstr ""
 
-#: ../email_users_options_form.php:196
+#: ../email_users_options_form.php:195
 msgid "Save Changes"
 msgstr ""
 
-#: ../email_users_options_form.php:207
+#: ../email_users_options_form.php:206
 msgid "Email-Users Defaults"
 msgstr ""
 
+#: ../email_users_options_form.php:208
+msgid ""
+"Email-Users has default values for all settings.  When reset, the following "
+"values are used."
+msgstr ""
+
+#: ../email_users_options_form.php:212
+msgid "Settings"
+msgstr ""
+
 #: ../email_users_options_form.php:213
-msgid "Plugin Default Settings"
+msgid "Default Value"
 msgstr ""
 
 #: ../email_users_options_form.php:233
@@ -416,8 +463,12 @@ msgstr ""
 msgid "Email-Users Test Notification Mail"
 msgstr ""
 
+#: ../email_users_options_form.php:246
+msgid "Use this Test Notification to verify proper operation of Email-Users."
+msgstr ""
+
 #: ../email_users_options_form.php:250
-msgid "Notification mail preview (updated when the options are saved)"
+msgid "Notification Mail Preview (updated when the options are saved)"
 msgstr ""
 
 #: ../email_users_options_form.php:260 ../email_users_send_test_mail.php:61
@@ -432,158 +483,136 @@ msgstr ""
 msgid "Email-Users Variables"
 msgstr ""
 
-#: ../email_users_options_form.php:323
+#: ../email_users_options_form.php:319
 msgid "Variables you can include in the subject or body templates"
 msgstr ""
 
-#: ../email_users_options_form.php:329
+#: ../email_users_options_form.php:323
+msgid "Variable"
+msgstr ""
+
+#: ../email_users_options_form.php:324 ../email_users_options_form.php:370
+msgid "Description"
+msgstr ""
+
+#: ../email_users_options_form.php:330
 msgid "the link to the blog"
 msgstr ""
 
-#: ../email_users_options_form.php:333
+#: ../email_users_options_form.php:334
 msgid "the blog's name"
 msgstr ""
 
-#: ../email_users_options_form.php:337
+#: ../email_users_options_form.php:338
 msgid "the WordPress user name of the person sending the mail"
 msgstr ""
 
-#: ../email_users_options_form.php:341
+#: ../email_users_options_form.php:342
 msgid "the title of the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:345
+#: ../email_users_options_form.php:346
 msgid "the excerpt of the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:349
+#: ../email_users_options_form.php:350
 msgid "the link to the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:360
+#: ../email_users_options_form.php:361
 msgid "Email-Users Capabilities"
 msgstr ""
 
-#: ../email_users_options_form.php:363
+#: ../email_users_options_form.php:364
 msgid ""
 "Email Users uses capabilities to define what users are allowed to do. Below "
 "is a list of the capabilities used by the plugin and the default user role "
 "allowed to make these actions."
 msgstr ""
 
-#: ../email_users_options_form.php:363
+#: ../email_users_options_form.php:364
 msgid ""
 "If you want to change the roles having those capabilities, you should use "
 "the plugin:"
 msgstr ""
 
-#: ../email_users_options_form.php:368
+#: ../email_users_options_form.php:369
 msgid "Capability"
 msgstr ""
 
-#: ../email_users_options_form.php:369
-msgid "Description"
-msgstr ""
-
-#: ../email_users_options_form.php:370
-msgid "Default roles"
-msgstr ""
-
-#: ../email_users_options_form.php:376
-msgid "Access this options page."
+#: ../email_users_options_form.php:371
+msgid "Default Roles"
 msgstr ""
 
 #: ../email_users_options_form.php:377
+msgid "Access this options page."
+msgstr ""
+
+#: ../email_users_options_form.php:378
 msgid "Administrators only."
 msgstr ""
 
-#: ../email_users_options_form.php:381
+#: ../email_users_options_form.php:382
 msgid "Send an email to a single user."
 msgstr ""
 
-#: ../email_users_options_form.php:382
+#: ../email_users_options_form.php:383
 msgid "Administrators, editors, authors and contributors."
 msgstr ""
 
-#: ../email_users_options_form.php:386
+#: ../email_users_options_form.php:387
 msgid "Send an email to various users at the same time."
 msgstr ""
 
-#: ../email_users_options_form.php:387
+#: ../email_users_options_form.php:388
 msgid "Administrators, editors and authors."
 msgstr ""
 
-#: ../email_users_options_form.php:391
+#: ../email_users_options_form.php:392
 msgid "Notify users of new posts."
 msgstr ""
 
-#: ../email_users_options_form.php:392 ../email_users_options_form.php:397
+#: ../email_users_options_form.php:393 ../email_users_options_form.php:398
 msgid "Administrators and editors."
 msgstr ""
 
-#: ../email_users_options_form.php:396
+#: ../email_users_options_form.php:397
 msgid "Send an email to user groups."
-msgstr ""
-
-#: ../email_users_options_form.php:414
-msgid "Make a Donation"
-msgstr ""
-
-#: ../email_users_options_form.php:422
-msgid "Plugin's Home Page"
-msgstr ""
-
-#: ../email_users_options_form.php:431
-msgid "EN"
-msgstr ""
-
-#: ../email_users_options_form.php:445
-msgid "More Plugins"
-msgstr ""
-
-#: ../email_users_options_form.php:449
-msgid "Discover other Plugins by MarvinLabs:"
-msgstr ""
-
-#: ../email_users_options_form.php:451
-msgid ""
-"If Email-Users is not robust enough or if you want to allow your users to "
-"communicate with each other, try: "
-msgstr ""
-
-#: ../email_users_options_form.php:452
-msgid "If you lose time copy/pasting the same post structure every time, try: "
 msgstr ""
 
 #: ../email_users_overview.php:26
 msgid "You are not allowed to send emails."
 msgstr ""
 
-#: ../email_users_overview.php:33
-msgid "Send an Email"
+#: ../email_users_overview.php:45 ../email_users_overview.php:51
+msgid "Send Individual Message"
 msgstr ""
 
-#: ../email_users_overview.php:39 ../email_users_overview.php:41
+#: ../email_users_overview.php:48
 msgid "Send an email to one or more individual users"
 msgstr ""
 
-#: ../email_users_overview.php:48 ../email_users_overview.php:50
+#: ../email_users_overview.php:50
+msgid ""
+"You can send an email to one or more users by selecting them individually."
+msgstr ""
+
+#: ../email_users_overview.php:63
+msgid "Send a Group Message"
+msgstr ""
+
+#: ../email_users_overview.php:66
 msgid "Send an email to one or more user groups"
 msgstr ""
 
-#: ../email_users_overview.php:55
-msgid "Discover other plugins by MarvinLabs:"
+#: ../email_users_overview.php:68
+msgid ""
+"You can send an email to one or more user groups (i.e. users belonging to "
+"the same WordPress role)."
 msgstr ""
 
-#: ../email_users_overview.php:57
-msgid ""
-"If email users is not enough, if you want to allow your users to communicate "
-"between each other, try: "
-msgstr ""
-
-#: ../email_users_overview.php:58
-msgid ""
-"If you loose time copy/pasting the same post structure every time, try: "
+#: ../email_users_overview.php:69
+msgid "Send Group Message"
 msgstr ""
 
 #: ../email_users_send_group_mail.php:52 ../email_users_send_user_mail.php:47
