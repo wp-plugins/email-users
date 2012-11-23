@@ -415,8 +415,7 @@
 <div class="inside">
 
 <?php if(1):?>
-<div style="margin: 0px 50px;">
-<div style="text-align: center; font-size: 0.75em;background:#ECECEC;border:1px solid #CCC;padding:0px 5px;margin:0px auto;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><!-- PayPal box wrapper -->
+<div style="text-align: center; font-size: 0.75em;padding:0px 5px;margin:0px auto;"><!-- PayPal box wrapper -->
 <div><!-- PayPal box-->
 	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
 	<p style="margin: 0.25em 0"><a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s Home Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
@@ -434,7 +433,6 @@
 		<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
 	</form>
 </div><!-- PayPal box -->
-</div><!-- PayPal box wrapper -->
 </div>
 
 </div><!-- inside -->
@@ -442,17 +440,16 @@
 
 <div class="postbox">
 <div class="handlediv" title="Click to toggle"><br /></div>
-<h3 class="hndle"><span><?php _e('More Plugins', MAILUSERS_I18N_DOMAIN); ?></span></h3>
-<div class="inside">
-
-<div style="background: #FFFBCC; border: 1px solid #E6DB55; margin: 1em; padding: 1em;"><!-- MarvinLabs Box -->
-	<h2><?php _e('Discover other Plugins by MarvinLabs:', MAILUSERS_I18N_DOMAIN); ?></h2>
+<h3 class="hndle"><span><?php _e('Discover other Plugins by MarvinLabs', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<div class="inside" style="">
+<div style="padding:0px 5px;">
+<div>
 	<ul>
-		<li><?php _e('If Email-Users is not robust enough or if you want to allow your users to communicate with each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
-		<li><?php _e('If you lose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
+		<li>&bull; <?php _e('If Email-Users is not robust enough or if you want to allow your users to communicate with each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
+		<li>&bull; <?php _e('If you lose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
 	</ul>
-</div><!-- MarvinLabs Box -->
-
+</div>
+</div>
 <?php else: echo "PB 25%"; endif;?>
 </div><!-- inside -->
 </div><!-- postbox -->
