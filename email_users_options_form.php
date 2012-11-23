@@ -19,6 +19,10 @@
 ?>
 
 <?php 
+	wp_enqueue_script('postbox');
+    wp_enqueue_style('dashboard');
+    wp_enqueue_script('dashboard');
+
 	if (!current_user_can('manage_options')) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
             __('You are not allowed to change the options of this plugin.', MAILUSERS_I18N_DOMAIN)));
@@ -27,7 +31,6 @@
 	
 	if ( mailusers_get_installed_version() != mailusers_get_current_version() ) {
 ?>
-<div class="wrap">
 	<div class="error fade">
 		<p><?php _e('It looks like you have an old version of the plugin activated. Please deactivate the plugin and activate it again to complete the installation of the new version.', MAILUSERS_I18N_DOMAIN); ?>
 	</p>		
@@ -36,31 +39,12 @@
 		<?php _e('Current Version:', MAILUSERS_I18N_DOMAIN); ?> <?php echo mailusers_get_current_version(); ?>
 	</p>
 	</div>		
-</div>
 <?php
 	}
 ?>
 
-<div class="wrap">
-<div class="alignright" style="font-size: 0.75em;background:#ECECEC;border:1px solid #CCC;padding:0px 5px;margin:95px 50px 0px 0px;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;">
-<div align="center">
-	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
-	<p style="margin: 0.25em 0"><a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s Home Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
-	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-		<input type="hidden" name="cmd" value="_xclick">
-		<input type="hidden" name="business" value="vpratfr@yahoo.fr">
-		<input type="hidden" name="item_name" value="Email Users - Wordpress Plugin">
-		<input type="hidden" name="no_shipping" value="1">
-		<input type="hidden" name="no_note" value="1">
-		<input type="hidden" name="currency_code" value="EUR">
-		<input type="hidden" name="tax" value="0">
-		<input type="hidden" name="lc" value="<?php _e('EN', MAILUSERS_I18N_DOMAIN); ?>">
-		<input type="hidden" name="bn" value="PP-DonationsBF">
-		<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" border="0" name="submit" alt="PayPal">
-		<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
-	</form>
-</div>
-</div>
+<div class="wrap"><!-- wrap -->
+
 
 <?php if (function_exists('screen_icon')) screen_icon(); ?>
 <h2><?php _e('Email Users Settings', MAILUSERS_I18N_DOMAIN); ?></h2>
@@ -72,14 +56,16 @@
 <?php	
 	} ?>
 
+<div> <!-- Postbox Containers -->
+<div class="postbox-container" style="width:65%; border: 0px dashed blue;"><!-- 65% Postbox Container -->
+<div class="metabox-holder">
+<div class="meta-box-sortables">
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Email-Users Plugin Settings', MAILUSERS_I18N_DOMAIN);?></span></h3>
+<div class="inside">
 
-<div style="background: #FFFBCC; border: 1px solid #E6DB55; margin: 2em; padding: 1em;">
-	<h2><?php _e('Discover other plugins by MarvinLabs:', MAILUSERS_I18N_DOMAIN); ?></h2>
-	<ul>
-		<li><?php _e('If email users is not enough, if you want to allow your users to communicate between each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
-		<li><?php _e('If you loose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
-	</ul>
-</div>
+<?php if(1):?>
 
 <form name="EmailUsersOptions" action="options.php" method="post">		
 	<?php settings_fields('email_users') ;?>
@@ -129,7 +115,7 @@
 		<th scope="row" valign="top">
             <label for="default_subject"><?php _e('Default<br/>Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<input type="text" name="mailusers_default_subject" style="width: 550px;" 
+			<input type="text" name="mailusers_default_subject" style="width: auto;" 
 				value="<?php echo format_to_edit(mailusers_get_default_subject()); ?>" 
 				size="80" /></td>
 	</tr>
@@ -161,7 +147,7 @@
 		<th scope="row" valign="top">
             <label for="default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: 550px;"><?php echo mailusers_get_default_body(); ?></textarea>
+			<textarea rows="10" cols="80" name="mailusers_default_body" id="default_body" style="width: auto;"><?php echo mailusers_get_default_body(); ?></textarea>
 		</td>
 	</tr>
 	<tr>
@@ -212,6 +198,15 @@
 </form>	
 
 <br class="clear"/>
+
+</div><!-- inside -->
+</div><!-- postbox -->
+
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Email-Users Defaults', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<div class="inside">
+
 <table class="widefat">
 	<thead>
 	<tr>
@@ -240,6 +235,15 @@
 </form>	
 
 <br class="clear"/>
+
+</div><!-- inside -->
+</div><!-- postbox -->
+
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Email-Users Test Notification Mail', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<div class="inside">
+
 <table class="widefat">
 	<thead>
 	<tr>
@@ -305,6 +309,14 @@
 </form>	
 <br class="clear"/>
 
+</div><!-- inside -->
+</div><!-- postbox -->
+
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Email-Users Variables', MAILUSERS_I18N_DOMAIN);?></span></h3>
+<div class="inside">
+
 <table class="widefat">
 	<thead>
 	<tr>
@@ -322,7 +334,7 @@
 	</tr>
 	<tr>
 		<td><b>%FROM_NAME%</b></td>
-		<td><?php _e('the wordpress user name of the person sending the mail', MAILUSERS_I18N_DOMAIN); ?></td>
+		<td><?php _e('the WordPress user name of the person sending the mail', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
 		<td><b>%POST_TITLE%</b></td>
@@ -339,6 +351,14 @@
 	</tbody>
 </table>
 <br class="clear"/>
+
+</div><!-- inside -->
+</div><!-- postbox -->
+
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Email-Users Capabilities', MAILUSERS_I18N_DOMAIN);?></span></h3>
+<div class="inside">
 
 <p><?php _e('Email Users uses capabilities to define what users are allowed to do. Below is a list of the capabilities used by the plugin and the default user role allowed to make these actions.', MAILUSERS_I18N_DOMAIN); ?> <?php _e('If you want to change the roles having those capabilities, you should use the plugin:', MAILUSERS_I18N_DOMAIN); ?> <a href="http://www.im-web-gefunden.de/wordpress-plugins/role-manager/" target="_blank">Role Manager</a></p>
 
@@ -380,5 +400,64 @@
 </table>
 
 <br/>
+<?php else: echo "PB 65%"; endif;?>
+</div><!-- inside -->
+</div><!-- postbox -->
+</div><!-- meta-box-sortables -->
+</div><!-- metabox-holder -->
+</div><!-- 65% Postbox Container -->
+<div class="postbox-container side" style="margin-left: 10px; min-width: 255px; width:25%; border: 0px dashed red;"><!-- 25% Postbox Container -->
+<div class="metabox-holder">
+<div class="meta-box-sortables">
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Make a Donation', MAILUSERS_I18N_DOMAIN);?></span></h3>
+<div class="inside">
 
+<?php if(1):?>
+<div style="margin: 0px 50px;">
+<div style="text-align: center; font-size: 0.75em;background:#ECECEC;border:1px solid #CCC;padding:0px 5px;margin:0px auto;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;"><!-- PayPal box wrapper -->
+<div><!-- PayPal box-->
+	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
+	<p style="margin: 0.25em 0"><a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s Home Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="cmd" value="_xclick">
+		<input type="hidden" name="business" value="vpratfr@yahoo.fr">
+		<input type="hidden" name="item_name" value="Email Users - Wordpress Plugin">
+		<input type="hidden" name="no_shipping" value="1">
+		<input type="hidden" name="no_note" value="1">
+		<input type="hidden" name="currency_code" value="EUR">
+		<input type="hidden" name="tax" value="0">
+		<input type="hidden" name="lc" value="<?php _e('EN', MAILUSERS_I18N_DOMAIN); ?>">
+		<input type="hidden" name="bn" value="PP-DonationsBF">
+		<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" border="0" name="submit" alt="PayPal">
+		<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+	</form>
+</div><!-- PayPal box -->
+</div><!-- PayPal box wrapper -->
 </div>
+
+</div><!-- inside -->
+</div><!-- postbox -->
+
+<div class="postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('More Plugins', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<div class="inside">
+
+<div style="background: #FFFBCC; border: 1px solid #E6DB55; margin: 1em; padding: 1em;"><!-- MarvinLabs Box -->
+	<h2><?php _e('Discover other Plugins by MarvinLabs:', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<ul>
+		<li><?php _e('If Email-Users is not robust enough or if you want to allow your users to communicate with each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
+		<li><?php _e('If you lose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
+	</ul>
+</div><!-- MarvinLabs Box -->
+
+<?php else: echo "PB 25%"; endif;?>
+</div><!-- inside -->
+</div><!-- postbox -->
+</div><!-- meta-box-sortables -->
+</div><!-- metabox-holder -->
+</div><!-- 25% Postbox Container -->
+</div><!-- Postbox Containers -->
+</div><!-- wrap -->
