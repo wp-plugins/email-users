@@ -50,7 +50,6 @@
 	<p><?php _e('You can send an email to one or more users by selecting them individually.', MAILUSERS_I18N_DOMAIN); ?></p>
 	<p><a href="admin.php?page=mailusers-send-to-user-page"><?php _e('Send Individual Message', MAILUSERS_I18N_DOMAIN); ?> &raquo;</a></p>
 	<div class="clear"></div>
-	<br/>	
 </div><!-- inside -->
 </div><!-- postbox -->
 <div class="clear"></div>
@@ -80,50 +79,7 @@
 <div class="postbox-container side" style="margin: 0px 0px 20px 10px; min-width: 225px; width:25%; border: 0px dashed red;"><!-- 25% Postbox Container -->
 <div class="metabox-holder">
 <div class="meta-box-sortables">
-<?php if(0):?>
-<div class="postbox">
-<div class="handlediv" title="Click to toggle"><br /></div>
-<h3 class="hndle"><span><?php _e('Make a Donation', MAILUSERS_I18N_DOMAIN);?></span></h3>
-<div class="inside">
-
-<div style="text-align: center; font-size: 0.75em;padding:0px 5px;margin:0px auto;"><!-- PayPal box wrapper -->
-<div><!-- PayPal box-->
-	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
-	<p style="margin: 0.25em 0"><a href="http://email-users.vincentprat.info" target="_blank"><?php _e('Plugin\'s Home Page', MAILUSERS_I18N_DOMAIN); ?></a></p>
-	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-		<input type="hidden" name="cmd" value="_xclick">
-		<input type="hidden" name="business" value="vpratfr@yahoo.fr">
-		<input type="hidden" name="item_name" value="Email Users - Wordpress Plugin">
-		<input type="hidden" name="no_shipping" value="1">
-		<input type="hidden" name="no_note" value="1">
-		<input type="hidden" name="currency_code" value="EUR">
-		<input type="hidden" name="tax" value="0">
-		<input type="hidden" name="lc" value="<?php _e('EN', MAILUSERS_I18N_DOMAIN); ?>">
-		<input type="hidden" name="bn" value="PP-DonationsBF">
-		<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but04.gif" border="0" name="submit" alt="PayPal">
-		<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
-	</form>
-</div><!-- PayPal box -->
-</div>
-
-</div><!-- inside -->
-</div><!-- postbox -->
-
-<div class="postbox">
-<div class="handlediv" title="Click to toggle"><br /></div>
-<h3 class="hndle"><span><?php _e('Discover other Plugins by MarvinLabs', MAILUSERS_I18N_DOMAIN); ?></span></h3>
-<div class="inside" style="">
-<div style="padding:0px 5px;">
-<div>
-	<ul>
-		<li>&bull; <?php _e('If Email-Users is not robust enough or if you want to allow your users to communicate with each other, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://user-messages.marvinlabs.com">User Messages</a></li>
-		<li>&bull; <?php _e('If you lose time copy/pasting the same post structure every time, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://post-templates.marvinlabs.com">Post Templates</a></li>
-	</ul>
-</div>
-</div>
-</div><!-- inside -->
-</div><!-- postbox -->
-<?php else: include_once "email_users_credits.php"; endif;?>
+<?php include_once "email_users_credits.php";?>
 </div><!-- meta-box-sortables -->
 </div><!-- metabox-holder -->
 </div><!-- 25% Postbox Container -->
