@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.16
+Version: 4.3.17
 Plugin URI: http://www.marvinlabs.com/products/wordpress-addons/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.16' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.3.17' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
 
 /**
  * Initialise the internationalisation domain
@@ -508,14 +508,10 @@ function mailusers_any_user_profile_update($uid) {
 	}
 }
 
-//add_action('admin_init', 'editor_admin_init');
-function editor_admin_init() {
-	wp_enqueue_script('word-count');
-	wp_enqueue_script('post');
-	wp_enqueue_script('editor');
-	wp_enqueue_script('media-upload');
-}
- 
+/**
+ * Enqueue scripts when needed
+ *
+ */
 function email_users_enqueue_scripts($hook) {
     if (('email-users_page_mailusers-send-to-users-page' == $hook) ||
         ('email-users_page_mailusers-send-to-group-page' == $hook))
