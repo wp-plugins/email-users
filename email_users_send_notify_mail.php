@@ -73,7 +73,6 @@
 		}
 	}
 
-    var_dump($original_mail_content) ;
 	if (!isset($send_roles)) {
 		$send_roles = array();
 	}
