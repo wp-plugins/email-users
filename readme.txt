@@ -18,6 +18,12 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 == Changelog ==
 
+= Version 4.3.19 =
+* Fixed missing DIV on landing page causing footer to appear in wrong spot.
+* Added some more marketing information.
+* Tweaked some more wording to be consistent with other areas of the plugin.
+* Removed page layout development code.
+
 = Version 4.3.18 =
 * Updated plugin landing page to be cleaner and use modern WordPress styling.
 
