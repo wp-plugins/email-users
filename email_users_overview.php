@@ -36,22 +36,24 @@
 	<?php if (current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP)
 		|| 	current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) { ?>
 
+<div> <!-- Postbox Containers -->
 <div class="postbox-container" style="width:65%; border: 0px dashed blue;"><!-- 65% Postbox Container -->
 <div class="metabox-holder">
 <div class="meta-box-sortables">
 <div class="postbox">
 <div class="handlediv" title="Click to toggle"><br /></div>
-<h3 class="hndle"><span><?php _e('Send individual message', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<h3 class="hndle"><span><?php _e('Send Individual Message', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
 	<div style="float:left"><a href="admin.php?page=mailusers-send-to-user-page">
 		<img src="<?php echo WP_CONTENT_URL . '/plugins/email-users/images/user.png'; ?>" alt="<?php _e('Send an email to one or more individual users', MAILUSERS_I18N_DOMAIN); ?>" title="<?php _e('Send an email to one or more individual users', MAILUSERS_I18N_DOMAIN); ?>" /></a>
 	</div>
 	<p><?php _e('You can send an email to one or more users by selecting them individually.', MAILUSERS_I18N_DOMAIN); ?></p>
-	<p><a href="admin.php?page=mailusers-send-to-user-page"><?php _e('Send individual message', MAILUSERS_I18N_DOMAIN); ?> &raquo;</a></p>
+	<p><a href="admin.php?page=mailusers-send-to-user-page"><?php _e('Send Individual Message', MAILUSERS_I18N_DOMAIN); ?> &raquo;</a></p>
 	<div class="clear"></div>
 	<br/>	
 </div><!-- inside -->
 </div><!-- postbox -->
+<div class="clear"></div>
 	
 	
 	<?php } ?>
@@ -59,13 +61,13 @@
 	<?php if (current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) { ?>
 <div class="postbox">
 <div class="handlediv" title="Click to toggle"><br /></div>
-<h3 class="hndle"><span><?php _e('Send a group message', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+<h3 class="hndle"><span><?php _e('Send a Group Message', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
 	<div style="float:left"><a href="admin.php?page=mailusers-send-to-group-page">
 		<img src="<?php echo WP_CONTENT_URL . '/plugins/email-users/images/group.png'; ?>" alt="<?php _e('Send an email to one or more user groups', MAILUSERS_I18N_DOMAIN); ?>" title="<?php _e('Send an email to one or more user groups', MAILUSERS_I18N_DOMAIN); ?>" /></a>
 	</div>
 	<p><?php _e('You can send an email to one or more user groups (i.e. users belonging to the same WordPress role).', MAILUSERS_I18N_DOMAIN); ?></p>
-	<p><a href="admin.php?page=mailusers-send-to-group-page"><?php _e('Send group message', MAILUSERS_I18N_DOMAIN); ?> &raquo;</a></p>
+	<p><a href="admin.php?page=mailusers-send-to-group-page"><?php _e('Send Group Message', MAILUSERS_I18N_DOMAIN); ?> &raquo;</a></p>
 	<div class="clear"></div>
 </div><!-- inside -->
 </div><!-- postbox -->
@@ -75,15 +77,15 @@
 </div><!-- metabox-holder -->
 </div><!-- 65% Postbox Container -->
 
-<div class="postbox-container side" style="margin-left: 10px; min-width: 255px; width:25%; border: 0px dashed red;"><!-- 25% Postbox Container -->
+<div class="postbox-container side" style="margin: 0px 0px 20px 10px; min-width: 225px; width:25%; border: 0px dashed red;"><!-- 25% Postbox Container -->
 <div class="metabox-holder">
 <div class="meta-box-sortables">
+<?php if(0):?>
 <div class="postbox">
 <div class="handlediv" title="Click to toggle"><br /></div>
 <h3 class="hndle"><span><?php _e('Make a Donation', MAILUSERS_I18N_DOMAIN);?></span></h3>
 <div class="inside">
 
-<?php if(1):?>
 <div style="text-align: center; font-size: 0.75em;padding:0px 5px;margin:0px auto;"><!-- PayPal box wrapper -->
 <div><!-- PayPal box-->
 	<p style="margin: 0.25em 0"><b>Email Users <?php echo mailusers_get_current_version(); ?></b></p>
@@ -119,14 +121,11 @@
 	</ul>
 </div>
 </div>
-<?php else: echo "PB 25%"; endif;?>
 </div><!-- inside -->
 </div><!-- postbox -->
+<?php else: include_once "email_users_credits.php"; endif;?>
 </div><!-- meta-box-sortables -->
 </div><!-- metabox-holder -->
 </div><!-- 25% Postbox Container -->
 </div><!-- Postbox Containers -->
 </div><!-- wrap -->
-
-		
-	
