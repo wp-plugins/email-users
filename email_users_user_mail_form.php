@@ -180,7 +180,6 @@
 				<div id="mail-content-editor" style="width: 647px;">
 				<?php
 					if ($mail_format=='html') {
-						//the_editor(stripslashes($mail_content), "mailcontent", "subject", true);
 						wp_editor(stripslashes($mail_content), "mailcontent");
 					} else {
 				?>
