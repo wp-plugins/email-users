@@ -67,7 +67,7 @@
 <div style="padding:0px 5px;">
 <div>
 	<ul style="list-style-type: square;margin-left: 7px;">
-		<li><?php _e('if you use Google Forms and want to integrate them with your WordPress site, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://michaelwalsh.org/wordpress/wordpress-plugins/wpgform/">WordPress Google Form</a></li>
+		<li><?php _e('If you use Google Forms and want to integrate them with your WordPress site, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://michaelwalsh.org/wordpress/wordpress-plugins/wpgform/">WordPress Google Form</a></li>
 	</ul>
 </div>
 </div>
