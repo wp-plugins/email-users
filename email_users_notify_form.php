@@ -110,6 +110,7 @@
     }
     // Process short codes?
     if (mailusers_get_shortcode_processing() == 'true') {
+        $post_content = do_shortcode($post_content) ;
         $post_excerpt = do_shortcode($post_excerpt) ;
     }
 	
