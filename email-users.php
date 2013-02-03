@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.3.21
+Version: 4.4.1
 Plugin URI: http://email-users.vincentprat.info
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.3.21' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.4.1-beta' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,9 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
+
+$mailusers_custom_meta_filters = array() ;
 
 /**
  * Initialise the internationalisation domain
@@ -240,12 +242,16 @@ function mailusers_profile_update($user_id) {
  * Add the meta field when a user registers
  */
 function mailusers_user_meta_init($user_id) {
+    $values = array('true', 'false');
+
+    //  Check to see if user already has the user meta value and it is set.
 	$default = mailusers_get_default_notifications() == 'true' ? 'true' : 'false' ;
-	if (get_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true) == '')
+	if (!in_array(get_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true), $values))
 		update_user_meta($user_id, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, $default);
 
+    //  Check to see if user already has the user meta value and it is set.
 	$default = mailusers_get_default_mass_email() == 'true' ? 'true' : 'false' ;
-	if (get_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true) == '')
+	if (!in_array(get_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true), $values))
 		update_user_meta($user_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, $default);
 }
 
@@ -287,6 +293,8 @@ function mailusers_page_relatedlink() {
  */
 add_action( 'admin_menu', 'mailusers_add_pages' );
 function mailusers_add_pages() {
+    global $mailusers_custom_meta_filters ;
+
     mailusers_init_i18n();
 
     add_posts_page(
@@ -331,6 +339,37 @@ function mailusers_add_pages() {
 	MAILUSERS_EMAIL_USER_GROUPS_CAP,
        	'mailusers-send-to-group-page',
        	'mailusers_send_to_group_page') ;
+
+    /**
+     * Do we need to deal with a custom meta filter?
+     *
+     */
+
+    //  Load any custom meta filters
+    do_action('mailusers_custom_meta_filter') ;
+
+    foreach ($mailusers_custom_meta_filters as $mf)
+    {
+        $slug = strtolower($mf['label']);
+        $slug = preg_replace("/[^a-z0-9\s-]/", "", $slug);
+        $slug = trim(preg_replace("/[\s-]+/", " ", $slug));
+        $slug = trim(substr($slug, 0));
+        $slug1 = preg_replace("/\s/", "-", $slug);
+        $slug2 = preg_replace("/\s/", "_", $slug);
+        
+        //  Need to create the function to call the custom filter email script
+
+        $fn = create_function('', 'global $mailusers_mf, $mailusers_mv, $mailusers_mc; $mailusers_mf = \'' .
+            $mf['meta_filter'] .  '\' ; $mailusers_mv = \'' . $mf['meta_value'] .  '\' ; $mailusers_mc = \'' .
+            $mf['meta_compare'] . '\' ; require(\'email_users_send_custom_filter_mail.php\') ;');
+
+        add_submenu_page(plugin_basename(__FILE__),
+	    sprintf(__('Send to %s'), $mf['label'], MAILUSERS_I18N_DOMAIN), 
+	    sprintf(__('Send to %s'), $mf['label'], MAILUSERS_I18N_DOMAIN), 
+	    MAILUSERS_EMAIL_USER_GROUPS_CAP,
+       	    'mailusers-send-to-custom-filter-page-' . $slug1, $fn) ;
+       	    //'mailusers_send_to_custom_filter_page_' . $slug2) ;
+    }
 
     add_submenu_page(plugin_basename(__FILE__),
 	__('User Settings', MAILUSERS_I18N_DOMAIN), 
@@ -758,21 +797,44 @@ function mailusers_update_from_sender_exclude( $from_sender_exclude ) {
  * Get the users
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
-function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array(), $sortby = null) {
+function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array(), $sortby = null, $meta_value = 'true', $meta_compare = '=') {
 
 	if ($sortby == null) $sortby = mailusers_get_default_sort_users_by();
 
     //  Set up the arguments for get_users()
 
-    $args['exclude'] = $exclude_id ;
-    $args['fields'] = 'all_with_meta' ;
+    $args['exclude'] = $exclude_id;
+    $args['fields'] = 'all_with_meta';
 
     //  Apply the meta filter
 
     if ($meta_filter != '')
     {
-        $args['meta_key'] = $meta_filter ;
-        $args['meta_value'] = 'true' ;
+        $args = array(
+            'include' => '',
+            'exclude' => '',
+            'fields' => 'all_with_meta',
+            'meta_key' => $meta_filter,
+            'meta_value' => $meta_value,
+            'meta_like_escape' => false,
+            'meta_compare' => $meta_compare) ;
+ 
+        //  Note:  WordPress 3.5.1 and earlier do not support 'LIKE' 
+        //  constructs on meta queries - they get wrapped with SQL
+        //  protection.  A patch has been submitted for WordPress 3.6
+        //  to allow LIKE and NOT LIKE to work properly.
+        //
+        //  http://core.trac.wordpress.org/ticket/23373
+ 
+        //  Is it a LIKE comparison?  If so, handle it differently ...
+ 
+        if (in_array(strtoupper(trim($meta_compare)), array('LIKE', 'NOT LIKE')))
+        {
+            $args = array_merge($args, array(
+                'meta_like_escape' => true,
+                'meta_compare' => strtoupper(trim($meta_compare)))) ;
+        }
+
     }
 
     //  Retrieve the list of users
@@ -869,7 +931,7 @@ function mailusers_get_roles( $exclude_id='', $meta_filter = '') {
 		$users_in_role = mailusers_get_recipients_from_roles(array($key), $exclude_id, $meta_filter);
 		if (!empty($users_in_role)) {
 			$roles[$key] = $value;
-		}
+        }
 	}
 
 	return $roles;
@@ -895,6 +957,29 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
         $users = array_merge($users, mailusers_get_users($exclude_id, $meta_filter, array('role' => $role))) ;
 
     return $users ;
+}
+
+/**
+ * Get the users given the existance of a custom meta filter
+ * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ */
+function mailusers_get_recipients_from_custom_meta_filter( $ids, $exclude_id='', $meta_filter='', $meta_value='', $meta_compare='=') {
+    mailusers_whereami(__FILE__, __LINE__) ;
+    return mailusers_get_users($exclude_id, $meta_filter, array('include' => $ids), null, $meta_value, $meta_compare) ;
+}
+
+/**
+ * Register a custom meta filter
+ *
+ */
+function mailusers_register_custom_meta_filter($label, $meta_filter, $meta_value, $meta_compare = '=') {
+    global $mailusers_custom_meta_filters ;
+
+    $mailusers_custom_meta_filters[] = array(
+        'label' => $label,
+        'meta_filter' => $meta_filter,
+        'meta_value' => $meta_value,
+        'meta_compare' => $meta_compare) ;
 }
 
 /**
@@ -1091,12 +1176,14 @@ function mailusers_preprint_r()
     $arg_list = func_get_args() ;
     for ($i = 0; $i < $numargs; $i++) {
 	    printf('<pre style="text-align:left;">%s</pre>', print_r($arg_list[$i], true)) ;
+	    error_log(print_r($arg_list[$i], true)) ;
     }
 }
 
 function mailusers_whereami($x, $y)
 {
 	printf('<h2>%s::%s</h2>', basename($x), $y) ;
+	error_log(sprintf('%s::%s', basename($x), $y)) ;
 }
 endif;
 ?>

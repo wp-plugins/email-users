@@ -18,6 +18,12 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 == Changelog ==
 
+= Version 4.4.1 =
+* Added German translation files (thank you Tobias Bechtold).
+* Fixed bug in Send to Groups where number of users receiving email was wrong.
+* Added internationalization support to Send to Group status messages.
+* Added support for sending email to users based on a custom meta filter.
+
 = Version 4.3.21 =
 * Updated Spanish translation files.
 

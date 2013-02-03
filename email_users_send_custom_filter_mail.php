@@ -27,6 +27,7 @@
 
 <?php
 	global $user_identity, $user_email, $user_ID;
+    global $mailusers_mf, $mailusers_mv, $mailusers_mc;
 
 	$err_msg = '';
 	$from_sender = 0;
@@ -114,7 +115,8 @@
 	<?php
 		// Fetch users
 		// --
-		$recipients = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+		//$recipients = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+		$recipients = mailusers_get_recipients_from_custom_meta_filter($send_roles, $exclude_id, $mailusers_mf, $mailusers_mv, $mailusers_mc);
 
 		if (empty($recipients)) {
 	?>
@@ -137,7 +139,7 @@
 			} else {
 				echo '<div class="updated fade"><p>' . sprintf(__('Email has been sent to %s users, but %s recipients were originally found. Perhaps some users don\'t have valid email addresses?', MAILUSERS_I18N_DOMAIN), $num_sent, count($recipients)) . '</p></div>';
 			}
-			include('email_users_group_mail_form.php');
+			include('email_users_custom_filter_mail_form.php');
 		}
 	?>
 	</div>
@@ -145,6 +147,6 @@
 <?php
 	} else {
 		// Redirect to the form page
-		include('email_users_group_mail_form.php');
+		include('email_users_custom_filter_mail_form.php');
 	}
 ?>
