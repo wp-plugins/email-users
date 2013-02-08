@@ -143,6 +143,14 @@
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
+            <label for="send_bounces_to_address_override"><?php _e('Send Bounces To Email<br/>Address Override', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input type="text" name="mailusers_send_bounces_to_address_override" style="width: 235px;" 
+				value="<?php echo format_to_edit(mailusers_get_send_bounces_to_address_override()); ?>" 
+                size="80" id="from_sender_address_override"/><br/>&nbsp;<?php _e('An email address that can be used in place of the logged in user\'s email address to receive bounced email notifications.', MAILUSERS_I18N_DOMAIN); ?><br/><b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></td>
+	</tr>
+	<tr>
+		<th scope="row" valign="top">
             <label for="mailusers_default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
             <?php wp_editor(stripslashes(mailusers_get_default_body()), "mailusers_default_body");?>
@@ -243,7 +251,7 @@
 <div class="handlediv" title="Click to toggle"><br /></div>
 <h3 class="hndle"><span><?php _e('Email-Users Test Notification Mail', MAILUSERS_I18N_DOMAIN); ?></span></h3>
 <div class="inside">
-<p><?php _e('Use this Test Notification to verify proper operation of Email-Users.', MAILUSER_I18N_DOMAIN);?></p>
+<p><?php _e('Use this Test Notification to verify proper operation of Email-Users.', MAILUSERS_I18N_DOMAIN);?></p>
 <table class="widefat">
 	<thead>
 	<tr>
