@@ -19,7 +19,7 @@
 ?>
 
 <?php
-	global $user_identity, $user_email, $user_ID;
+	global $user_identity, $user_email, $user_ID, $mailusers_send_to_group_mode ;
 
 	if (!current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP)) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
@@ -42,17 +42,26 @@
 		$mail_content = '';
 	}
 
+	if (!isset($mail_content)) {
+		$mail_content = '';
+	}
+
+	if (!isset($group_mode)) {
+		$group_mode = $mailusers_send_to_group_mode;
+	}
+
 	get_currentuserinfo();
 
 	$from_name = $user_identity;
 	$from_address = $user_email;
     $override_name = mailusers_get_from_sender_name_override() ;
     $override_address = mailusers_get_from_sender_address_override() ;
+
 ?>
 
 <div class="wrap">
 	<div id="icon-users" class="icon32"><br/></div>
-	<h2><?php _e('Send an Email to User Groups', MAILUSERS_I18N_DOMAIN); ?></h2>
+	<h2><?php if ($group_mode == 'meta') _e('Send an Email to User Groups Filtered by User Meta Data', MAILUSERS_I18N_DOMAIN); else _e('Send an Email to User Groups', MAILUSERS_I18N_DOMAIN); ?></h2>
 
 	<?php 	if (isset($err_msg) && $err_msg!='') { ?>
 			<div class="error fade"><p><?php echo $err_msg; ?><p></div>
@@ -64,6 +73,7 @@
 		<input type="hidden" name="send" value="true" />
 		<input type="hidden" name="fromName" value="<?php echo $from_name;?>" />
 		<input type="hidden" name="fromAddress" value="<?php echo $from_address;?>" />
+		<input type="hidden" name="group_mode" value="<?php echo $mailusers_send_to_group_mode;?>" />
 
 		<table class="form-table" width="100%" cellspacing="2" cellpadding="5">
 		<tr>
@@ -90,12 +100,15 @@
 			<td>
 				<select id="send_roles" name="send_roles[]" multiple="multiple" size="8" style="width: 654px; height: 250px;">
 				<?php
-					$roles = mailusers_get_roles($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+                    if ($group_mode == 'meta')
+					    $roles = mailusers_get_group_meta_filters($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+                    else
+					    $roles = mailusers_get_roles($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
 					foreach ($roles as $key => $value) {
 				?>
 					<option value="<?php echo $key; ?>"	<?php
 						echo (in_array($key, $send_roles) ? ' selected="yes"' : '');?>>
-                		<?php printf('%s - %s', __('Role', MAILUSERS_I18N_DOMAIN), $value); ?>
+                		<?php printf('%s - %s', ($group_mode == 'meta') ? __('Filter', MAILUSERS_I18N_DOMAIN) : __('Role', MAILUSERS_I18N_DOMAIN), $value); ?>
 					</option>
 				<?php
 					}

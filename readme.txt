@@ -20,33 +20,49 @@ This plugin is available under the GPL license, which means that it's free. If y
 
 Email Users provides the ability to send email to a very specific set of users using a custom meta filter.  To create a special mail list, you will need to add something similar to the following to your theme's functions.php file or create a separate plugin file.
 
-The mailusers_register_custom_meta_filter() function takes 3-4 parameters:
-1.  Menu Lable - text that will appear on the WordPress Email-Users menu.
+The mailusers_register_user_custom_meta_filter() and mailusers_register_group_custom_meta_filter() actions each take 3-4 parameters:
+1.  Label - text that will appear on the WordPress Email-Users menu (users) or in the Recipient List (groups).
 1.  Meta Key - the meta key to search for in the user meta table.
 1.  Meta Value - the value to match against in the user meta table.
 1.  Meta Compare - optional, defaults to '='.  The type of comparison to be performed.
 
 This example will filter the user list to only those users where the first name is Alex.
 `
-add_action( 'mailusers_custom_meta_filter', 'first_name_alex', 5 );
+add_action( 'mailusers_user_custom_meta_filter', 'first_name_alex', 5 );
 
 function first_name_alex()
 {
-    mailusers_register_custom_meta_filter('First Name: Alex', 'first_name', 'Alex');
+    mailusers_register_user_custom_meta_filter('First Name: Alex', 'first_name', 'Alex');
 }
 `
 
 Regular SQL comparisons (=, !=, etc.) can be performed.  Wildcard matches (LIKE, NOT LIKE) are not yet supported due to how the WordPress get_users() API currently handles LIKE comparison.  A patch has been submitted and hopefully it will be addressed in WordPress 3.6.  Once addressed, you will be able to create filters like the one below to specifically match last names which begin with the letter M.
 
 `
-add_action( 'mailusers_custom_meta_filter', 'last_names_starting_with_m', 5 );
+add_action( 'mailusers_user_custom_meta_filter', 'last_names_starting_with_m', 5 );
 
 function last_names_starting_with_m()
 {
-    mailusers_register_custom_meta_filter('Last Name: M', 'last_name', 'M%', 'LIKE');
+    mailusers_register_user_custom_meta_filter('Last Name: M', 'last_name', 'M%', 'LIKE');
 }
 `
 
+`
+add_action( 'mailusers_group_custom_meta_filter', 'send_to_fire_department', 5 );
+
+function send_to_fire_department()
+{
+    mailusers_register_group_custom_meta_filter('Fire Department', 'department', 'fire');
+}
+
+
+add_action( 'mailusers_group_custom_meta_filter', 'send_to_police_department', 5 );
+
+function send_to_police_department()
+{
+    mailusers_register_group_custom_meta_filter('Police Department', 'department', 'police');
+}
+`
 == Changelog ==
 
 = Version 4.4.1 =
@@ -54,6 +70,9 @@ function last_names_starting_with_m()
 * Fixed bug in Send to Groups where number of users receiving email was wrong.
 * Added internationalization support to Send to Group status messages.
 * Added support for sending email to users based on a custom meta filter.
+* Added support for sending email to groups based on a custom meta filter.
+* Added suppport for providing a bounce email address.
+* Fixed bug in Options form which prevented translation of strings.
 
 = Version 4.3.21 =
 * Updated Spanish translation files.

@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.4.1
+Version: 4.4.0
 Plugin URI: http://email-users.vincentprat.info
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
 Author: MarvinLabs & Mike Walsh
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.4.1-beta' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.4.0-beta-2' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -45,7 +45,8 @@ define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails
 // Debug
 define( 'MAILUSERS_DEBUG', true);
 
-$mailusers_custom_meta_filters = array() ;
+$mailusers_user_custom_meta_filters = array() ;
+$mailusers_group_custom_meta_filters = array() ;
 
 /**
  * Initialise the internationalisation domain
@@ -82,6 +83,8 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_from_sender_name_override' => '',
 		// Mail User - Default setting for From Sender Address Override
 		'mailusers_from_sender_address_override' => '',
+		// Mail User - Default setting for Send Bounces To Address Override
+		'mailusers_send_bounces_to_address_override' => '',
 		// Mail User - Maximum number of rows to show in the User Settings table
 		'mailusers_user_settings_table_rows' => '20',
 		// Mail User - Default setting for Notifications
@@ -293,62 +296,57 @@ function mailusers_page_relatedlink() {
  */
 add_action( 'admin_menu', 'mailusers_add_pages' );
 function mailusers_add_pages() {
-    global $mailusers_custom_meta_filters ;
+    global $mailusers_user_custom_meta_filters ;
+    global $mailusers_group_custom_meta_filters ;
 
     mailusers_init_i18n();
 
     add_posts_page(
-	__('Notify Users', MAILUSERS_I18N_DOMAIN),
-	__('Notify Users', MAILUSERS_I18N_DOMAIN),
-	MAILUSERS_NOTIFY_USERS_CAP,
+	    __('Notify Users', MAILUSERS_I18N_DOMAIN),
+	    __('Notify Users', MAILUSERS_I18N_DOMAIN),
+	    MAILUSERS_NOTIFY_USERS_CAP,
        	'mailusers-send-notify-mail-post',
        	'mailusers_send_notify_mail') ;
 
     add_pages_page(
-	__('Notify Users', MAILUSERS_I18N_DOMAIN),
-	__('Notify Users', MAILUSERS_I18N_DOMAIN),
-	MAILUSERS_NOTIFY_USERS_CAP,
+	    __('Notify Users', MAILUSERS_I18N_DOMAIN),
+	    __('Notify Users', MAILUSERS_I18N_DOMAIN),
+	    MAILUSERS_NOTIFY_USERS_CAP,
        	'mailusers-send-notify-mail-page',
        	'mailusers_send_notify_mail') ;
 
     add_options_page(
-	__('Email Users', MAILUSERS_I18N_DOMAIN),
-	__('Email Users', MAILUSERS_I18N_DOMAIN),
-	'manage_options',
+	    __('Email Users', MAILUSERS_I18N_DOMAIN),
+	    __('Email Users', MAILUSERS_I18N_DOMAIN),
+	    'manage_options',
        	'mailusers-options-page',
        	'mailusers_options_page') ;
 
     add_menu_page(
-	__('Email Users', MAILUSERS_I18N_DOMAIN), 
-	__('Email Users', MAILUSERS_I18N_DOMAIN), 
-	MAILUSERS_EMAIL_SINGLE_USER_CAP,
+	    __('Email Users', MAILUSERS_I18N_DOMAIN), 
+	    __('Email Users', MAILUSERS_I18N_DOMAIN), 
+	    MAILUSERS_EMAIL_SINGLE_USER_CAP,
        	plugin_basename(__FILE__),
-	'mailusers_overview_page',
-	plugins_url( 'images/email.png' , __FILE__)) ;
+	    'mailusers_overview_page',
+	    plugins_url( 'images/email.png' , __FILE__)) ;
 
+    //  Send to User(s) Menu
     add_submenu_page(plugin_basename(__FILE__),
-	__('Send to User(s)', MAILUSERS_I18N_DOMAIN), 
-	__('Send to User(s)', MAILUSERS_I18N_DOMAIN), 
+	    __('Send to User(s)', MAILUSERS_I18N_DOMAIN), 
+	    __('Send to User(s)', MAILUSERS_I18N_DOMAIN), 
 	MAILUSERS_EMAIL_SINGLE_USER_CAP,
        	'mailusers-send-to-user-page',
        	'mailusers_send_to_user_page') ;
 
-    add_submenu_page(plugin_basename(__FILE__),
-	__('Send to Group(s)', MAILUSERS_I18N_DOMAIN), 
-	__('Send to Group(s)', MAILUSERS_I18N_DOMAIN), 
-	MAILUSERS_EMAIL_USER_GROUPS_CAP,
-       	'mailusers-send-to-group-page',
-       	'mailusers_send_to_group_page') ;
-
     /**
-     * Do we need to deal with a custom meta filter?
+     * Do we need to deal with a user custom meta filter?
      *
      */
 
     //  Load any custom meta filters
-    do_action('mailusers_custom_meta_filter') ;
+    do_action('mailusers_user_custom_meta_filter') ;
 
-    foreach ($mailusers_custom_meta_filters as $mf)
+    foreach ($mailusers_user_custom_meta_filters as $mf)
     {
         $slug = strtolower($mf['label']);
         $slug = preg_replace("/[^a-z0-9\s-]/", "", $slug);
@@ -364,17 +362,45 @@ function mailusers_add_pages() {
             $mf['meta_compare'] . '\' ; require(\'email_users_send_custom_filter_mail.php\') ;');
 
         add_submenu_page(plugin_basename(__FILE__),
-	    sprintf(__('Send to %s'), $mf['label'], MAILUSERS_I18N_DOMAIN), 
-	    sprintf(__('Send to %s'), $mf['label'], MAILUSERS_I18N_DOMAIN), 
-	    MAILUSERS_EMAIL_USER_GROUPS_CAP,
+	        sprintf(__('Send to %s'), $mf['label'], MAILUSERS_I18N_DOMAIN), 
+	        sprintf(__('Send to %s'), $mf['label'], MAILUSERS_I18N_DOMAIN), 
+	        MAILUSERS_EMAIL_USER_GROUPS_CAP,
        	    'mailusers-send-to-custom-filter-page-' . $slug1, $fn) ;
        	    //'mailusers_send_to_custom_filter_page_' . $slug2) ;
     }
 
+    //  Send to Group(s) Menu
     add_submenu_page(plugin_basename(__FILE__),
-	__('User Settings', MAILUSERS_I18N_DOMAIN), 
-	__('User Settings', MAILUSERS_I18N_DOMAIN), 
-	'edit_users',
+	    __('Send to Group(s)', MAILUSERS_I18N_DOMAIN), 
+	    __('Send to Group(s)', MAILUSERS_I18N_DOMAIN), 
+	    MAILUSERS_EMAIL_USER_GROUPS_CAP,
+       	'mailusers-send-to-group-page',
+       	'mailusers_send_to_group_page') ;
+
+    /**
+     * Do we need to deal with a user custom meta filter?
+     *
+     */
+
+    //  Load any custom meta filters
+    do_action('mailusers_group_custom_meta_filter') ;
+
+    if (!empty($mailusers_group_custom_meta_filters))
+    {
+        //  Send to Group(s) Menu
+        add_submenu_page(plugin_basename(__FILE__),
+	        __('Send to Meta Group(s)', MAILUSERS_I18N_DOMAIN), 
+	        __('Send to Meta Group(s)', MAILUSERS_I18N_DOMAIN), 
+	        MAILUSERS_EMAIL_USER_GROUPS_CAP,
+            'mailusers-send-to-group-cutome-meta-page',
+   	        'mailusers_send_to_group_custom_meta_page') ;
+    }
+
+    //  User Settings Menu
+    add_submenu_page(plugin_basename(__FILE__),
+	    __('User Settings', MAILUSERS_I18N_DOMAIN), 
+	    __('User Settings', MAILUSERS_I18N_DOMAIN), 
+	    'edit_users',
        	'mailusers-user-settings',
        	'mailusers_user_settings_page') ;
 }
@@ -407,6 +433,18 @@ function mailusers_send_to_user_page()
  */
 function mailusers_send_to_group_page()
 {
+    global $mailusers_send_to_group_mode ;
+    $mailusers_send_to_group_mode = 'role' ;
+    require_once('email_users_send_group_mail.php') ;
+}
+
+/**
+ * Wrapper for the email users send to group custom meta menu
+ */
+function mailusers_send_to_group_custom_meta_page()
+{
+    global $mailusers_send_to_group_mode ;
+    $mailusers_send_to_group_mode = 'meta' ;
     require_once('email_users_send_group_mail.php') ;
 }
 
@@ -582,6 +620,8 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_from_sender_name_override') ;
     register_setting('email_users',
         'mailusers_from_sender_address_override', 'mailusers_from_sender_address_override_validate') ;
+    register_setting('email_users',
+        'mailusers_send_bounces_to_address_override', 'mailusers_send_bounces_to_address_override_validate') ;
     register_setting('email_users', 'mailusers_version') ;
 }
 
@@ -718,6 +758,28 @@ function mailusers_from_sender_address_override_validate( $from_sender_address_o
 	return is_email($from_sender_address_override ) ? $from_sender_address_override : false ;
 }
 
+
+/**
+ * Wrapper for the from sender address override option
+ */
+function mailusers_get_send_bounces_to_address_override() {
+	return get_option( 'mailusers_send_bounces_to_address_override' );
+}
+
+/**
+ * Wrapper for the from sender address override option
+ */
+function mailusers_update_send_bounces_to_address_override( $send_bounces_to_address_override ) {
+	return update_option( 'mailusers_send_bounces_to_address_override', $send_bounces_to_address_override );
+}
+
+/**
+ * Wrapper for the from sender address override option validation
+ */
+function mailusers_send_bounces_to_address_override_validate( $send_bounces_to_address_override ) {
+	return is_email($send_bounces_to_address_override ) ? $send_bounces_to_address_override : false ;
+}
+
 /**
  * Wrapper for the default notification setting
  */
@@ -798,7 +860,6 @@ function mailusers_update_from_sender_exclude( $from_sender_exclude ) {
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array(), $sortby = null, $meta_value = 'true', $meta_compare = '=') {
-
 	if ($sortby == null) $sortby = mailusers_get_default_sort_users_by();
 
     //  Set up the arguments for get_users()
@@ -938,6 +999,34 @@ function mailusers_get_roles( $exclude_id='', $meta_filter = '') {
 }
 
 /**
+ * Get the users based on group custom meta filters
+ * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ */
+function mailusers_get_group_meta_filters( $exclude_id='', $meta_filter = '') {
+	$filters = array();
+
+    global $mailusers_group_custom_meta_filters ;
+
+    $users = mailusers_get_users($exclude_id, $meta_filter) ;
+    $ids = array() ;
+
+    foreach ($users as $user)
+        $ids[] = $user->ID ;
+
+    $mf = &$mailusers_group_custom_meta_filters ;
+
+	foreach ($mf as $key => $value) {
+        $users_in_filter = mailusers_get_recipients_from_custom_meta_filter($ids,
+            $exclude_id, $value['meta_filter'], $value['meta_value'], $value['meta_compare']);
+		if (!empty($users_in_filter)) {
+			$filters[$key] = $value['label'];
+        }
+	}
+
+	return $filters;
+}
+
+/**
  * Get the users given a role or an array of ids
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
@@ -964,18 +1053,57 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_recipients_from_custom_meta_filter( $ids, $exclude_id='', $meta_filter='', $meta_value='', $meta_compare='=') {
-    mailusers_whereami(__FILE__, __LINE__) ;
     return mailusers_get_users($exclude_id, $meta_filter, array('include' => $ids), null, $meta_value, $meta_compare) ;
 }
 
 /**
- * Register a custom meta filter
+ * Get the users given a filter or an array of filters.
+ * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
+ */
+function mailusers_get_recipients_from_custom_meta_filters($filters, $exclude_id='', $meta_filter = '') {
+
+    global $mailusers_group_custom_meta_filters ;
+
+    $users = mailusers_get_users($exclude_id, $meta_filter) ;
+    $ids = array() ;
+
+    foreach ($users as $user)
+        $ids[] = $user->ID ;
+
+    $users = array() ;
+
+    foreach ($filters as $filter)
+    {
+        $mf = &$mailusers_group_custom_meta_filters[$filter] ;
+        $users = array_merge($users, mailusers_get_recipients_from_custom_meta_filter($ids,
+            $exclude_id, $mf['meta_filter'], $mf['meta_value'], $mf['meta_compare']));
+    }
+
+    return $users ;
+}
+
+/**
+ * Register a user custom meta filter
  *
  */
-function mailusers_register_custom_meta_filter($label, $meta_filter, $meta_value, $meta_compare = '=') {
-    global $mailusers_custom_meta_filters ;
+function mailusers_register_user_custom_meta_filter($label, $meta_filter, $meta_value, $meta_compare = '=') {
+    global $mailusers_user_custom_meta_filters ;
 
-    $mailusers_custom_meta_filters[] = array(
+    $mailusers_user_custom_meta_filters[] = array(
+        'label' => $label,
+        'meta_filter' => $meta_filter,
+        'meta_value' => $meta_value,
+        'meta_compare' => $meta_compare) ;
+}
+
+/**
+ * Register a group custom meta filter
+ *
+ */
+function mailusers_register_group_custom_meta_filter($label, $meta_filter, $meta_value, $meta_compare = '=') {
+    global $mailusers_group_custom_meta_filters ;
+
+    $mailusers_group_custom_meta_filters[] = array(
         'label' => $label,
         'meta_filter' => $meta_filter,
         'meta_value' => $meta_value,
@@ -1044,8 +1172,13 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	if ( (empty($recipients)) ) { return $num_sent; }
 	if ('' == $message) { return false; }
 
+    //  Return path defaults to sender email if not specified
+    $return_path = mailusers_get_send_bounces_to_address_override() ;
+    if ($return_path == '') $return_path = $sender_email;
+
+    //  Build headers
 	$headers  = "From: \"$sender_name\" <$sender_email>\n";
-	$headers .= "Return-Path: <" . $sender_email . ">\n";
+	$headers .= "Return-Path: <" . $return_path . ">\n";
 	$headers .= "Reply-To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
 	$headers .= "X-Mailer: PHP" . phpversion() . "\n";
 

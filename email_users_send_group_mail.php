@@ -26,7 +26,7 @@
 ?>
 
 <?php
-	global $user_identity, $user_email, $user_ID;
+	global $user_identity, $user_email, $user_ID, $mailusers_send_to_group_mode;
 
 	$err_msg = '';
 	$from_sender = 0;
@@ -77,10 +77,18 @@
 		} else {
 			$from_sender = $_POST['from_sender'];
 		}
+		
+		if ( !isset( $_POST['group_mode'] ) || trim($_POST['group_mode'])=='' ) {
+			$group_mode = $mailusers_send_to_group_mode;
+		} else {
+			$group_mode = $_POST['group_mode'];
+		}
 	}
 	if (!isset($send_roles)) {
 		$send_roles = array();
 	}
+
+    $send_filters = &$send_roles ;
 
 	if (!isset($mail_format)) {
 		$mail_format = mailusers_get_default_mail_format();
@@ -92,6 +100,10 @@
 
 	if (!isset($mail_content)) {
 		$mail_content = '';
+	}	
+
+	if (!isset($group_mode)) {
+		$group_mode = $mailusers_send_to_group_mode;
 	}	
 
     //  Override the send from address?
@@ -114,7 +126,10 @@
 	<?php
 		// Fetch users
 		// --
-		$recipients = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+        if ($group_mode == 'meta')
+		    $recipients = mailusers_get_recipients_from_custom_meta_filters($send_filters, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
+        else
+		    $recipients = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
 
 		if (empty($recipients)) {
 	?>
