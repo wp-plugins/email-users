@@ -47,6 +47,8 @@ function last_names_starting_with_m()
 }
 `
 
+In addition to filtering on User Meta data to build a custom list of users, you can now define custom groups based on User Meta data.
+
 `
 add_action( 'mailusers_group_custom_meta_filter', 'send_to_fire_department', 5 );
 
@@ -63,6 +65,37 @@ function send_to_police_department()
     mailusers_register_group_custom_meta_filter('Police Department', 'department', 'police');
 }
 `
+
+In addition to defining specific Meta Key and Value pairs, Email Users also supports a filter to generate the Meta Group filters based on a Meta Key.  The Meta Key filter supports two optional arguments - a Meta Value and a function callback to generate the label.  Neither is required.  When the label callback is used, it receives two arguments, both strings, the Meta Key and Meta Value.  It must return a string.
+
+`
+//  Define action to send to blog followers
+add_action( 'mailusers_group_custom_meta_key_filter', 'send_to_my_blog_followers', 5 );
+
+function send_to_my_blog_followers()
+{
+    mailusers_register_group_custom_meta_key_filter('blog_follower');
+}
+
+function send_to_departments_label($mk, $mv)
+{
+    return(ucwords($mk) . ' = ' . ucwords($mv)) ;
+}
+
+//  Define action to send to departments using custom callback to generate the label
+add_action( 'mailusers_group_custom_meta_key_filter', 'send_to_departments', 5 );
+
+function send_to_departments()
+{
+    mailusers_register_group_custom_meta_key_filter('department', null, 'send_to_departments_label');
+}
+
+function send_to_departments_label($mk, $mv)
+{
+    return(ucwords($mk) . ' = ' . ucwords($mv)) ;
+}
+`
+
 == Changelog ==
 
 = Version 4.4.1 =
@@ -73,6 +106,7 @@ function send_to_police_department()
 * Added support for sending email to groups based on a custom meta filter.
 * Added suppport for providing a bounce email address.
 * Fixed bug in Options form which prevented translation of strings.
+* Added support for defining email group meta filters based on meta key.
 
 = Version 4.3.21 =
 * Updated Spanish translation files.
