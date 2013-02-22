@@ -382,6 +382,9 @@ function mailusers_add_pages() {
      *
      */
 
+    //  Load any custom meta key filters
+    do_action('mailusers_group_custom_meta_key_filter') ;
+
     //  Load any custom meta filters
     do_action('mailusers_group_custom_meta_filter') ;
 
@@ -392,7 +395,7 @@ function mailusers_add_pages() {
 	        __('Send to Meta Group(s)', MAILUSERS_I18N_DOMAIN), 
 	        __('Send to Meta Group(s)', MAILUSERS_I18N_DOMAIN), 
 	        MAILUSERS_EMAIL_USER_GROUPS_CAP,
-            'mailusers-send-to-group-cutome-meta-page',
+            'mailusers-send-to-group-custom-meta-page',
    	        'mailusers_send_to_group_custom_meta_page') ;
     }
 
@@ -1111,6 +1114,16 @@ function mailusers_register_group_custom_meta_filter($label, $meta_filter, $meta
 }
 
 /**
+ * Register a group custom meta key filter
+ *
+ */
+function mailusers_register_group_custom_meta_key_filter($meta_key, $meta_value = null, $label_cb = null) {
+    require_once('email_users_custom_filter_class.php') ;
+
+    CustomMetaKeyGroupFilter::BuildFilter($meta_key, $meta_value, $label_cb) ;
+}
+
+/**
  * Check Valid E-Mail Address
  */
 function mailusers_is_valid_email($email) {
@@ -1308,14 +1321,14 @@ function mailusers_preprint_r()
     $numargs = func_num_args() ;
     $arg_list = func_get_args() ;
     for ($i = 0; $i < $numargs; $i++) {
-	    printf('<pre style="text-align:left;">%s</pre>', print_r($arg_list[$i], true)) ;
+	    //printf('<pre style="text-align:left;">%s</pre>', print_r($arg_list[$i], true)) ;
 	    error_log(print_r($arg_list[$i], true)) ;
     }
 }
 
 function mailusers_whereami($x, $y)
 {
-	printf('<h2>%s::%s</h2>', basename($x), $y) ;
+	//printf('<h2>%s::%s</h2>', basename($x), $y) ;
 	error_log(sprintf('%s::%s', basename($x), $y)) ;
 }
 endif;
