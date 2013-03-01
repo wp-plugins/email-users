@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.4.1-beta-3' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.4.1-beta-4' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -525,28 +525,25 @@ function mailusers_edit_any_user_profile_form($uid) {
 		<tr>
 			<th></th>
 			<td>
-				<input 	type="checkbox"
+                <input type="hidden" name="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>" value="false">
+				<input type="checkbox"
 						name="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>"
 						value="true"
 						<?php if (get_user_meta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true)=='true') echo 'checked="checked"'; ?> ></input>
 				<?php _e('Accept to receive post or page notification emails', MAILUSERS_I18N_DOMAIN); ?><br/>
-				<input 	type="checkbox"
+				<input type="hidden" name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>" value="false">
+				<input type="checkbox"
 						name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						id="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>"
 						value="true"
 						<?php if (get_user_meta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true)=='true') echo 'checked="checked"'; ?> ></input>
+
 				<?php _e('Accept to receive emails sent to multiple recipients (but still accept emails sent only to me)', MAILUSERS_I18N_DOMAIN); ?>
 			</td>
 		</tr>
 	</tbody>
 	</table>
-<?php
-    }
-    else {
-?>
-<input 	type="hidden" name="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>" id="<?php echo MAILUSERS_ACCEPT_NOTIFICATION_USER_META; ?>" value="<?php echo (get_user_meta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true) === 'true') ? "true" : "false"; ?>"></input>
-<input 	type="hidden" name="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>" id="<?php echo MAILUSERS_ACCEPT_MASS_EMAIL_USER_META; ?>" value="<?php echo (get_user_meta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true) === 'true') ? "true" : "false"; ?>"></input>
 <?php
     }
 }
@@ -577,15 +574,15 @@ function mailusers_any_user_profile_update($uid) {
 	    $value = $_POST[MAILUSERS_ACCEPT_NOTIFICATION_USER_META] ;
 		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, $value);
 	} else {
-		update_usermeta($uid, MAILUSERS_ACCEPT_NOTIFICATION_USER_META, 'false');
+        add_user_meta($uid,  MAILUSERS_ACCEPT_NOTIFICATION_USER_META, get_option(MAILUSERS_ACCEPT_NOTIFICATION_USER_META), true);
 	}
 
 	if (isset($_POST[MAILUSERS_ACCEPT_MASS_EMAIL_USER_META])) {
 	    $value = $_POST[MAILUSERS_ACCEPT_MASS_EMAIL_USER_META];
 		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, $value);
 	} else {
-		update_usermeta($uid, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, 'false');
-	}
+        add_user_meta($uid,  MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, get_option(MAILUSERS_ACCEPT_MASS_EMAIL_USER_META), true);
+    }
 }
 
 /**

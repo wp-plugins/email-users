@@ -107,6 +107,7 @@ function send_to_departments_label($mk, $mv)
 * Added suppport for providing a bounce email address.
 * Fixed bug in Options form which prevented translation of strings.
 * Added support for defining email group meta filters based on meta key.
+* Implemented solution from @maximinime to fix lost Email-Users settings.
 
 = Version 4.3.21 =
 * Updated Spanish translation files.
