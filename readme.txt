@@ -1,9 +1,9 @@
 === Email Users ===
 Contributors: vprat, mpwalsh8
-Donate link: http://www.marvinlabs.com
+Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.3
-Tested up to: 3.4.2
+Tested up to: 3.5.1
 Stable tag: 4.3.21
 
 A plugin for WordPress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
@@ -12,9 +12,9 @@ A plugin for WordPress which allows you to send an email to the registered blog 
 
 A plugin for WordPress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
-All the instructions for installation, the support forums, a FAQ, etc. can be found on the [plugin home page](http://www.marvinlabs.com).
+All the instructions for installation, the support forums, a FAQ, etc. can be found on the [plugin home page](http://wordpress.org/extend/plugins/email-users/) or on the [plugin overview page](http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/).
 
-This plugin is available under the GPL license, which means that it's free. If you use it for a commercial web site, if you appreciate my efforts or if you want to encourage me to develop and maintain it, please consider making a donation using Paypal, a secured payment solution. You just need to click the donate button on the [plugin home page](http://www.marvinlabs.com) and follow the instructions.
+This plugin is available under the GPL license, which means that it's free. If you use it for a commercial web site, if you appreciate my efforts or if you want to encourage me to develop and maintain it, please consider making a donation using Paypal, a secured payment solution. You just need to click the donate button on the the [plugin overview page](http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/) and follow the instructions.
 
 == Custom Filter Usage ==
 
@@ -108,6 +108,7 @@ function send_to_departments_label($mk, $mv)
 * Fixed bug in Options form which prevented translation of strings.
 * Added support for defining email group meta filters based on meta key.
 * Implemented solution from @maximinime to fix lost Email-Users settings.
+* Removed invalid references to Marvin Labs.
 
 = Version 4.3.21 =
 * Updated Spanish translation files.
