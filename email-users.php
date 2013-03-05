@@ -3,10 +3,10 @@
 /*
 Plugin Name: Email Users
 Version: 4.4.1
-Plugin URI: http://email-users.vincentprat.info
-Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.
-Author: MarvinLabs & Mike Walsh
-Author URI: http://www.marvinlabs.com
+Plugin URI: http://wordpress.org/extend/plugins/email-users/
+Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
+Author: Mike Walsh & MarvinLabs
+Author URI: http://www.michaelwalsh.org
 */
 
 /*  Copyright 2006 Vincent Prat 
@@ -27,7 +27,7 @@ Author URI: http://www.marvinlabs.com
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.4.1-beta-5' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.4.1-beta-6' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
