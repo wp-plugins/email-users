@@ -103,7 +103,9 @@
 	$post_title = $post->post_title;
 	$post_url = get_permalink( $post_id );			
 	$post_content = explode( '<!--more-->', $post->post_content, 2 );
-	$post_excerpt = $post_content[0];
+    $post_excerpt = $post->post_excerpt;
+
+    if (empty($post_excerpt)) $post_excerpt = $post_content[0];
 
     if (mailusers_get_default_mail_format()=='html') {
 		$post_excerpt = wpautop($post_excerpt);
