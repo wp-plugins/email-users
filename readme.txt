@@ -109,6 +109,7 @@ function send_to_departments_label($mk, $mv)
 * Added support for defining email group meta filters based on meta key.
 * Implemented solution from @maximinime to fix lost Email-Users settings.
 * Removed invalid references to Marvin Labs.
+* Fixed bug where Post Excerpt wasn't being used in email when present.
 
 = Version 4.3.21 =
 * Updated Spanish translation files.
