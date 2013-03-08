@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 4.3.21
+Stable tag: 4.4.1
 
 A plugin for WordPress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
@@ -110,6 +110,7 @@ function send_to_departments_label($mk, $mv)
 * Implemented solution from @maximinime to fix lost Email-Users settings.
 * Removed invalid references to Marvin Labs.
 * Fixed bug where Post Excerpt wasn't being used in email when present.
+* Updated French and Spanish language files.
 
 = Version 4.3.21 =
 * Updated Spanish translation files.
