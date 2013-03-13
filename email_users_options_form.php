@@ -186,11 +186,11 @@
 		<td>
 			<input 	type="checkbox" name="mailusers_default_notifications" id="mailusers_default_notifications" value="true"
 					<?php if (mailusers_get_default_notifications()=='true') echo 'checked="checked"';?> ></input>
-			<?php _e('Recieve post or page notification emails.', MAILUSERS_I18N_DOMAIN); ?><br/>
+			<?php _e('Receive post or page notification emails.', MAILUSERS_I18N_DOMAIN); ?><br/>
 			<input 	type="checkbox"
 					name="mailusers_default_mass_email" id="mailusers_default_mass_email" value="true"
 					<?php if (mailusers_get_default_mass_email()=='true') echo 'checked="checked"';?> ></input>
-			<?php _e('Recieve emails sent to multiple recipients.', MAILUSERS_I18N_DOMAIN); ?><br/>
+			<?php _e('Receive emails sent to multiple recipients.', MAILUSERS_I18N_DOMAIN); ?><br/>
 			<input 	type="checkbox"
 					name="mailusers_default_user_control" id="mailusers_default_user_control" value="true"
 					<?php if (mailusers_get_default_user_control()=='true') echo 'checked="checked"';?> ></input>
