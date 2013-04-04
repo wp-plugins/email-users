@@ -1,5 +1,5 @@
 === Email Users ===
-Contributors: vprat, mpwalsh8
+Contributors: vprat, mpwalsh8, marvinlabs
 Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.3
