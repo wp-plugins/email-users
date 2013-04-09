@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.4.2
+Version: 4.4.3-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.4.2' );
+define( 'MAILUSERS_CURRENT_VERSION', '4.4.3-beta-1' );
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
 
 $mailusers_user_custom_meta_filters = array() ;
 $mailusers_group_custom_meta_filters = array() ;
@@ -872,13 +872,17 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     if ($meta_filter != '')
     {
         $args = array_merge($args, array(
-            'include' => '',
-            'exclude' => '',
             'fields' => 'all_with_meta',
             'meta_key' => $meta_filter,
             'meta_value' => $meta_value,
             'meta_like_escape' => false,
             'meta_compare' => $meta_compare)) ;
+
+        if (!array_key_exists('include', $args))
+            $args['include'] = '' ;
+
+        if (!array_key_exists('exclude', $args))
+            $args['exclude'] = '' ;
  
         //  Note:  WordPress 3.5.1 and earlier do not support 'LIKE' 
         //  constructs on meta queries - they get wrapped with SQL
@@ -1053,6 +1057,7 @@ function mailusers_get_recipients_from_roles($roles, $exclude_id='', $meta_filte
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_recipients_from_custom_meta_filter( $ids, $exclude_id='', $meta_filter='', $meta_value='', $meta_compare='=') {
+
     return mailusers_get_users($exclude_id, $meta_filter, array('include' => $ids), null, $meta_value, $meta_compare) ;
 }
 
@@ -1178,6 +1183,7 @@ function mailusers_replace_sender_templates($text, $sender_name) {
  * Returns number of recipients addressed in emails or false on internal error.
  */
 function mailusers_send_mail($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
+    
 	$num_sent = 0; // return value
 	if ( (empty($recipients)) ) { return $num_sent; }
 	if ('' == $message) { return false; }
@@ -1238,10 +1244,16 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		$count = 0;
 		$sender_emailed = false;
 
-		//for ($i=0; $i<count($recipients); $i++) {
-			//$recipient = $recipients[$i]->user_email;
-        foreach ($recipients as $key=> $value) {
-			$recipient = $recipients[$key]->user_email;
+        //  Make sure there are no duplicates which can result
+        //  if/when the user selects both roles and users as
+        //  the recipients.
+
+        foreach ($recipients as $key=> $value)
+			$recipients[$key] = $recipients[$key]->user_email;
+
+        $recipients = array_unique($recipients) ;
+
+        foreach ($recipients as $recipient) {
 
             if (!mailusers_is_valid_email($recipient)) {
                 continue;
@@ -1280,8 +1292,12 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	} else {
 		$headers .= "To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
 
-        foreach ($recipients as $key=> $value) {
-			$recipient = $recipients[$key]->user_email;
+        foreach ($recipients as $key=> $value)
+			$recipients[$key] = $recipients[$key]->user_email;
+
+        $recipients = array_unique($recipients) ;
+
+        foreach ($recipients as $recipient) {
 
             if (!mailusers_is_valid_email($recipient)) {
                 echo '<div class="error fade"><p>' . sprintf(__('Invalid email address ("%s") found.', MAILUSERS_I18N_DOMAIN), $recipient) . '</p></div>';
