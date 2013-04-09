@@ -98,6 +98,11 @@ function send_to_departments_label($mk, $mv)
 
 == Changelog ==
 
+= Version 4.4.3
+* Fixed typo which prevented saving Sender Exclude option.
+* Fixed bug with User Meta filters.
+* Fixed bug with duplicate emails being sent in some instances when both Roles and Users selected.
+
 = Version 4.4.2 =
 * Fixed bug which caused email to be sent to all recipients instead of just those in a specific group.
 * Addressed deprecated update_usermeta() usage.
