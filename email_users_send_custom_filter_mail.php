@@ -55,12 +55,20 @@
 			$mail_format = $_POST['mail_format'];
 		}
 	
+		if ( !isset($_POST['send_users']) || !is_array($_POST['send_users']) || empty($_POST['send_users']) ) {
+			$err_msg = $err_msg . __('You must enter at least a recipient.', MAILUSERS_I18N_DOMAIN) . '<br/>';
+		} else {
+			$send_users = $_POST['send_users'];
+		}
+		
+        /*
 		if ( !isset($_POST['send_roles']) || !is_array($_POST['send_roles']) || empty($_POST['send_roles']) ) {
 			$err_msg = $err_msg . __('You must select at least a role.', MAILUSERS_I18N_DOMAIN) . '<br/>';
 		} else {
 			$send_roles = $_POST['send_roles'];
 		}
-	
+         */
+        		
 		if ( !isset( $_POST['subject'] ) || trim($_POST['subject'])=='' ) {
 			$err_msg = $err_msg . __('You must enter a subject.', MAILUSERS_I18N_DOMAIN) . '<br/>';
 		} else {
@@ -81,6 +89,10 @@
 	}
 	if (!isset($send_roles)) {
 		$send_roles = array();
+	}
+
+	if (!isset($send_users)) {
+		$send_users = array();
 	}
 
 	if (!isset($mail_format)) {
@@ -116,7 +128,16 @@
 		// Fetch users
 		// --
 		//$recipients = mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
-		$recipients = mailusers_get_recipients_from_custom_meta_filter($send_roles, $exclude_id, $mailusers_mf, $mailusers_mv, $mailusers_mc);
+
+        if (!empty($send_users)) {
+		    $recipients = mailusers_get_recipients_from_custom_meta_filter($send_users, $exclude_id, $mailusers_mf, $mailusers_mv, $mailusers_mc);
+        }
+        else if (!empty($send_roles)) {
+		    $recipients = mailusers_get_recipients_from_custom_meta_filter($send_roles, $exclude_id, $mailusers_mf, $mailusers_mv, $mailusers_mc);
+        }
+        else {
+            $recipients = array() ;
+        }
 
 		if (empty($recipients)) {
 	?>
