@@ -98,6 +98,14 @@ function send_to_departments_label($mk, $mv)
 
 == Changelog ==
 
+= Version 4.5.0
+* Added CSS class and ID to Post and Page Notification post boxes so they can be styled or easily hidden via CSS.
+* Added integration with User Groups plugin.
+* Added integration with User Access Manager Plugin.
+* Cleaned up recipient selection for Group Email and Post/Page Notifications so it includes Filters, Roles, and groups from integrated plugins (when enabled).
+* Added integration pane to Settings page to note which plugins Email-Users recorgnizes and enables integration with.
+* Added *mailusers_update_custom_meta_filters* action to update of dynamic meta filters prior to their use.  Useful to creating and updating meta values based on other meta data or plugins.
+
 = Version 4.4.4
 * Bumped version because the tag wasn't done correctly.
 
