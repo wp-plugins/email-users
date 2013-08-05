@@ -176,7 +176,7 @@
             $recipients = array_merge($recipients, mailusers_get_recipients_from_user_groups($send_ug, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META));
 
         if (class_exists(MAILUSERS_USER_ACCESS_MANAGER_CLASS) && !empty($send_uam))
-            $recipients = array_merge($recipients, mailusers_get_recipients_from_terms($send_ug, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META));
+            $recipients = array_merge($recipients, mailusers_get_recipients_from_uam_group($send_uam, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META));
 
         if (!empty($send_roles))
             $recipients = array_merge($recipients, mailusers_get_recipients_from_roles($send_roles, $exclude_id, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META));
