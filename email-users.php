@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', true);
+define( 'MAILUSERS_DEBUG', false);
 
 //  Enable integration with User Groups plugin?
 //  @see http://wordpress.org/plugins/user-groups/
@@ -1336,7 +1336,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$headers .= "Cc: " . $sender_email . "\n\n";
 			
 			if (MAILUSERS_DEBUG) {
-				mailusers_preprint_r(htmlentities($headers));
+				mailusers_preprint_r($headers);
 			}
 			
 			@wp_mail($to, $subject, $mailtext, $headers);
