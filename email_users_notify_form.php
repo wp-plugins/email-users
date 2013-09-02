@@ -19,7 +19,7 @@
 ?>
 
 <?php 
-    global $user_identity, $user_email, $user_ID; 
+    global $post, $user_identity, $user_email, $user_ID; 
 
     if (!current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
@@ -102,7 +102,7 @@
     $post_title = $post->post_title;
     $post_url = get_permalink( $post_id );            
     $post_content = explode( '<!--more-->', $post->post_content, 2 );
-    $post_excerpt = $post->post_excerpt;
+    $post_excerpt = get_the_excerpt() ;
 
     if (empty($post_excerpt)) $post_excerpt = $post_content[0];
 
@@ -160,20 +160,6 @@
             <td>
                 <select name="send_targets[]" multiple="yes" size="8" style="width: 250px; height: 250px;">
                 <?php 
-    if (class_exists(MAILUSERS_USER_ACCESS_MANAGER_CLASS)) {
-        error_log('UAM present!') ;
-        $q = mailusers_get_uam_groups() ;
-        error_log(print_r($q, true)) ;
-
-        foreach ($q as $key => $value)
-        {
-            $qq = mailusers_get_recipients_from_uam_group($key) ;
-            error_log(print_r($qq, true)) ;
-        }
-    } else {
-        error_log('No UAM present!') ;
-    }
-
 
                     $prefix = __('Filter', MAILUSERS_I18N_DOMAIN) ;
                     $targets = mailusers_get_group_meta_filters($user_ID, MAILUSERS_ACCEPT_MASS_EMAIL_USER_META);
