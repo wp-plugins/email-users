@@ -1263,8 +1263,9 @@ function mailusers_preg_quote($str) {
 /**
  * Replace the template variables in a given text.
  */
-function mailusers_replace_post_templates($text, $post_title, $post_excerpt, $post_url) {
+function mailusers_replace_post_templates($text, $post_title, $post_author, $post_excerpt, $post_url) {
 	$text = preg_replace( '/%POST_TITLE%/', mailusers_preg_quote($post_title), $text );
+	$text = preg_replace( '/%POST_AUTHOR%/', mailusers_preg_quote($post_author), $text );
 	$text = preg_replace( '/%POST_EXCERPT%/', mailusers_preg_quote($post_excerpt), $text );
 	$text = preg_replace( '/%POST_URL%/', mailusers_preg_quote($post_url), $text );
 	return $text;

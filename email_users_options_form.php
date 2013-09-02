@@ -350,6 +350,10 @@
 		<td><?php _e('the title of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
+		<td><b>%POST_AUTHOR%</b></td>
+		<td><?php _e('the author of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
 		<td><b>%POST_EXCERPT%</b></td>
 		<td><?php _e('the excerpt of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>

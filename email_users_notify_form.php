@@ -103,6 +103,7 @@
     $post_url = get_permalink( $post_id );            
     $post_content = explode( '<!--more-->', $post->post_content, 2 );
     $post_excerpt = get_the_excerpt() ;
+    $post_author = get_userdata( $post->post_author )->display_name;
 
     if (empty($post_excerpt)) $post_excerpt = $post_content[0];
 
@@ -115,8 +116,8 @@
         $post_excerpt = do_shortcode($post_excerpt) ;
     }
     
-    $subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
-    $mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
+    $subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_url);
+    $mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_url);
 ?>
 
 <div class="wrap">
