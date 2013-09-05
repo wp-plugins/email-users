@@ -148,6 +148,11 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.5.2
+* Added Dashboard Widget to report number of users who accept each type of email and default settings.
+* Added Message to Settings page to warn Admin when no users will not receive emails.
+* Added Meta Box to Settings page to report number of users who accept each type of email.
+
 = Version 4.5.1
 * Fixed Post Excerpt to use WordPress API to allow usage of filters.
 * Added support for %POST_AUTHOR% keyword replacement.
