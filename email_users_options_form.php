@@ -307,7 +307,7 @@
 		// Replace the template variables concerning the sender details
 		// --	
 		get_currentuserinfo();
-		global $user_identity, $user_email ;
+		global $post, $user_identity, $user_email ;
 
 		$from_name = $user_identity;
 		$from_address = $user_email;
@@ -318,10 +318,11 @@
 		$post_title = $post->post_title;
 		$post_url = get_permalink( $post_id );			
 		$post_content = explode( '<!--more-->', $post->post_content, 2 );
-		$post_excerpt = $post_content[0];
+		$post_excerpt = get_the_excerpt();
+        $post_author = get_userdata( $post->post_author )->display_name;
 		
-		$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
-		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
+		$subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_url);
+		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_url);
 ?>
 	<tr>
 		<td><b><?php _e('Subject', MAILUSERS_I18N_DOMAIN); ?></b></td>
