@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.5.1
+Version: 4.5.2
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.5.1');
+define( 'MAILUSERS_CURRENT_VERSION', '4.5.2');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1439,6 +1439,67 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 	return $num_sent;
 }
+
+/**
+ * Add a widget to the dashboard.
+ *
+ * This function is hooked into the 'wp_dashboard_setup' action below.
+ */
+function mailusers_add_dashboard_widgets() {
+
+	wp_add_dashboard_widget(
+                 'mailusers_dashboard_widget',         // Widget slug.
+                 'Email Users',         // Title.
+                 'mailusers_dashboard_widget_function' // Display function.
+        );	
+}
+add_action( 'wp_dashboard_setup', 'mailusers_add_dashboard_widgets' );
+
+/**
+ * Create the function to output the contents of our Dashboard Widget.
+ */
+function mailusers_dashboard_widget_function() {
+?>
+    <div class="table table_content">
+    <p class="sub"><?php _e('Default User Settings', MAILUSERS_I18N_DOMAIN); ?></p>
+    <table style="text-align: left; width: 90%;">
+   	<tr>
+    <th><?php _e('Receive post or page notification emails:', MAILUSERS_I18N_DOMAIN); ?></th>
+	<td><?php echo (mailusers_get_default_notifications()=='true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ; ?></td>
+	</tr>
+   	<tr>
+    <th><?php _e('Receive emails sent to multiple recipients:', MAILUSERS_I18N_DOMAIN); ?></th>
+	<td><?php echo (mailusers_get_default_mass_email()=='true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ; ?></td>
+	</tr>
+   	<tr>
+    <th><?php _e('Allow Users to control their own Email Users settings:', MAILUSERS_I18N_DOMAIN); ?></th>
+	<td><?php echo (mailusers_get_default_user_control()=='true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ; ?></td>
+	</tr>
+	</table>
+    </div>
+<?php
+
+    //  Report the number of users who accept notifications and mass emails
+
+    $massemails = mailusers_get_users('', MAILUSERS_ACCEPT_MASS_EMAIL_USER_META) ;
+    $notifications = mailusers_get_users('', MAILUSERS_ACCEPT_NOTIFICATION_USER_META) ;
+
+?>
+    <div class="table table_content">
+    <p class="sub"><?php _e('User Statistics', MAILUSERS_I18N_DOMAIN); ?></p>
+    <table style="text-align: left; width: 90%;">
+   	<tr>
+    <th><?php _e('Number of Users who accept post or page notification emails:', MAILUSERS_I18N_DOMAIN); ?></th>
+	<td<?php if ( count($notifications) == 0) echo ' style="color: red;"' ; ?>><?php echo count($notifications) ; ?></td>
+	</tr>
+   	<tr>
+    <th><?php _e('Number of Users who accept emails sent to multiple recipients:', MAILUSERS_I18N_DOMAIN); ?></th>
+	<td<?php if ( count($massemails) == 0) echo ' style="color: red;"' ; ?>><?php echo count($massemails) ; ?></td>
+	</tr>
+	</table>
+    </div>
+<?php
+} 
 
 if (MAILUSERS_DEBUG) :
 /**
