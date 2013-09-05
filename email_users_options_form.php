@@ -493,11 +493,11 @@
 <div class="table table_content">
 <table style="text-align: left; width: 90%;">
 <tr>
-<th><?php _e('Number of Users who accept<br/>post or page notification emails:', MAILUSERS_I18N_DOMAIN); ?></th>
+<td><?php _e('Number of Users who accept<br/>post or page notification emails:', MAILUSERS_I18N_DOMAIN); ?></td>
 <td<?php if ( count($notifications) == 0) echo ' style="color: red;"' ; ?>><?php echo count($notifications) ; ?></td>
 </tr>
 <tr>
-<th><?php _e('Number of Users who accept<br/>emails sent to multiple recipients:', MAILUSERS_I18N_DOMAIN); ?></th>
+<td><?php _e('Number of Users who accept<br/>emails sent to multiple recipients:', MAILUSERS_I18N_DOMAIN); ?></td>
 <td<?php if ( count($massemails) == 0) echo ' style="color: red;"' ; ?>><?php echo count($massemails) ; ?></td>
 </tr>
 </table>
@@ -534,7 +534,7 @@
 <div style="padding:0px 5px;">
 <div>
 	<ul style="list-style-type: square;margin-left: 7px;">
-		<li><?php _e('if you use Google Forms and want to integrate them with your WordPress site, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://michaelwalsh.org/wordpress/wordpress-plugins/wpgform/">WordPress Google Form</a></li>
+		<li><?php _e('If you use Google Forms and want to integrate them with your WordPress site, try: ', MAILUSERS_I18N_DOMAIN); ?><a href="http://michaelwalsh.org/wordpress/wordpress-plugins/wpgform/">WordPress Google Form</a></li>
 	</ul>
 </div>
 </div>
