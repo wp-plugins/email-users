@@ -145,9 +145,17 @@
 				size="80" /></td>
 	</tr>
 	<tr>
+        <th><?php _e('Copy Sender', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input 	type="checkbox" name="mailusers_copy_sender" id="mailusers_copy_sender" value="true"
+					<?php if (mailusers_get_copy_sender()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Copy sender (add sender email to Cc: header) when sending email.', MAILUSERS_I18N_DOMAIN); ?><br/>
+		</td>
+	</tr>
+	<tr>
         <th><?php _e('From Sender<br/>Exclude', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<input 	type="checkbox" name="mailusers_from_sender_exclude" id="mailusers_from__sender_exclude" value="true"
+			<input 	type="checkbox" name="mailusers_from_sender_exclude" id="mailusers_from_sender_exclude" value="true"
 					<?php if (mailusers_get_from_sender_exclude()=='true') echo 'checked="checked"';?> ></input>
 			<?php _e('Exclude sender from email recipient list.', MAILUSERS_I18N_DOMAIN); ?><br/>
 		</td>
@@ -321,8 +329,8 @@
 		$post_excerpt = get_the_excerpt();
         $post_author = get_userdata( $post->post_author )->display_name;
 		
-		$subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_url);
-		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_url);
+		$subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
+		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
 ?>
 	<tr>
 		<td><b><?php _e('Subject', MAILUSERS_I18N_DOMAIN); ?></b></td>
@@ -384,6 +392,10 @@
 	<tr>
 		<td><b>%POST_EXCERPT%</b></td>
 		<td><?php _e('the excerpt of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b>%POST_CONTENT%</b></td>
+		<td><?php _e('the content of the post you want to highlight', MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	<tr>
 		<td><b>%POST_URL%</b></td>

@@ -69,8 +69,8 @@
 		$post_content = explode( '<!--more-->', $post->post_content, 2 );
 		$post_excerpt = $post_content[0];
 	
-		$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_url);
-		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_url);
+		$subject = mailusers_replace_post_templates($subject, $post_title, $post_excerpt, $post_content, $post_url);
+		$mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_excerpt, $post_content, $post_url);
 	}
 	
 ?>

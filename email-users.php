@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.5.3
+Version: 4.5.3-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.5.3');
+define( 'MAILUSERS_CURRENT_VERSION', '4.5.3-beta-1');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -106,8 +106,10 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_default_user_control' => 'true',
 		// Mail User - Default setting for Short Code Processing
 		'mailusers_shortcode_processing' => 'false',
-		// Mail User - Default setting for Short Code Processing
+		// Mail User - Default setting for From Sender Exclude
 		'mailusers_from_sender_exclude' => 'true',
+		// Mail User - Default setting for Copy Sender
+		'mailusers_copy_sender' => 'false',
 	) ;
 
     if (array_key_exists($option, $default_plugin_settings))
@@ -631,6 +633,7 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
     register_setting('email_users', 'mailusers_shortcode_processing') ;
     register_setting('email_users', 'mailusers_from_sender_exclude') ;
+    register_setting('email_users', 'mailusers_copy_sender') ;
     register_setting('email_users', 'mailusers_from_sender_name_override') ;
     register_setting('email_users', 'mailusers_group_taxonomy') ;
     register_setting('email_users',
@@ -875,6 +878,25 @@ function mailusers_get_from_sender_exclude() {
  */
 function mailusers_update_from_sender_exclude( $from_sender_exclude ) {
 	return update_option( 'mailusers_from_sender_exclude', $from_sender_exclude );
+}
+
+/**
+ * Wrapper for the from send exclude setting
+ */
+function mailusers_get_copy_sender() {
+    $option = get_option( 'mailusers_copy_sender' );
+
+    if ($option === false)
+        $option = mailusers_get_default_plugin_settings( 'mailusers_copy_sender' );
+
+    return $option;
+}
+
+/**
+ * Wrapper for the from sender exclude setting
+ */
+function mailusers_update_copy_sender( $copy_sender ) {
+	return update_option( 'mailusers_copy_sender', $copy_sender );
 }
 
 /**
@@ -1263,10 +1285,11 @@ function mailusers_preg_quote($str) {
 /**
  * Replace the template variables in a given text.
  */
-function mailusers_replace_post_templates($text, $post_title, $post_author, $post_excerpt, $post_url) {
+function mailusers_replace_post_templates($text, $post_title, $post_author, $post_excerpt, $post_content, $post_url) {
 	$text = preg_replace( '/%POST_TITLE%/', mailusers_preg_quote($post_title), $text );
 	$text = preg_replace( '/%POST_AUTHOR%/', mailusers_preg_quote($post_author), $text );
 	$text = preg_replace( '/%POST_EXCERPT%/', mailusers_preg_quote($post_excerpt), $text );
+	$text = preg_replace( '/%POST_CONTENT%/', mailusers_preg_quote($post_content), $text );
 	$text = preg_replace( '/%POST_URL%/', mailusers_preg_quote($post_url), $text );
 	return $text;
 }
@@ -1298,9 +1321,20 @@ function mailusers_replace_sender_templates($text, $sender_name) {
  */
 function mailusers_send_mail($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
     
+    //  Default the To: and Cc: values to the send email address
+    $to = sprintf('"%s <%s>"\n', $sender_name, $sender_email) ;
+    $cc = sprintf('Cc: %s', $to) ;
+    //error_log('xxxxxxxxxxxxxxxxxxxxxxxxx') ;
+    //error_log($to) ;
+    //error_log($cc) ;
+    //error_log('yyyyyyyyyyyyyyyyyyyyyyyyy') ;
+
 	$num_sent = 0; // return value
 	if ( (empty($recipients)) ) { return $num_sent; }
 	if ('' == $message) { return false; }
+
+    //  Cc: Sender?
+    $ccsender = mailusers_get_copy_sender() ;
 
     //  Return path defaults to sender email if not specified
     $return_path = mailusers_get_send_bounces_to_address_override() ;
@@ -1332,14 +1366,15 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	if (count($recipients)==1) {
         $recipient = reset($recipients) ; // reset will return first value of the array!
 		if (mailusers_is_valid_email($recipient->user_email)) {
-            $to = sprintf("%s <%s>", $recipient->display_name, $recipient->user_email) . "\r\n" ;
+            $to = sprintf("%s <%s>\n", $recipient->display_name, $recipient->user_email) ;
 			//$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipient->user_email . ">\n";
-			$headers .= "Cc: " . $sender_email . "\n\n";
-			
+            if ($ccsender) $headers .= $cc ;
+
 			if (MAILUSERS_DEBUG) {
 				mailusers_preprint_r($headers);
 			}
 			
+            //error_log('--------------> 1') ;
 			@wp_mail($to, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
@@ -1386,7 +1421,8 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
 				if (!$sender_emailed) {
-					$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
+					//$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
+					$newheaders = $headers . $to . "$bcc\n\n";
 					$sender_emailed = true;
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
@@ -1396,6 +1432,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					mailusers_preprint_r($newheaders);
 				}
 			
+                //error_log('--------------> 2') ;
+                //error_log($sender_email) ;
+                //error_log($newheaders) ;
 				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
@@ -1404,7 +1443,10 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$num_sent++;
 		}
 	} else {
-		$headers .= "To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
+		//$headers .= sprintf('To: "%s <%s>"\n', $sender_name, $sender_email) ;
+
+        if ($ccsender)
+		    $headers .= sprintf('Cc: "%s <%s>"\n', $sender_name, $sender_email) ;
 
         foreach ($recipients as $key=> $value)
 			$recipients[$key] = $recipients[$key]->user_email;
@@ -1434,7 +1476,8 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		}
 				
 		//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
-		@wp_mail(null, $subject, $mailtext, $newheaders);
+        //error_log('--------------> 3') ;
+		@wp_mail($to, $subject, $mailtext, $newheaders);
 	}
 
 	return $num_sent;
@@ -1500,6 +1543,34 @@ function mailusers_dashboard_widget_function() {
     </div>
 <?php
 } 
+
+function mailusers_wp_mail_content_type($x)
+{
+    error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+    error_log($x) ;
+}
+//add_filter('wp_mail_content_type', 'mailusers_wp_mail_content_type') ;
+
+function mailusers_wp_mail_charset($x)
+{
+    error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+    error_log($x) ;
+}
+//add_filter('wp_mail_charset', 'mailusers_wp_mail_charset') ;
+
+function mailusers_wp_mail_from($x)
+{
+    error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+    error_log($x) ;
+}
+//add_filter('wp_mail_from', 'mailusers_wp_mail_from') ;
+
+function mailusers_wp_mail_from_name($x)
+{
+    error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+    error_log($x) ;
+}
+//add_filter('wp_mail_from_name', 'mailusers_wp_mail_from_name') ;
 
 if (MAILUSERS_DEBUG) :
 /**
