@@ -116,6 +116,9 @@
         $post_excerpt = do_shortcode($post_excerpt) ;
     }
     
+    //  Deal with post content in array form
+    if (is_array($post_content)) $post_content = $post_content[0] ;
+
     $subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
     $mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
 ?>
