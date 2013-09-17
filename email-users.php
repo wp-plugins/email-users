@@ -1322,12 +1322,8 @@ function mailusers_replace_sender_templates($text, $sender_name) {
 function mailusers_send_mail($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
     
     //  Default the To: and Cc: values to the send email address
-    $to = sprintf('"%s <%s>"\n', $sender_name, $sender_email) ;
+    $to = sprintf('%s <%s>\n', $sender_name, $sender_email) ;
     $cc = sprintf('Cc: %s', $to) ;
-    //error_log('xxxxxxxxxxxxxxxxxxxxxxxxx') ;
-    //error_log($to) ;
-    //error_log($cc) ;
-    //error_log('yyyyyyyyyyyyyyyyyyyyyyyyy') ;
 
 	$num_sent = 0; // return value
 	if ( (empty($recipients)) ) { return $num_sent; }
@@ -1361,9 +1357,17 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		$mailtext = wordwrap(strip_tags($message), 80, "\n");
 	}
 
-	// If unique recipient, send mail using to field.
+	// If unique recipient, send mail using TO field.
 	//--
+
+	// If multiple recipients, use the BCC field
+	//--
+	$bcc = '';
+	$bcc_limit = mailusers_get_max_bcc_recipients();
+        printf('<h3>%s::%s</h3><pre>%s</pre><br/>', basename(__FILE__), __LINE__, htmlspecialchars(print_r(array($to, $cc, $sender_name, $sender_email), true))) ;
+
 	if (count($recipients)==1) {
+        printf('<h3>%s::%s</h3>', basename(__FILE__), __LINE__) ;
         $recipient = reset($recipients) ; // reset will return first value of the array!
 		if (mailusers_is_valid_email($recipient->user_email)) {
             $to = sprintf("%s <%s>\n", $recipient->display_name, $recipient->user_email) ;
@@ -1374,7 +1378,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				mailusers_preprint_r($headers);
 			}
 			
-            //error_log('--------------> 1') ;
 			@wp_mail($to, $subject, $mailtext, $headers);
 			$num_sent++;
 		} else {
@@ -1384,12 +1387,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		return $num_sent;
 	}
 
-	// If multiple recipients, use the BCC field
-	//--
-	$bcc = '';
-	$bcc_limit = mailusers_get_max_bcc_recipients();
-
-	if ( $bcc_limit>0 && (count($recipients)>$bcc_limit) ) {
+    elseif ( $bcc_limit>0 && (count($recipients)>$bcc_limit) ) {
 		$count = 0;
 		$sender_emailed = false;
 
@@ -1422,7 +1420,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
 				if (!$sender_emailed) {
 					//$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
-					$newheaders = $headers . $to . "$bcc\n\n";
+					$newheaders = $headers . $to . "\n$bcc\n\n";
 					$sender_emailed = true;
 				} else {
 					$newheaders = $headers . "$bcc\n\n";
@@ -1432,9 +1430,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					mailusers_preprint_r($newheaders);
 				}
 			
-                //error_log('--------------> 2') ;
-                //error_log($sender_email) ;
-                //error_log($newheaders) ;
 				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
@@ -1476,7 +1471,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		}
 				
 		//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
-        //error_log('--------------> 3') ;
 		@wp_mail($to, $subject, $mailtext, $newheaders);
 	}
 
