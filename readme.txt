@@ -148,9 +148,12 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
-= Version 4.5.3
+= Version 4.5.3 =
 * Fixed bug in Test Notification which failed to incorporate %POST_AUTHOR% keyword.
 * Replaced bold font in Email-Users Info meta box on settings page.
+* Added %POST_CONTENT% substitution keyword.
+* Refactored construction of email headers.
+* Added option to specifically CC sender.
 
 = Version 4.5.2
 * Added Dashboard Widget to report number of users who accept each type of email and default settings.
