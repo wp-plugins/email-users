@@ -1484,11 +1484,18 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
  */
 function mailusers_add_dashboard_widgets() {
 
-	wp_add_dashboard_widget(
-                 'mailusers_dashboard_widget',         // Widget slug.
-                 'Email Users',         // Title.
-                 'mailusers_dashboard_widget_function' // Display function.
+    //  Only show widget for users who have the capability
+    if (current_user_can(MAILUSERS_EMAIL_SINGLE_USER_CAP) ||
+        current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP) ||
+        current_user_can(MAILUSERS_EMAIL_USER_GROUPS_CAP) ||
+        current_user_can(MAILUSERS_NOTIFY_USERS_CAP)) 
+    {
+	    wp_add_dashboard_widget(
+            'mailusers_dashboard_widget',         // Widget slug.
+            'Email Users',                        // Title.
+            'mailusers_dashboard_widget_function' // Display function.
         );	
+    }
 }
 add_action( 'wp_dashboard_setup', 'mailusers_add_dashboard_widgets' );
 
