@@ -53,7 +53,7 @@
         <select style="width:300px;" name="post_id">
         <?php
          global $post ;
-         $lastposts = get_posts(array('numberposts' => 0, 'post_type' => $post_type));
+         $lastposts = get_posts(array('numberposts' => -1, 'post_type' => $post_type));
          foreach($lastposts as $post) :
             setup_postdata($post);
          ?>
@@ -186,7 +186,7 @@
                         $index = strtolower($prefix . '-' . $key); ?>
                         <option value="<?php echo $index; ?>"
                         <?php echo (in_array($index, $send_targets) ? ' selected="yes"' : '');?>>
-                        <?php printf('%s - %s', $prefix, $value); ?>
+                        <?php printf('%s - %s', $prefix, __($value)); ?>
                         </option>
                         <?php 
                     }
@@ -202,7 +202,7 @@
                             $index = strtolower($prefix . '-' . $key); ?>
                             <option value="<?php echo $index; ?>"
                             <?php echo (in_array($index, $send_targets) ? ' selected="yes"' : '');?>>
-                            <?php printf('%s - %s', $prefix, $value); ?>
+                            <?php printf('%s - %s', $prefix, __($value)); ?>
                             </option>
                             <?php
                         }
@@ -219,7 +219,7 @@
                             $index = strtolower($prefix . '-' . $key); ?>
                             <option value="<?php echo $index; ?>"
                             <?php echo (in_array($index, $send_targets) ? ' selected="yes"' : '');?>>
-                            <?php printf('%s - %s', $prefix, $value); ?>
+                            <?php printf('%s - %s', $prefix, __($value)); ?>
                             </option>
                             <?php
                         }
