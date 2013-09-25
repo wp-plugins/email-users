@@ -94,15 +94,19 @@ class MailUsers_List_Table extends WP_List_Table {
      **************************************************************************/
     function column_default($item, $column_name) {
         switch($column_name){
-            case 'last_name':
-            case 'first_name':
+            //case 'last_name':
+            //case 'first_name':
+            case 'display_name':
             case 'user_login':
             case 'user_email':
                 return $item->$column_name;
-            case 'notifications':
-            case 'massemail':
+            //case 'notifications':
+            //case 'massemail':
+            case MAILUSERS_ACCEPT_NOTIFICATION_USER_META:
+            case MAILUSERS_ACCEPT_MASS_EMAIL_USER_META:
                 return ($item->$column_name == 'true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ;
             default:
+                error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
                 return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
     }
@@ -125,6 +129,8 @@ class MailUsers_List_Table extends WP_List_Table {
      * @return string Text to be placed inside the column <td> (last_name only)
      **************************************************************************/
     function column_last_name($item) {
+        //error_log('====================================================') ;
+        //error_log(print_r($item, true)) ;
         
         //Build row actions
         $actions = array(
@@ -174,12 +180,15 @@ class MailUsers_List_Table extends WP_List_Table {
     function get_columns(){
         $columns = array(
             'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
-            'last_name'     => __('Last Name', MAILUSERS_I18N_DOMAIN),
-            'first_name'    => __('First Name', MAILUSERS_I18N_DOMAIN),
+            //'last_name'     => __('Last Name', MAILUSERS_I18N_DOMAIN),
+            //'first_name'    => __('First Name', MAILUSERS_I18N_DOMAIN),
+            'display_name'    => __('Display Name', MAILUSERS_I18N_DOMAIN),
             'user_login'    => __('Username', MAILUSERS_I18N_DOMAIN),
             'user_email'    => __('E-Mail Address', MAILUSERS_I18N_DOMAIN),
-            'notifications' => __('Notifications', MAILUSERS_I18N_DOMAIN),
-            'massemail'     => __('Mass Email', MAILUSERS_I18N_DOMAIN)
+            //'notifications' => __('Notifications', MAILUSERS_I18N_DOMAIN),
+            //'massemail'     => __('Mass Email', MAILUSERS_I18N_DOMAIN)
+            MAILUSERS_ACCEPT_NOTIFICATION_USER_META => __('Notifications', MAILUSERS_I18N_DOMAIN),
+            MAILUSERS_ACCEPT_MASS_EMAIL_USER_META   => __('Mass Email', MAILUSERS_I18N_DOMAIN)
         );
         return $columns;
     }
@@ -200,12 +209,15 @@ class MailUsers_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_sortable_columns() {
         $sortable_columns = array(
-            'last_name'     => array('last_name',true),     //true means its already sorted
-            'first_name'    => array('first_name',false),
-            'user_login'    => array('user_login',false),
-            'user_email'    => array('user_email',false),
-            'notifications' => array('notifications',false),
-            'massemail'     => array('massemail',false)
+            //'last_name'     => array('last_name', true),     //true means its already sorted
+            //'first_name'    => array('first_name', true),
+            'display_name'    => array('display_name', true),
+            'user_login'    => array('user_login', true),
+            'user_email'    => array('user_email', false),
+            //'notifications' => array('notifications', false),
+            //'massemail'     => array('massemail', false)
+            MAILUSERS_ACCEPT_NOTIFICATION_USER_META => array(MAILUSERS_ACCEPT_NOTIFICATION_USER_META, true),
+            MAILUSERS_ACCEPT_MASS_EMAIL_USER_META   => array(MAILUSERS_ACCEPT_MASS_EMAIL_USER_META, true)
         );
         return $sortable_columns;
     }
@@ -318,7 +330,7 @@ class MailUsers_List_Table extends WP_List_Table {
     
     //  This is a work-in-progress function which uses get_users()
     //  instead of an SQL query.  The sorting doesn't work correctly
-    //  so it may not work as a replacemetn for the SQL based version.
+    //  so it may not work as a replacement for the SQL based version.
 
     /***************************************************************************
      * REQUIRED! This is where you prepare your data for display. This method will
@@ -334,7 +346,7 @@ class MailUsers_List_Table extends WP_List_Table {
      * @uses $this->get_pagenum()
      * @uses $this->set_pagination_args()
      **************************************************************************/
-    function prepare_items_wip() {
+    function prepare_items() {
         global $wpdb, $_wp_column_headers;
         $screen = get_current_screen() ;
         
@@ -348,6 +360,9 @@ class MailUsers_List_Table extends WP_List_Table {
         /* -- Pagination parameters -- */
         //Number of elements in your table?
         $totalitems = count_users() ;
+
+        //Search?
+        $search = !empty($_GET['s']) ? mysql_real_escape_string($_GET['s']) : '';
 
         //Which page is this?
         $paged = !empty($_GET['paged']) ? mysql_real_escape_string($_GET['paged']) : '';
@@ -366,12 +381,12 @@ class MailUsers_List_Table extends WP_List_Table {
  
         /* -- Ordering parameters -- */
         //Parameters that are going to be used to order the result
-        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'last_name';
+        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'display_name';
         $order = !empty($_GET['order']) ? mysql_real_escape_string($_GET['order']) : 'ASC';
  
         /* -- Register the pagination -- */
         $this->set_pagination_args( array(
-            'total_items' => $totalitems,
+            'total_items' => $totalitems['total_users'],
             'total_pages' => $totalpages,
             'per_page' => $per_page,
         ) );
@@ -412,9 +427,37 @@ class MailUsers_List_Table extends WP_List_Table {
            ,'orderby' => $orderby
            ,'number' => (int)$per_page
            ,'offset' => (int)$offset
+           ,'search' => $search
+           ,'search_columns' => array( 'user_login', 'user_email', 'display_name', 'user_nicename' )
+           ,'count_total' => true
         );
 
+        //  Retrieve data
         $this->items = get_users($args) ;
+
+        //  Need to adjust pagination?
+        //  Only when doing a search as results will not match original total item count.
+
+        if (!empty($search))
+        {
+            //  Don't limit the query
+            unset($args['number']) ;
+
+            /* -- Pagination parameters -- */
+            //Number of elements in your results?
+            $totalitems = count(get_users($args)) ;
+
+            //How many pages do we have in total?
+            $totalpages = ceil($totalitems/$per_page);
+
+            /* -- Register the pagination -- */
+            $this->set_pagination_args( array(
+                'total_items' => $totalitems,
+                'total_pages' => $totalpages,
+                'per_page' => $per_page,
+            ) );
+            //The pagination links are automatically built according to those parameters
+        }
     }
 
     /** ************************************************************************
@@ -432,7 +475,7 @@ class MailUsers_List_Table extends WP_List_Table {
      * @uses $this->set_pagination_args()
      **************************************************************************/
 
-    function prepare_items() {
+    function prepare_items_wip() {
         global $wpdb, $_wp_column_headers;
         $screen = get_current_screen() ;
         
@@ -474,7 +517,7 @@ class MailUsers_List_Table extends WP_List_Table {
  
         /* -- Ordering parameters -- */
         //Parameters that are going to be used to order the result
-        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'last_name';
+        $orderby = !empty($_GET['orderby']) ? mysql_real_escape_string($_GET['orderby']) : 'user_login';
         $order = !empty($_GET['order']) ? mysql_real_escape_string($_GET['order']) : 'ASC';
         if(!empty($orderby) & !empty($order)){ $query.=' ORDER BY '.$orderby.' '.$order; }
  
@@ -483,6 +526,12 @@ class MailUsers_List_Table extends WP_List_Table {
             $offset=($paged-1)*$per_page;
             $query.=' LIMIT '.(int)$offset.','.(int)$per_page;
         }
+        error_log('++++') ;
+        error_log($paged) ;
+        error_log($per_page) ;
+        error_log($offset) ;
+        error_log($query) ;
+        error_log('----') ;
  
         /* -- Register the pagination -- */
         $this->set_pagination_args( array(
@@ -552,7 +601,7 @@ function mailusers_render_list_page(){
             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <!-- Now we can render the completed list table -->
-            <?php //$mailusersListTable->search_box(__('Search', MAILUSERS_I18N_DOMAIN), 'search_id'); ?>
+            <?php $mailusersListTable->search_box(__('Search', MAILUSERS_I18N_DOMAIN), 'search_id'); ?>
             <?php $mailusersListTable->display() ; ?>
         </form>
         
