@@ -154,6 +154,10 @@ function update_publicworks_meta_filter()
 * Added %POST_CONTENT% substitution keyword.
 * Refactored construction of email headers.
 * Added option to specifically CC sender.
+* Fixed sorting problems on User Settings page.
+* Added Search to User Settings page.
+* Replaced First/Last Names on User Settings page with Display Name - needed to eliminate complex query.
+* Replaced complex SQL query with proper call to get_users() for User Settings page, facilitated fixing several bugs on User Settings page.
 
 = Version 4.5.2
 * Added Dashboard Widget to report number of users who accept each type of email and default settings.
