@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2013-09-18 21:18-0000\n"
-"PO-Revision-Date: 2013-09-18 21:18-0000\n"
+"POT-Creation-Date: 2013-09-25 17:20-0000\n"
+"PO-Revision-Date: 2013-09-25 17:20-0000\n"
 "Last-Translator: Mike Walsh <mpwalsh8@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -98,12 +98,12 @@ msgid "Receive post or page notification emails:"
 msgstr ""
 
 #: ../email-users.php:1512 ../email-users.php:1516 ../email-users.php:1520
-#: ../email_users_user_settings.php:104
+#: ../email_users_user_settings.php:107
 msgid "On"
 msgstr ""
 
 #: ../email-users.php:1512 ../email-users.php:1516 ../email-users.php:1520
-#: ../email_users_user_settings.php:104
+#: ../email_users_user_settings.php:107
 msgid "Off"
 msgstr ""
 
@@ -375,7 +375,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ../email_users_options_form.php:114
+#: ../email_users_options_form.php:114 ../email_users_user_settings.php:185
 msgid "Display Name"
 msgstr ""
 
@@ -910,62 +910,58 @@ msgstr ""
 msgid "You are not allowed to view the user settings."
 msgstr ""
 
-#: ../email_users_user_settings.php:177
-msgid "Last Name"
-msgstr ""
-
-#: ../email_users_user_settings.php:178
-msgid "First Name"
-msgstr ""
-
-#: ../email_users_user_settings.php:179
+#: ../email_users_user_settings.php:186
 msgid "Username"
 msgstr ""
 
-#: ../email_users_user_settings.php:180
+#: ../email_users_user_settings.php:187
 msgid "E-Mail Address"
 msgstr ""
 
-#: ../email_users_user_settings.php:181
+#: ../email_users_user_settings.php:190
 msgid "Notifications"
 msgstr ""
 
-#: ../email_users_user_settings.php:182
+#: ../email_users_user_settings.php:191
 msgid "Mass Email"
 msgstr ""
 
-#: ../email_users_user_settings.php:230
+#: ../email_users_user_settings.php:242
 msgid "Notifications On"
 msgstr ""
 
-#: ../email_users_user_settings.php:231
+#: ../email_users_user_settings.php:243
 msgid "Notifications Off"
 msgstr ""
 
-#: ../email_users_user_settings.php:232
+#: ../email_users_user_settings.php:244
 msgid "Mass Email On"
 msgstr ""
 
-#: ../email_users_user_settings.php:233
+#: ../email_users_user_settings.php:245
 msgid "Mass Email Off"
 msgstr ""
 
-#: ../email_users_user_settings.php:234
+#: ../email_users_user_settings.php:246
 msgid "Notifications On & Mass Email On"
 msgstr ""
 
-#: ../email_users_user_settings.php:235
+#: ../email_users_user_settings.php:247
 msgid "Notifications On & Mass Email Off"
 msgstr ""
 
-#: ../email_users_user_settings.php:236
+#: ../email_users_user_settings.php:248
 msgid "Notifications Off & Mass Email On"
 msgstr ""
 
-#: ../email_users_user_settings.php:237
+#: ../email_users_user_settings.php:249
 msgid "Notifications Off & Mass Email Off"
 msgstr ""
 
-#: ../email_users_user_settings.php:315
+#: ../email_users_user_settings.php:327
 msgid "No users selected"
+msgstr ""
+
+#: ../email_users_user_settings.php:492
+msgid "Search"
 msgstr ""
