@@ -1399,10 +1399,8 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	//--
 	$bcc = '';
 	$bcc_limit = mailusers_get_max_bcc_recipients();
-        printf('<h3>%s::%s</h3><pre>%s</pre><br/>', basename(__FILE__), __LINE__, htmlspecialchars(print_r(array($to, $cc, $sender_name, $sender_email), true))) ;
 
 	if (count($recipients)==1) {
-        printf('<h3>%s::%s</h3>', basename(__FILE__), __LINE__) ;
         $recipient = reset($recipients) ; // reset will return first value of the array!
 		if (mailusers_is_valid_email($recipient->user_email)) {
             $to = sprintf("%s <%s>\n", $recipient->display_name, $recipient->user_email) ;
@@ -1453,19 +1451,20 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			$count++;
 
 			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
-				if (!$sender_emailed) {
-					//$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
-					$newheaders = $headers . $to . "\n$bcc\n\n";
-					$sender_emailed = true;
-				} else {
+//				if (!$sender_emailed) {
+//					//$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
+//					$newheaders = $headers . $to . "\n$bcc\n\n";
+//					$sender_emailed = true;
+//				} else {
 					$newheaders = $headers . "$bcc\n\n";
-				}
+//				}
 					
 				if (MAILUSERS_DEBUG) {
 					mailusers_preprint_r($newheaders);
 				}
 			
-				@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
+				@wp_mail($to, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
 			}
