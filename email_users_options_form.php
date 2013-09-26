@@ -232,6 +232,19 @@
 			<?php _e('Allow Users to control their own Email Users settings.', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
+	<tr>
+    <th><?php _e('Additional<br/>Mail Headers', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input 	type="checkbox"
+					name="mailusers_add_x_mailer_header" id="mailusers_add_x_mailer_header" value="true"
+					<?php if (mailusers_get_add_x_mailer_header()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Add <b>X-Mailer</b> mail header record.<br/><small><i>Not recommended for typical WordPress installations.</i></small>', MAILUSERS_I18N_DOMAIN); ?><br/>
+			<input 	type="checkbox"
+					name="mailusers_add_mime_version_header" id="mailusers_add_mime_version_header" value="true"
+					<?php if (mailusers_get_add_mime_version_header()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Add <a href="http://en.wikipedia.org/wiki/MIME-Version#MIME-Version">MIME-Version</a> mail header record.<br/><small><i>Not recommended for typical WordPress installations.</i></small>', MAILUSERS_I18N_DOMAIN); ?><br/>
+		</td>
+	</tr>
 	</table>
 
 	<p class="submit">
@@ -506,7 +519,8 @@
 
 <div><!-- Email Users info box-->
 <div class="table table_content">
-<table style="text-align: left; width: 90%;">
+<table class="widefat">
+<tr><th colspan="2"><?php _e('User Settings', MAILUSERS_I18N_DOMAIN) ;?></th></tr>
 <tr>
 <td><?php _e('Number of Users who accept<br/>post or page notification emails:', MAILUSERS_I18N_DOMAIN); ?></td>
 <td<?php if ( count($notifications) == 0) echo ' style="color: red;"' ; ?>><?php echo count($notifications) ; ?></td>
@@ -516,6 +530,23 @@
 <td<?php if ( count($massemails) == 0) echo ' style="color: red;"' ; ?>><?php echo count($massemails) ; ?></td>
 </tr>
 </table>
+<br/>
+<table class="widefat">
+<tr><th colspan="2"><?php _e('Filters', MAILUSERS_I18N_DOMAIN) ;?></th></tr>
+<?php
+    $filters = array('wp_mail_content_type', 'wp_mail_charset', 'wp_mail_from', 'wp_mail_from_name') ;
+
+    foreach ($filters as $filter) {
+?>
+<tr>
+<td><?php printf('%s:', $filter); ?></td>
+<td<?php if ( has_action($filter)) echo ' style="color: red;"' ; ?>><?php echo has_action($filter) ? __('Yes', MAILUSERS_I18N_DOMAIN) : __('No', MAILUSERS_I18N_DOMAIN) ; ?></td>
+</tr>
+<?php
+    }
+?>
+</table>
+<p><small>There are a number of <a href="http://codex.wordpress.org/Plugin_API/Filter_Reference">WordPress Filters</a> which <strong><i>may</i></strong> affect Email Users.  The presence of these filters does not mean they will adversely affect Email Users but should be examined if email delivery isn't reaching all of the intended recipients or the mail format and/or header detail isn't as expected.</small></p>
 </div>
 </div>
 
