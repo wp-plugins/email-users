@@ -106,7 +106,6 @@ class MailUsers_List_Table extends WP_List_Table {
             case MAILUSERS_ACCEPT_MASS_EMAIL_USER_META:
                 return ($item->$column_name == 'true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ;
             default:
-                error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
                 return print_r($item,true); //Show the whole array for troubleshooting purposes
         }
     }
@@ -129,8 +128,6 @@ class MailUsers_List_Table extends WP_List_Table {
      * @return string Text to be placed inside the column <td> (last_name only)
      **************************************************************************/
     function column_last_name($item) {
-        //error_log('====================================================') ;
-        //error_log(print_r($item, true)) ;
         
         //Build row actions
         $actions = array(
