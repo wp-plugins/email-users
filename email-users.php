@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.5.3-beta-3
+Version: 4.5.3-beta-4
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.5.3-beta-3');
+define( 'MAILUSERS_CURRENT_VERSION', '4.5.3-beta-4');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -110,6 +110,10 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_from_sender_exclude' => 'true',
 		// Mail User - Default setting for Copy Sender
 		'mailusers_copy_sender' => 'false',
+		// Mail User - Default setting for Add X-Mailer header
+		'mailusers_add_x_mailer_header' => 'false',
+		// Mail User - Default setting for Add MIME-Version header
+		'mailusers_add_mime_version_header' => 'false',
 	) ;
 
     if (array_key_exists($option, $default_plugin_settings))
@@ -834,17 +838,45 @@ function mailusers_update_default_mass_email( $default_mass_email ) {
 }
 
 /**
- * Wrapper for the default mass email setting
+ * Wrapper for the default user control setting
  */
 function mailusers_get_default_user_control() {
 	return get_option( 'mailusers_default_user_control' );
 }
 
 /**
- * Wrapper for the default mass email setting
+ * Wrapper to set the default user control setting
  */
 function mailusers_update_default_user_control( $default_user_control ) {
 	return update_option( 'mailusers_default_user_control', $default_user_control );
+}
+
+/**
+ * Wrapper for getting the Add X-Mailer Header option
+ */
+function mailusers_get_add_x_mailer_header() {
+	return get_option( 'mailusers_add_x_mailer_header' );
+}
+
+/**
+ * Wrapper for setting the Add X-Mailer Header option
+ */
+function mailusers_update_add_x_mailer_header( $add_x_mailer_header ) {
+	return update_option( 'mailusers_add_x_mailer_header', $add_x_mailer_header );
+}
+
+/**
+ * Wrapper for getting the Add MIME-Version Header option
+ */
+function mailusers_get_add_mime_version_header() {
+	return get_option( 'mailusers_add_mime_version_header' );
+}
+
+/**
+ * Wrapper for setting the Add MIME-Version Header option
+ */
+function mailusers_update_add_mime_version_header( $add_mime_version_header ) {
+	return update_option( 'mailusers_add_mime_version_header', $add_mime_version_header );
 }
 
 /**
@@ -1340,17 +1372,20 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	$headers  = "From: \"$sender_name\" <$sender_email>\n";
 	$headers .= "Return-Path: <" . $return_path . ">\n";
 	$headers .= "Reply-To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
-	$headers .= "X-Mailer: PHP" . phpversion() . "\n";
+    if (mailusers_get_add_x_mailer_header() == 'true')
+	    $headers .= "X-Mailer: PHP" . phpversion() . "\n";
 
 	$subject = stripslashes($subject);
 	$message = stripslashes($message);
 
 	if ('html' == $type) {
-		$headers .= "MIME-Version: 1.0\n";
+        if (mailusers_get_add_mime_version_header() == 'true')
+		    $headers .= "MIME-Version: 1.0\n";
 		$headers .= "Content-Type: " . get_bloginfo('html_type') . "; charset=\"". get_bloginfo('charset') . "\"\n";
 		$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . "</body></html>";
 	} else {
-		$headers .= "MIME-Version: 1.0\n";
+        if (mailusers_get_add_mime_version_header() == 'true')
+		    $headers .= "MIME-Version: 1.0\n";
 		$headers .= "Content-Type: text/plain; charset=\"". get_bloginfo('charset') . "\"\n";
 		$message = preg_replace('|&[^a][^m][^p].{0,3};|', '', $message);
 		$message = preg_replace('|&amp;|', '&', $message);
@@ -1545,6 +1580,11 @@ function mailusers_dashboard_widget_function() {
 <?php
 } 
 
+if (MAILUSERS_DEBUG) :
+
+/**
+ * Filter testing functions
+ */
 function mailusers_wp_mail_content_type($x)
 {
     error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
@@ -1573,7 +1613,6 @@ function mailusers_wp_mail_from_name($x)
 }
 //add_filter('wp_mail_from_name', 'mailusers_wp_mail_from_name') ;
 
-if (MAILUSERS_DEBUG) :
 /**
  * Debug functions
  */
@@ -1593,4 +1632,5 @@ function mailusers_whereami($x, $y)
 	error_log(sprintf('%s::%s', basename($x), $y)) ;
 }
 endif;
+
 ?>
