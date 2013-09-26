@@ -160,6 +160,9 @@ function update_publicworks_meta_filter()
 * Replaced complex SQL query with proper call to get_users() for User Settings page, facilitated fixing several bugs on User Settings page.
 * Fixed bug which preventing showing all posts and/or pages in Notify dropdown.
 * Added translation for value of Role when used in select boxes.
+* Resolved duplicate MIME-Version and X-Mailer header problem.
+* Added new options to optionally add MIME-Version and X-Mailer headers as by default, they are added by WordPress and shouldn't be added by Email Users.
+* Improved Information Panel on Email Users settings page, now shows status of any filters which could affect Email Users.
 
 = Version 4.5.2
 * Added Dashboard Widget to report number of users who accept each type of email and default settings.
