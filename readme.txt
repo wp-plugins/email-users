@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 4.5.4
+Stable tag: 4.5.5
 
 A plugin for WordPress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
@@ -147,6 +147,9 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.5.5 =
+* Forgot to register settings for new MIME-Type and X-Mailer settings.
 
 = Version 4.5.4 =
 * Version bump due to bad tagging in WordPress plugin repository.
