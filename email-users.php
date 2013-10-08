@@ -644,6 +644,8 @@ function mailusers_admin_init() {
         'mailusers_from_sender_address_override', 'mailusers_from_sender_address_override_validate') ;
     register_setting('email_users',
         'mailusers_send_bounces_to_address_override', 'mailusers_send_bounces_to_address_override_validate') ;
+    register_setting('email_users', 'mailusers_add_x_mailer_header') ;
+    register_setting('email_users', 'mailusers_add_mime_version_header') ;
     register_setting('email_users', 'mailusers_version') ;
 }
 
