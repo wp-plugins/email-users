@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.5.5
+Version: 4.5.6-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.5.5');
+define( 'MAILUSERS_CURRENT_VERSION', '4.5.6-beta-1');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', false);
+define( 'MAILUSERS_DEBUG', true);
 
 //  Enable integration with User Groups plugin?
 //  @see http://wordpress.org/plugins/user-groups/
@@ -1411,6 +1411,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 			if (MAILUSERS_DEBUG) {
 				mailusers_preprint_r($headers);
+		        mailusers_debug_wp_mail($to, $subject, $mailtext, $headers);
 			}
 			
 			@wp_mail($to, $subject, $mailtext, $headers);
@@ -1463,12 +1464,15 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					
 				if (MAILUSERS_DEBUG) {
 					mailusers_preprint_r($newheaders);
+		            mailusers_debug_wp_mail($to, $subject, $mailtext, $newheaders);
 				}
 			
 				//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 				@wp_mail($to, $subject, $mailtext, $newheaders);
 				$count = 0;
 				$bcc = '';
+                //global $phpmailer ;
+                //error_log(print_r($phpmailer, true)) ;
 			}
 
 			$num_sent++;
@@ -1476,8 +1480,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	} else {
 		//$headers .= sprintf('To: "%s <%s>"\n', $sender_name, $sender_email) ;
 
-        if ($ccsender)
-		    $headers .= sprintf('Cc: "%s <%s>"\n', $sender_name, $sender_email) ;
+        if ($ccsender) $headers .= $cc ;
+        //if ($ccsender)
+		    //$headers .= sprintf('Cc: "%s <%s>"\n', $sender_name, $sender_email) ;
 
         foreach ($recipients as $key=> $value)
 			$recipients[$key] = $recipients[$key]->user_email;
@@ -1504,10 +1509,13 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 					
 		if (MAILUSERS_DEBUG) {
 			mailusers_preprint_r($newheaders);
+		    mailusers_debug_wp_mail($to, $subject, $mailtext, $newheaders);
 		}
 				
 		//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
 		@wp_mail($to, $subject, $mailtext, $newheaders);
+        //global $phpmailer ;
+        //error_log(print_r($phpmailer, true)) ;
 	}
 
 	return $num_sent;
@@ -1582,6 +1590,83 @@ function mailusers_dashboard_widget_function() {
 } 
 
 if (MAILUSERS_DEBUG) :
+
+add_filter('phpmailer_init', 'mailusers_debug_phpmailer') ;
+/**
+ * mailusers_debug_wp_mail()
+ *
+ * @param $mailer mixed PHPMailer instance
+ */
+function mailusers_debug_phpmailer($mailer)
+{
+    //$mailer->SMTPDebug = true ;
+    //$mailer->Debugoutout = "error_log" ;
+
+?>
+<div class="postbox-container" style="width: 100%">
+        <div class="metabox-holder">
+            <div class="meta-box-sortables">
+                <div class="postbox closed" id="first">
+                    <div class="handlediv" title="Click to toggle"><br /></div>
+                    <h3 class="hndle"><span><?php _e('PHPMailer Debug', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+                    <div class="inside">
+                    <pre><?php print_r($mailer) ; ?></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form style="display:none" method="get" action="">
+        <?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
+        <?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
+    </form>
+<?php
+}
+
+/**
+ * mailusers_debug_wp_mail()
+ *
+ * @param $to string recipient email address
+ * @param $subject string email subject
+ * @param $mailtext string email content
+ * @param $headers mixed additional email headers
+ */
+function mailusers_debug_wp_mail($to, $subject, $mailtext, $headers)
+{
+?>
+<div class="postbox-container" style="width: 100%">
+        <div class="metabox-holder">
+            <div class="meta-box-sortables">
+                <div class="postbox closed" id="first">
+                    <div class="handlediv" title="Click to toggle"><br /></div>
+                    <h3 class="hndle"><span><?php _e('wp_mail() Debug', MAILUSERS_I18N_DOMAIN); ?></span></h3>
+                    <div class="inside">
+                    <pre>
+<?php
+    printf('') ;
+    print_r(htmlentities($to)) ;
+    printf('') ;
+    print_r(htmlentities($subject)) ;
+    printf('') ;
+    print_r(htmlentities($mailtext)) ;
+    printf('') ;
+    print_r(htmlentities($headers)) ;
+    printf('') ;
+?>
+                    </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form style="display:none" method="get" action="">
+        <?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
+        <?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
+    </form>
+<?php
+}
 
 /**
  * Filter testing functions
