@@ -42,6 +42,21 @@
 <?php
 	}
 
+    //  Check to see if wp_mail() has been overloaded
+
+    if (class_exists('ReflectionFunction'))
+    {
+        $wp_mail = new ReflectionFunction('wp_mail') ;
+        $actual = realpath($wp_mail->getFileName()) ;
+        $expected = realpath(sprintf('%s%swp-includes%spluggable.php', ABSPATH, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR)) ;
+
+        if ($actual != $expected) 
+        {
+            printf('<div class="updated fade"><h3>%s</h3></div>', 
+                __('Warning:  wp_mail() appears to be overloaded.', MAILUSERS_I18N_DOMAIN)) ;
+        }
+    }
+
     //  Check the number of users who accept notifications and mass emails
 
     $massemails = mailusers_get_users('', MAILUSERS_ACCEPT_MASS_EMAIL_USER_META) ;
@@ -62,6 +77,14 @@
     <th><?php _e('Number of Users who accept emails sent to multiple recipients:', MAILUSERS_I18N_DOMAIN); ?></th>
 	<td<?php if ( count($massemails) == 0) echo ' style="color: red;"' ; ?>><?php echo count($massemails) ; ?></td>
 	</tr>
+<tr>
+<td colspan="2">
+<?php
+$reflection = new ReflectionFunction( 'wp_mail' );
+print $reflection->getFileName();
+?>        
+</td>
+</tr>
 	</table>
     </div>
     </div>
@@ -468,6 +491,45 @@
 	</tbody>
 </table>
 
+<br/>
+</div><!-- inside -->
+</div><!-- postbox -->
+
+<div id="email-users-wp_mail" class="postbox email-users-postbox">
+<div class="handlediv" title="Click to toggle"><br /></div>
+<h3 class="hndle"><span><?php _e('Email-Users wp_mail() Check', MAILUSERS_I18N_DOMAIN);?></span></h3>
+<div class="inside">
+
+<p><?php _e('Email Users is dependent on the <a href="http://codex.wordpress.org/Function_Reference/wp_mail">wp_mail()</a> function.', MAILUSERS_I18N_DOMAIN); ?></p>
+
+    <table style="width: auto;" class="widefat">
+    <thead>
+    <tr>
+    <th colspan="2"><?php _e('wp_mail() is loaded from:', MAILUSERS_I18N_DOMAIN);?></th>
+    <tr>
+    </thead>
+    <tbody>
+    <th><?php _e('Expected:', MAILUSERS_I18N_DOMAIN) ;?></th>
+    <td><?php print $expected;?></td>
+    </tr>
+    <tr>
+    <th><?php _e('Actual:', MAILUSERS_I18N_DOMAIN) ;?></th>
+    <td><?php print $actual;?></td>
+    </tr>
+    </tbody>
+    </table>
+    <p>
+    The WordPress wp_mail() function is <a href="http://codex.wordpress.org/Pluggable_Functions">pluggable</a>
+    which means the standard WordPress functionality can be overloaded by a Theme or another WordPress plugin.
+    It is important to note that if the <strong><i>expected</i></strong> and <strong><i>actual</i></strong> do
+    not match, it does not automatically mean there will be a problem.  However, if Email Users is not producing
+    the expected results AND the <strong><i>expected</i></strong> and <strong><i>actual</i></strong> do not match,
+    it is something which should be looked at as a potential source of the problem.
+    </p>
+    <p>
+    The recommended way to eliminate the overloaded version of wp_mail() as the source of a problem is to disable
+    the plugin or theme which has overloaded wp_mail().
+    </p>
 <br/>
 </div><!-- inside -->
 </div><!-- postbox -->
