@@ -514,7 +514,7 @@ print $reflection->getFileName();
     </tr>
     <tr>
     <th><?php _e('Actual:', MAILUSERS_I18N_DOMAIN) ;?></th>
-    <td><?php print $actual;?></td>
+    <td<?php if ($actual != $expected) echo ' style="color: red;"' ; ?>><?php print $actual;?></td>
     </tr>
     </tbody>
     </table>
