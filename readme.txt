@@ -148,6 +148,10 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.6.0 =
+* Significantly improved debug functionality to chase down mail header issues.
+* Check added to determine if wp_mail() has been overloaded by a theme or plugin.
+
 = Version 4.5.5 =
 * Forgot to register settings for new MIME-Type and X-Mailer settings.
 
