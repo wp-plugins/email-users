@@ -605,4 +605,8 @@
 </div><!-- metabox-holder -->
 </div><!-- 25% Postbox Container -->
 </div><!-- Postbox Containers -->
+<form style="display:none" method="get" action="">
+    <?php wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false ); ?>
+    <?php wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false ); ?>
+</form>
 </div><!-- wrap -->
