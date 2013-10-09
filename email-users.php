@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.5.6-beta-1
+Version: 4.6.0-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.5.6-beta-1');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-1');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1591,6 +1591,32 @@ function mailusers_dashboard_widget_function() {
 
 if (MAILUSERS_DEBUG) :
 
+//  Load PHPMailer Class
+if ( ! class_exists( 'phpmailerException' ) ) :
+    require_once(ABSPATH . 'wp-includes/class-phpmailer.php') ;
+endif;
+
+//  Define a new "debug" PHPMailer Class
+class mailusersDebugPHPMailer {
+    public function Send() {
+        printf('<div class="error fade"><h3>%s</h3></div>', __('Mail sending aborted.', MAILUSERS_I18N_DOMAIN)) ;
+        error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+        error_log(__('Mail sending aborted.', MAILUSERS_I18N_DOMAIN)) ;
+        throw new phpmailerException(__('Mail sending aborted.', MAILUSERS_I18N_DOMAIN)) ;
+    }
+}
+
+add_action( 'phpmailer_init', 'mailusers_debug_phpmailer2', 99 );
+function mailusers_debug_phpmailer2( $phpmailer ) {
+    //if ( MAILUSERS_DEBUG) 
+        error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
+        $phpmailer = new mailusersDebugPHPMailer();
+}
+    
+function wp_mail2()
+{
+}
+
 add_filter('phpmailer_init', 'mailusers_debug_phpmailer') ;
 /**
  * mailusers_debug_wp_mail()
@@ -1606,7 +1632,7 @@ function mailusers_debug_phpmailer($mailer)
 <div class="postbox-container" style="width: 100%">
         <div class="metabox-holder">
             <div class="meta-box-sortables">
-                <div class="postbox closed" id="first">
+                <div class="postbox" id="first">
                     <div class="handlediv" title="Click to toggle"><br /></div>
                     <h3 class="hndle"><span><?php _e('PHPMailer Debug', MAILUSERS_I18N_DOMAIN); ?></span></h3>
                     <div class="inside">
@@ -1638,7 +1664,7 @@ function mailusers_debug_wp_mail($to, $subject, $mailtext, $headers)
 <div class="postbox-container" style="width: 100%">
         <div class="metabox-holder">
             <div class="meta-box-sortables">
-                <div class="postbox closed" id="first">
+                <div class="postbox" id="first">
                     <div class="handlediv" title="Click to toggle"><br /></div>
                     <h3 class="hndle"><span><?php _e('wp_mail() Debug', MAILUSERS_I18N_DOMAIN); ?></span></h3>
                     <div class="inside">
