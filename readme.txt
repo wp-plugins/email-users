@@ -151,6 +151,7 @@ function update_publicworks_meta_filter()
 = Version 4.6.0 =
 * Significantly improved debug functionality to chase down mail header issues.
 * Check added to determine if wp_mail() has been overloaded by a theme or plugin.
+* Rewrite of mailusers_send_mail() fucntion to construct headers as arrays insyead of as string.  The string would sometimes not break correctly and recognize the Bcc: field.
 
 = Version 4.5.5 =
 * Forgot to register settings for new MIME-Type and X-Mailer settings.
