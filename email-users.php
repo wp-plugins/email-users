@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.0-beta-1
+Version: 4.6.0-beta-2
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-1');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-2');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1355,6 +1355,158 @@ function mailusers_replace_sender_templates($text, $sender_name) {
  */
 function mailusers_send_mail($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
     
+    $headers = array() ;
+
+    //  Default the To: and Cc: values to the send email address
+    $to = sprintf('%s <%s>', $sender_name, $sender_email) ;
+    $cc = sprintf('Cc: %s', $to) ;
+
+	$num_sent = 0; // return value
+	if ( (empty($recipients)) ) { return $num_sent; }
+	if ('' == $message) { return false; }
+
+    //  Cc: Sender?
+    $ccsender = mailusers_get_copy_sender() ;
+
+    //  Return path defaults to sender email if not specified
+    $return_path = mailusers_get_send_bounces_to_address_override() ;
+    if ($return_path == '') $return_path = $sender_email;
+
+    //  Build headers
+	$headers[] = sprintf('From: "%s" <%s>', $sender_name, $sender_email);
+	$headers[] = sprintf('Return-Path: <%s>', $return_path);
+	$headers[] = sprintf('Reply-To: "%s" <%s>', $sender_name, $sender_email);
+
+    if (mailusers_get_add_x_mailer_header() == 'true')
+	    $headers[] = sprintf('X-Mailer: PHP %s', phpversion()) ;
+
+	$subject = stripslashes($subject);
+	$message = stripslashes($message);
+
+	if ('html' == $type) {
+        if (mailusers_get_add_mime_version_header() == 'true')
+		    $headers[] = 'MIME-Version: 1.0';
+		$headers[] = sprintf('Content-Type: %s; charset="%s"', get_bloginfo('html_type'), get_bloginfo('charset')) ;
+		$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . "</body></html>";
+	} else {
+        if (mailusers_get_add_mime_version_header() == 'true')
+		    $headers[] = 'MIME-Version: 1.0';
+		$headers[] = sprintf('Content-Type: text/plain; charset="%s"', get_bloginfo('charset')) ;
+		$message = preg_replace('|&[^a][^m][^p].{0,3};|', '', $message);
+		$message = preg_replace('|&amp;|', '&', $message);
+		$mailtext = wordwrap(strip_tags($message), 80, "\n");
+	}
+
+	// If unique recipient, send mail using TO field.
+	//--
+
+	// If multiple recipients, use the BCC field
+	//--
+	$bcc = array();
+	$bcc_limit = mailusers_get_max_bcc_recipients();
+
+	if (count($recipients)==1) {
+        $recipient = reset($recipients) ; // reset will return first value of the array!
+		if (mailusers_is_valid_email($recipient->user_email)) {
+            $to = sprintf('%s <%s>', $recipient->display_name, $recipient->user_email) ;
+
+            if ($ccsender) $headers[] = $cc ;
+
+			if (MAILUSERS_DEBUG) {
+				mailusers_preprint_r($headers);
+		        mailusers_debug_wp_mail($to, $subject, $mailtext, $headers);
+			}
+			
+			@wp_mail($to, $subject, $mailtext, $headers);
+			$num_sent++;
+		} else {
+			echo '<div class="error fade"><p>' . sprintf(__('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', MAILUSERS_I18N_DOMAIN), $recipient->user_email) . '</p></div>';
+			return $num_sent;
+		}
+		return $num_sent;
+	}
+
+    elseif ( $bcc_limit>0 && (count($recipients)>$bcc_limit) ) {
+		$count = 0;
+		$sender_emailed = false;
+
+        //  Make sure there are no duplicates which can result
+        //  if/when the user selects both roles and users as
+        //  the recipients.
+
+        foreach ($recipients as $key=> $value)
+			$recipients[$key] = $recipients[$key]->user_email;
+
+        $recipients = array_unique($recipients) ;
+
+        foreach ($recipients as $recipient) {
+
+            if (!mailusers_is_valid_email($recipient)) {
+                continue;
+            }
+            if ( empty($recipient) || ($sender_email == $recipient) ) {
+                continue;
+            }
+
+    		$bcc[] = sprintf('Bcc: %s', $recipient) ;
+
+			$count++;
+
+			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
+					
+				if (MAILUSERS_DEBUG) {
+					mailusers_preprint_r($newheaders);
+		            mailusers_debug_wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+				}
+			
+				@wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+
+				$count = 0;
+				$bcc = array() ;
+			}
+
+			$num_sent++;
+		}
+	} else {
+
+        if ($ccsender) $headers[] = $cc ;
+
+        foreach ($recipients as $key=> $value)
+			$recipients[$key] = $recipients[$key]->user_email;
+
+        $recipients = array_unique($recipients) ;
+
+        foreach ($recipients as $recipient) {
+
+            if (!mailusers_is_valid_email($recipient)) {
+                echo '<div class="error fade"><p>' . sprintf(__('Invalid email address ("%s") found.', MAILUSERS_I18N_DOMAIN), $recipient) . '</p></div>';
+                continue;
+            }
+
+			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
+
+    		$bcc[] = sprintf('Bcc: %s', $recipient) ;
+			$num_sent++;
+		}
+
+		if (MAILUSERS_DEBUG) {
+			mailusers_preprint_r(array_merge($headers, $bcc)) ;
+		    mailusers_debug_wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+		}
+			
+		@wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+	}
+
+	return $num_sent;
+}
+
+/**
+ * Delivers email to recipients in HTML or plaintext
+ *
+ * Returns number of recipients addressed in emails or false on internal error.
+ */
+function mailusers_send_mail2($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
+    
     //  Default the To: and Cc: values to the send email address
     $to = sprintf('%s <%s>\n', $sender_name, $sender_email) ;
     $cc = sprintf('Cc: %s', $to) ;
@@ -1670,15 +1822,15 @@ function mailusers_debug_wp_mail($to, $subject, $mailtext, $headers)
                     <div class="inside">
                     <pre>
 <?php
-    printf('') ;
-    print_r(htmlentities($to)) ;
-    printf('') ;
-    print_r(htmlentities($subject)) ;
-    printf('') ;
-    print_r(htmlentities($mailtext)) ;
-    printf('') ;
-    print_r(htmlentities($headers)) ;
-    printf('') ;
+    printf('<br/>') ;
+    print_r(htmlentities(print_r($to, true))) ;
+    printf('<br/>') ;
+    print_r(htmlentities(print_r($subject, true))) ;
+    printf('<br/>') ;
+    print_r(htmlentities(print_r($mailtext, true))) ;
+    printf('<br/>') ;
+    print_r(htmlentities(print_r($headers, true))) ;
+    printf('<br/>') ;
 ?>
                     </pre>
                     </div>
