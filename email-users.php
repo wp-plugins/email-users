@@ -1419,7 +1419,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 	// If unique recipient, send mail using TO field.
 	//--
-
 	// If multiple recipients, use the BCC field
 	//--
 	$bcc = array();
@@ -1521,179 +1520,6 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 }
 
 /**
- * Delivers email to recipients in HTML or plaintext
- *
- * Returns number of recipients addressed in emails or false on internal error.
- */
-function mailusers_send_mail2($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
-    
-    //  Default the To: and Cc: values to the send email address
-    $to = sprintf('%s <%s>\n', $sender_name, $sender_email) ;
-    $cc = sprintf('Cc: %s', $to) ;
-
-	$num_sent = 0; // return value
-	if ( (empty($recipients)) ) { return $num_sent; }
-	if ('' == $message) { return false; }
-
-    //  Cc: Sender?
-    $ccsender = mailusers_get_copy_sender() ;
-
-    //  Return path defaults to sender email if not specified
-    $return_path = mailusers_get_send_bounces_to_address_override() ;
-    if ($return_path == '') $return_path = $sender_email;
-
-    //  Build headers
-	$headers  = "From: \"$sender_name\" <$sender_email>\n";
-	$headers .= "Return-Path: <" . $return_path . ">\n";
-	$headers .= "Reply-To: \"" . $sender_name . "\" <" . $sender_email . ">\n";
-    if (mailusers_get_add_x_mailer_header() == 'true')
-	    $headers .= "X-Mailer: PHP" . phpversion() . "\n";
-
-	$subject = stripslashes($subject);
-	$message = stripslashes($message);
-
-	if ('html' == $type) {
-        if (mailusers_get_add_mime_version_header() == 'true')
-		    $headers .= "MIME-Version: 1.0\n";
-		$headers .= "Content-Type: " . get_bloginfo('html_type') . "; charset=\"". get_bloginfo('charset') . "\"\n";
-		$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . "</body></html>";
-	} else {
-        if (mailusers_get_add_mime_version_header() == 'true')
-		    $headers .= "MIME-Version: 1.0\n";
-		$headers .= "Content-Type: text/plain; charset=\"". get_bloginfo('charset') . "\"\n";
-		$message = preg_replace('|&[^a][^m][^p].{0,3};|', '', $message);
-		$message = preg_replace('|&amp;|', '&', $message);
-		$mailtext = wordwrap(strip_tags($message), 80, "\n");
-	}
-
-	// If unique recipient, send mail using TO field.
-	//--
-
-	// If multiple recipients, use the BCC field
-	//--
-	$bcc = '';
-	$bcc_limit = mailusers_get_max_bcc_recipients();
-
-	if (count($recipients)==1) {
-        $recipient = reset($recipients) ; // reset will return first value of the array!
-		if (mailusers_is_valid_email($recipient->user_email)) {
-            $to = sprintf("%s <%s>\n", $recipient->display_name, $recipient->user_email) ;
-			//$headers .= "To: \"" . $recipient->display_name . "\" <" . $recipient->user_email . ">\n";
-            if ($ccsender) $headers .= $cc ;
-
-			if (MAILUSERS_DEBUG) {
-				mailusers_preprint_r($headers);
-		        mailusers_debug_wp_mail($to, $subject, $mailtext, $headers);
-			}
-			
-			@wp_mail($to, $subject, $mailtext, $headers);
-			$num_sent++;
-		} else {
-			echo '<div class="error fade"><p>' . sprintf(__('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', MAILUSERS_I18N_DOMAIN), $recipient->user_email) . '</p></div>';
-			return $num_sent;
-		}
-		return $num_sent;
-	}
-
-    elseif ( $bcc_limit>0 && (count($recipients)>$bcc_limit) ) {
-		$count = 0;
-		$sender_emailed = false;
-
-        //  Make sure there are no duplicates which can result
-        //  if/when the user selects both roles and users as
-        //  the recipients.
-
-        foreach ($recipients as $key=> $value)
-			$recipients[$key] = $recipients[$key]->user_email;
-
-        $recipients = array_unique($recipients) ;
-
-        foreach ($recipients as $recipient) {
-
-            if (!mailusers_is_valid_email($recipient)) {
-                continue;
-            }
-            if ( empty($recipient) || ($sender_email == $recipient) ) {
-                continue;
-            }
-
-			if ($bcc=='') {
-				$bcc = "Bcc: $recipient";
-			} else {
-				$bcc .= ", $recipient";
-			}
-
-			$count++;
-
-			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
-//				if (!$sender_emailed) {
-//					//$newheaders = $headers . "To: \"" . $sender_name . "\" <" . $sender_email . ">\n" . "$bcc\n\n";
-//					$newheaders = $headers . $to . "\n$bcc\n\n";
-//					$sender_emailed = true;
-//				} else {
-					$newheaders = $headers . "$bcc\n\n";
-//				}
-					
-				if (MAILUSERS_DEBUG) {
-					mailusers_preprint_r($newheaders);
-		            mailusers_debug_wp_mail($to, $subject, $mailtext, $newheaders);
-				}
-			
-				//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
-				@wp_mail($to, $subject, $mailtext, $newheaders);
-				$count = 0;
-				$bcc = '';
-                //global $phpmailer ;
-                //error_log(print_r($phpmailer, true)) ;
-			}
-
-			$num_sent++;
-		}
-	} else {
-		//$headers .= sprintf('To: "%s <%s>"\n', $sender_name, $sender_email) ;
-
-        if ($ccsender) $headers .= $cc ;
-        //if ($ccsender)
-		    //$headers .= sprintf('Cc: "%s <%s>"\n', $sender_name, $sender_email) ;
-
-        foreach ($recipients as $key=> $value)
-			$recipients[$key] = $recipients[$key]->user_email;
-
-        $recipients = array_unique($recipients) ;
-
-        foreach ($recipients as $recipient) {
-
-            if (!mailusers_is_valid_email($recipient)) {
-                echo '<div class="error fade"><p>' . sprintf(__('Invalid email address ("%s") found.', MAILUSERS_I18N_DOMAIN), $recipient) . '</p></div>';
-                continue;
-            }
-
-			if ( empty($recipient) || ($sender_email == $recipient) ) { continue; }
-
-			if ($bcc=='') {
-				$bcc = "Bcc: $recipient";
-			} else {
-				$bcc .= ", $recipient";
-			}
-			$num_sent++;
-		}
-		$newheaders = $headers . "$bcc\n\n";
-					
-		if (MAILUSERS_DEBUG) {
-			mailusers_preprint_r($newheaders);
-		    mailusers_debug_wp_mail($to, $subject, $mailtext, $newheaders);
-		}
-				
-		//@wp_mail($sender_email, $subject, $mailtext, $newheaders);
-		@wp_mail($to, $subject, $mailtext, $newheaders);
-        //global $phpmailer ;
-        //error_log(print_r($phpmailer, true)) ;
-	}
-
-	return $num_sent;
-}
-
-/**
  * Add a widget to the dashboard.
  *
  * This function is hooked into the 'wp_dashboard_setup' action below.
@@ -1772,23 +1598,15 @@ endif;
 class mailusersDebugPHPMailer {
     public function Send() {
         printf('<div class="error fade"><h3>%s</h3></div>', __('Mail sending aborted.', MAILUSERS_I18N_DOMAIN)) ;
-        error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
-        error_log(__('Mail sending aborted.', MAILUSERS_I18N_DOMAIN)) ;
         throw new phpmailerException(__('Mail sending aborted.', MAILUSERS_I18N_DOMAIN)) ;
     }
 }
 
-add_action( 'phpmailer_init', 'mailusers_debug_phpmailer2', 99 );
-function mailusers_debug_phpmailer2( $phpmailer ) {
-    //if ( MAILUSERS_DEBUG) 
-        error_log(sprintf('%s::%s', basename(__FILE__), __LINE__)) ;
-        $phpmailer = new mailusersDebugPHPMailer();
+add_action( 'phpmailer_init', 'mailusers_phpmailer_init', 99 );
+function mailusers_phpmailer_init( $phpmailer ) {
+    $phpmailer = new mailusersDebugPHPMailer();
 }
     
-function wp_mail2()
-{
-}
-
 add_filter('phpmailer_init', 'mailusers_debug_phpmailer') ;
 /**
  * mailusers_debug_wp_mail()
@@ -1797,9 +1615,6 @@ add_filter('phpmailer_init', 'mailusers_debug_phpmailer') ;
  */
 function mailusers_debug_phpmailer($mailer)
 {
-    //$mailer->SMTPDebug = true ;
-    //$mailer->Debugoutout = "error_log" ;
-
 ?>
 <div class="postbox-container" style="width: 100%">
         <div class="metabox-holder">
