@@ -268,6 +268,15 @@ print $reflection->getFileName();
 			<?php _e('Add <a href="http://en.wikipedia.org/wiki/MIME-Version#MIME-Version">MIME-Version</a> mail header record.<br/><small><i>Not recommended for typical WordPress installations.</i></small>', MAILUSERS_I18N_DOMAIN); ?><br/>
 		</td>
 	</tr>
+	<tr>
+    <th><?php _e('Debug', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input 	type="checkbox"
+					name="mailusers_debug" id="mailusers_debug" value="true"
+					<?php if (mailusers_get_debug()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Enable Debug Mode<br/><small><i>Note:  Email is not sent when in debug mode.</i></small>', MAILUSERS_I18N_DOMAIN); ?><br/>
+		</td>
+	</tr>
 	</table>
 
 	<p class="submit">
