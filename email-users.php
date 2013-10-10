@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.0-beta-2
+Version: 4.6.0-beta-3
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-2');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-3');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -43,7 +43,7 @@ define( 'MAILUSERS_ACCEPT_NOTIFICATION_USER_META', 'email_users_accept_notificat
 define( 'MAILUSERS_ACCEPT_MASS_EMAIL_USER_META', 'email_users_accept_mass_emails' );
 
 // Debug
-define( 'MAILUSERS_DEBUG', true);
+define( 'MAILUSERS_DEBUG', (mailusers_get_debug() === 'true'));
 
 //  Enable integration with User Groups plugin?
 //  @see http://wordpress.org/plugins/user-groups/
@@ -112,8 +112,8 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_copy_sender' => 'false',
 		// Mail User - Default setting for Add X-Mailer header
 		'mailusers_add_x_mailer_header' => 'false',
-		// Mail User - Default setting for Add MIME-Version header
-		'mailusers_add_mime_version_header' => 'false',
+		// Mail User - Default setting for Debug
+		'mailusers_debug' => 'false',
 	) ;
 
     if (array_key_exists($option, $default_plugin_settings))
@@ -148,7 +148,7 @@ function mailusers_plugin_activation() {
 	if ( $installed_version==mailusers_get_current_version() ) {
 		// do nothing
 	}
-	else if ( $installed_version=='' ) {
+	elseif ( $installed_version=='' ) {
 		$plugin_settings = mailusers_get_default_plugin_settings() ;
 
 		//  Add the options which will add them if they don't
@@ -646,6 +646,7 @@ function mailusers_admin_init() {
         'mailusers_send_bounces_to_address_override', 'mailusers_send_bounces_to_address_override_validate') ;
     register_setting('email_users', 'mailusers_add_x_mailer_header') ;
     register_setting('email_users', 'mailusers_add_mime_version_header') ;
+    register_setting('email_users', 'mailusers_debug') ;
     register_setting('email_users', 'mailusers_version') ;
 }
 
@@ -931,6 +932,25 @@ function mailusers_get_copy_sender() {
  */
 function mailusers_update_copy_sender( $copy_sender ) {
 	return update_option( 'mailusers_copy_sender', $copy_sender );
+}
+
+/**
+ * Wrapper for the from send exclude setting
+ */
+function mailusers_get_debug() {
+    $option = get_option( 'mailusers_debug' );
+
+    if ($option === false)
+        $option = mailusers_get_default_plugin_settings( 'mailusers_debug' );
+
+    return $option;
+}
+
+/**
+ * Wrapper for the from sender exclude setting
+ */
+function mailusers_update_debug( $debug ) {
+	return update_option( 'mailusers_debug', $debug );
 }
 
 /**
