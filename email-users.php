@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.0-beta-3
+Version: 4.6.0-beta-4
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-3');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-4');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -112,6 +112,10 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_copy_sender' => 'false',
 		// Mail User - Default setting for Add X-Mailer header
 		'mailusers_add_x_mailer_header' => 'false',
+		// Mail User - Default setting Omit Display Names in Email Addresses
+		'mailusers_omit_display_names' => 'false',
+		// Mail User - The footer to use when using the post notification functionality
+		'mailusers_footer' => __(sprintf('<h5 style="border-top: 1px solid #eee;">Powered by Email Users v%s</h5>', MAILUSERS_CURRENT_VERSION), MAILUSERS_I18N_DOMAIN),
 		// Mail User - Default setting for Debug
 		'mailusers_debug' => 'false',
 	) ;
@@ -637,6 +641,7 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
     register_setting('email_users', 'mailusers_shortcode_processing') ;
     register_setting('email_users', 'mailusers_from_sender_exclude') ;
+    register_setting('email_users', 'mailusers_omit_display_names') ;
     register_setting('email_users', 'mailusers_copy_sender') ;
     register_setting('email_users', 'mailusers_from_sender_name_override') ;
     register_setting('email_users', 'mailusers_group_taxonomy') ;
@@ -646,6 +651,7 @@ function mailusers_admin_init() {
         'mailusers_send_bounces_to_address_override', 'mailusers_send_bounces_to_address_override_validate') ;
     register_setting('email_users', 'mailusers_add_x_mailer_header') ;
     register_setting('email_users', 'mailusers_add_mime_version_header') ;
+    register_setting('email_users', 'mailusers_footer') ;
     register_setting('email_users', 'mailusers_debug') ;
     register_setting('email_users', 'mailusers_version') ;
 }
@@ -676,6 +682,25 @@ function mailusers_get_default_body() {
  */
 function mailusers_update_default_body( $body ) {
 	return update_option( 'mailusers_default_body', stripslashes($body) );
+}
+
+/**
+ * Wrapper for the option 'mailusers_footer'
+ */
+function mailusers_get_footer() {
+    $option = get_option( 'mailusers_footer' );
+
+    if ($option === false)
+        $option = mailusers_get_default_plugin_settings( 'mailusers_footer' );
+
+    return stripslashes($option);
+}
+
+/**
+ * Wrapper for the option 'mailusers_footer'
+ */
+function mailusers_update_footer( $footer ) {
+	return update_option( 'mailusers_footer', stripslashes($footer) );
 }
 
 /**
@@ -894,6 +919,25 @@ function mailusers_get_shortcode_processing() {
  */
 function mailusers_update_shortcode_processing( $shortcode_processing ) {
 	return update_option( 'mailusers_shortcode_processing', $shortcode_processing );
+}
+
+/**
+ * Wrapper for the omit display names setting
+ */
+function mailusers_get_omit_display_names() {
+    $option = get_option( 'mailusers_omit_display_names' );
+
+    if ($option === false)
+        $option = mailusers_get_default_plugin_settings( 'omit_display_names' );
+
+    return $option;
+}
+
+/**
+ * Wrapper for the omit display names setting
+ */
+function mailusers_update_omit_display_names( $omit_display_names ) {
+	return update_option( 'mailusers_omit_display_names', $omit_display_names );
 }
 
 /**
@@ -1376,9 +1420,10 @@ function mailusers_replace_sender_templates($text, $sender_name) {
 function mailusers_send_mail($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
     
     $headers = array() ;
+    $omit = (mailusers_get_omit_display_names() == 'true') ;
 
     //  Default the To: and Cc: values to the send email address
-    $to = sprintf('%s <%s>', $sender_name, $sender_email) ;
+    $to = ($omit) ? $sender_email : sprintf('%s <%s>', $sender_name, $sender_email) ;
     $cc = sprintf('Cc: %s', $to) ;
 
 	$num_sent = 0; // return value
@@ -1393,28 +1438,29 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
     if ($return_path == '') $return_path = $sender_email;
 
     //  Build headers
-	$headers[] = sprintf('From: "%s" <%s>', $sender_name, $sender_email);
+	$headers[] = ($omit) ? $sender_email : sprintf('From: "%s" <%s>', $sender_name, $sender_email);
 	$headers[] = sprintf('Return-Path: <%s>', $return_path);
-	$headers[] = sprintf('Reply-To: "%s" <%s>', $sender_name, $sender_email);
+	$headers[] = ($omit) ? $sender_email : sprintf('Reply-To: "%s" <%s>', $sender_name, $sender_email);
 
     if (mailusers_get_add_x_mailer_header() == 'true')
 	    $headers[] = sprintf('X-Mailer: PHP %s', phpversion()) ;
 
 	$subject = stripslashes($subject);
 	$message = stripslashes($message);
+    $footer = mailusers_get_footer() ;
 
 	if ('html' == $type) {
         if (mailusers_get_add_mime_version_header() == 'true')
 		    $headers[] = 'MIME-Version: 1.0';
 		$headers[] = sprintf('Content-Type: %s; charset="%s"', get_bloginfo('html_type'), get_bloginfo('charset')) ;
-		$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . "</body></html>";
+		$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
 	} else {
         if (mailusers_get_add_mime_version_header() == 'true')
 		    $headers[] = 'MIME-Version: 1.0';
 		$headers[] = sprintf('Content-Type: text/plain; charset="%s"', get_bloginfo('charset')) ;
 		$message = preg_replace('|&[^a][^m][^p].{0,3};|', '', $message);
 		$message = preg_replace('|&amp;|', '&', $message);
-		$mailtext = wordwrap(strip_tags($message), 80, "\n");
+		$mailtext = wordwrap(strip_tags($message . "\n" . $footer), 80, "\n");
 	}
 
 	// If unique recipient, send mail using TO field.
@@ -1427,7 +1473,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	if (count($recipients)==1) {
         $recipient = reset($recipients) ; // reset will return first value of the array!
 		if (mailusers_is_valid_email($recipient->user_email)) {
-            $to = sprintf('%s <%s>', $recipient->display_name, $recipient->user_email) ;
+            $to = ($omit) ? $recipient->user_email : sprintf('%s <%s>', $recipient->display_name, $recipient->user_email) ;
 
             if ($ccsender) $headers[] = $cc ;
 
