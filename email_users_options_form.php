@@ -126,7 +126,7 @@ print $reflection->getFileName();
 			<select name="mailusers_default_mail_format" style="width: 235px;">
 				<option value="html" <?php if (mailusers_get_default_mail_format()=='html') echo 'selected="true"';?>><?php _e('HTML', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="plaintext" <?php if (mailusers_get_default_mail_format()=='plaintext') echo 'selected="true"';?>><?php _e('Plain text', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select><br/>&nbsp;<?php _e('Send mail as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></td>
+			</select><br/><i><small><?php _e('Send mail as plain text or HTML by default?', MAILUSERS_I18N_DOMAIN); ?></small></i></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
@@ -144,7 +144,7 @@ print $reflection->getFileName();
 				<option value="uldn" <?php if (mailusers_get_default_sort_users_by()=='uldn') echo 'selected="true"';?>><?php _e('User Login (Display Name)', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="ulfl" <?php if (mailusers_get_default_sort_users_by()=='ulfl') echo 'selected="true"';?>><?php _e('User Login (First Name Last Name)', MAILUSERS_I18N_DOMAIN); ?></option>
 				<option value="ullf" <?php if (mailusers_get_default_sort_users_by()=='ullf') echo 'selected="true"';?>><?php _e('User Login (Last Name, First Name)', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select><br/>&nbsp;<?php _e('Determine how to sort and display names in the User selection list?', MAILUSERS_I18N_DOMAIN); ?></td>
+			</select><br/><i><small><?php _e('Determine how to sort and display names in the User selection list?', MAILUSERS_I18N_DOMAIN); ?></small></i></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
@@ -156,7 +156,7 @@ print $reflection->getFileName();
 				<option value="10" <?php if (mailusers_get_max_bcc_recipients()=='10') echo 'selected="true"';?>>10</option>
 				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"';?>>30</option>
 				<option value="100" <?php if (mailusers_get_max_bcc_recipients()=='100') echo 'selected="true"';?>>100</option>
-			</select><br/>&nbsp;<?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?>
+			</select><br/><i><small><?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?></i></small>
 		</td>
 	</tr>
 	<tr>
@@ -166,6 +166,15 @@ print $reflection->getFileName();
 			<input type="text" name="mailusers_default_subject" style="width: auto;" 
 				value="<?php echo format_to_edit(mailusers_get_default_subject()); ?>" 
 				size="80" /></td>
+	</tr>
+	<tr>
+        <th><?php _e('Display Names', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input 	type="checkbox" name="mailusers_omit_display_names" id="mailusers_omit_display_names" value="true"
+					<?php if (mailusers_get_omit_display_names()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Omit Display Names when sending email.', MAILUSERS_I18N_DOMAIN); ?><br/>
+            <i><small><?php _e('Use "john.doe@example.com" instead of "John Doe &lt;john.doe@example.com&gt;"')?></small></i>
+		</td>
 	</tr>
 	<tr>
         <th><?php _e('Copy Sender', MAILUSERS_I18N_DOMAIN); ?></th>
@@ -189,7 +198,7 @@ print $reflection->getFileName();
 		<td>
 			<input type="text" name="mailusers_from_sender_name_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_name_override()); ?>" 
-				size="80" id="from_sender_name_override"/><br/>&nbsp;<?php _e('A name that can be used in place of the logged in user\'s name when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?></td>
+				size="80" id="from_sender_name_override"/><br/><i><small><?php _e('A name that can be used in place of the logged in user\'s name when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?></small></i></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
@@ -197,7 +206,7 @@ print $reflection->getFileName();
 		<td>
 			<input type="text" name="mailusers_from_sender_address_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_address_override()); ?>" 
-                size="80" id="from_sender_address_override"/><br/>&nbsp;<?php _e('An email address that can be used in place of the logged in user\'s email address when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?><br/><b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></td>
+                size="80" id="from_sender_address_override"/><br/><i><small><?php _e('An email address that can be used in place of the logged in user\'s email address when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?>&nbsp;<b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></small></i></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
@@ -205,13 +214,21 @@ print $reflection->getFileName();
 		<td>
 			<input type="text" name="mailusers_send_bounces_to_address_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_send_bounces_to_address_override()); ?>" 
-                size="80" id="from_sender_address_override"/><br/>&nbsp;<?php _e('An email address that can be used in place of the logged in user\'s email address to receive bounced email notifications.', MAILUSERS_I18N_DOMAIN); ?><br/><b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></td>
+                size="80" id="from_sender_address_override"/><br/><i><small><?php _e('An email address that can be used in place of the logged in user\'s email address to receive bounced email notifications.', MAILUSERS_I18N_DOMAIN); ?>&nbsp;<b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></small></i></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
             <label for="mailusers_default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
             <?php wp_editor(stripslashes(mailusers_get_default_body()), "mailusers_default_body");?>
+
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" valign="top">
+            <label for="mailusers_footer"><?php _e('Email Footer', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+            <?php wp_editor(stripslashes(mailusers_get_footer()), "mailusers_footer", array('textarea_rows' => 4));?>
 
 		</td>
 	</tr>
@@ -236,7 +253,7 @@ print $reflection->getFileName();
                 <option value="100" <?php if (mailusers_get_user_settings_table_rows()=='100') echo 'selected="true"'; ?>><?php _e('100', MAILUSERS_I18N_DOMAIN); ?></option>
                 <option value="200" <?php if (mailusers_get_user_settings_table_rows()=='200') echo 'selected="true"'; ?>><?php _e('200', MAILUSERS_I18N_DOMAIN); ?></option>
                 <option value="500" <?php if (mailusers_get_user_settings_table_rows()=='500') echo 'selected="true"'; ?>><?php _e('500', MAILUSERS_I18N_DOMAIN); ?></option>
-			</select><br/>&nbsp;<?php _e('By default the table will display 20 rows.', MAILUSERS_I18N_DOMAIN); ?>
+			</select><br/><i><small><?php _e('By default the table will display 20 rows.', MAILUSERS_I18N_DOMAIN); ?></small></i>
 		</td>
 	</tr>
 	<tr>
@@ -351,6 +368,7 @@ print $reflection->getFileName();
 	} else {						
 		$subject = mailusers_get_default_subject();
 		$mail_content = mailusers_get_default_body();
+		$mail_footer = mailusers_get_footer();
 
 		// Replace the template variables concerning the blog details
 		// --
