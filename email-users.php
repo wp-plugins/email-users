@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.0-beta-4
+Version: 4.6.0
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.0-beta-4');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.0');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -115,7 +115,7 @@ function mailusers_get_default_plugin_settings($option = null)
 		// Mail User - Default setting Omit Display Names in Email Addresses
 		'mailusers_omit_display_names' => 'false',
 		// Mail User - The footer to use when using the post notification functionality
-		'mailusers_footer' => __(sprintf('<h5 style="border-top: 1px solid #eee;">Powered by Email Users v%s</h5>', MAILUSERS_CURRENT_VERSION), MAILUSERS_I18N_DOMAIN),
+		'mailusers_footer' => __('<h5 style="border-top: 1px solid #eee;">Powered by <a href="http://wordpress.org/plugins/email-users/">Email Users</a>.</h5>', MAILUSERS_I18N_DOMAIN),
 		// Mail User - Default setting for Debug
 		'mailusers_debug' => 'false',
 	) ;
