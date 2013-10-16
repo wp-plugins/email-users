@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2013-10-16 15:27-0000\n"
-"PO-Revision-Date: 2013-10-16 15:27-0000\n"
+"POT-Creation-Date: 2013-10-16 15:35-0000\n"
+"PO-Revision-Date: 2013-10-16 15:35-0000\n"
 "Last-Translator: Mike Walsh <mpwalsh8@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,12 @@ msgid ""
 "%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Link to the post: <a "
 "href=\"%POST_URL%\">%POST_URL%</a></li><li>Link to %BLOG_NAME%: <a href="
 "\"%BLOG_URL%\">%BLOG_URL%</a></li></ul>"
+msgstr ""
+
+#: ../email-users.php:118
+msgid ""
+"<h5 style=\"border-top: 1px solid #eee;\">Powered by <a href=\"http://"
+"wordpress.org/plugins/email-users/\">Email Users</a>.</h5>"
 msgstr ""
 
 #: ../email-users.php:292 ../email-users.php:307 ../email-users.php:341
