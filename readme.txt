@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 4.6.0
+Stable tag: 4.6.1
 
 A plugin for WordPress which allows you to send an email to the registered blog users. Users can send personal emails to each other. Power users can email groups of users and even notify group of users of posts.
 
@@ -148,6 +148,11 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.6.1 =
+* Updated Spanish language translation files. (thank you Ponç J. Llaneras)
+* New Bulgarian language translation files.  (thank you Borisa Djuraskovic)
+* Fixed formatting issue in the plugin README file.
+
 = Version 4.6.0 =
 * Significantly improved debug functionality to chase down mail header issues.
 * Check added to determine if wp_mail() has been overloaded by a theme or plugin.
@@ -179,17 +184,17 @@ function update_publicworks_meta_filter()
 * Added new options to optionally add MIME-Version and X-Mailer headers as by default, they are added by WordPress and shouldn't be added by Email Users.
 * Improved Information Panel on Email Users settings page, now shows status of any filters which could affect Email Users.
 
-= Version 4.5.2
+= Version 4.5.2 =
 * Added Dashboard Widget to report number of users who accept each type of email and default settings.
 * Added Message to Settings page to warn Admin when no users will not receive emails.
 * Added Meta Box to Settings page to report number of users who accept each type of email.
 
-= Version 4.5.1
+= Version 4.5.1 =
 * Fixed Post Excerpt to use WordPress API to allow usage of filters.
 * Added support for %POST_AUTHOR% keyword replacement.
 * Added Italian language translation.
 
-= Version 4.5.0
+= Version 4.5.0 =
 * Added CSS class and ID to Post and Page Notification post boxes so they can be styled or easily hidden via CSS.
 * Added integration with User Groups plugin.
 * Added integration with User Access Manager Plugin.
@@ -197,10 +202,10 @@ function update_publicworks_meta_filter()
 * Added integration pane to Settings page to note which plugins Email-Users recorgnizes and enables integration with.
 * Added *mailusers_update_custom_meta_filters* action to update of dynamic meta filters prior to their use.  Useful to creating and updating meta values based on other meta data or plugins.
 
-= Version 4.4.4
+= Version 4.4.4 =
 * Bumped version because the tag wasn't done correctly.
 
-= Version 4.4.3
+= Version 4.4.3 =
 * Fixed typo which prevented saving Sender Exclude option.
 * Fixed bug with User Meta filters.
 * Fixed bug with duplicate emails being sent in some instances when both Roles and Users selected.
