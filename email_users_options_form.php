@@ -587,6 +587,11 @@ print $reflection->getFileName();
 		<td><?php _e('With the "User Access Manager"-plugin you can manage the access to your posts, pages and files.', MAILUSERS_I18N_DOMAIN); ?></td>
 		<td><?php _e((class_exists(MAILUSERS_USER_ACCESS_MANAGER_CLASS) ? 'Enabled' : 'Disabled'), MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
+	<tr>
+		<td><b><a href="http://wordpress.org/plugins/groups/">Groups</a></b></td>
+		<td><?php _e('Groups provides group-based user membership management, group-based capabilities and content access control.', MAILUSERS_I18N_DOMAIN); ?></td>
+		<td><?php _e((class_exists(MAILUSERS_ITTHINX_GROUPS_CLASS) ? 'Enabled' : 'Disabled'), MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
 	</tbody>
 </table>
 
