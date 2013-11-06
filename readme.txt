@@ -15,6 +15,20 @@ A plugin for WordPress which allows you to send an email to the registered blog 
 
 All the instructions for installation, the support forums, a FAQ, etc. can be found on the [plugin home page](http://wordpress.org/extend/plugins/email-users/) or on the [plugin overview page](http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/).
 
+= Translation =
+
+Email Users has language translation support for a number of languages.  New languages and updates to existing languages are always welcome.  Thank you to the people who have provided these translations.
+
+1. Spanish (es_ES) - Ponç J. Llaneras
+1. Bulgarian (sr_RS) - [Borisa Djuraskovic](http://www.webhostinghub.com/)
+1. Italian (it_IT)
+1. German (de_DE)
+1. Persian (fa_IR)
+1. French (fr_FR)
+1. Russian (ru_RU)
+1. Chinese (zh_CN)
+
+
 == License ==
 
 This plugin is available under the GPL license, which means that it's free. If you use it for a commercial web site, if you appreciate my efforts or if you want to encourage me to develop and maintain it, please consider making a donation using Paypal, a secured payment solution. You just need to click the donate button on the the [plugin overview page](http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/) and follow the instructions.
@@ -178,6 +192,7 @@ function update_publicworks_meta_filter()
 = Version 4.6.2 =
 * Refactored integration with other "Groups" plugins.
 * Added integration support with ItThinx Groups plugin.
+* Fixed language translation issues with several strings on Options page.
 
 = Version 4.6.1 =
 * Updated Spanish language translation files. (thank you Ponç J. Llaneras)
