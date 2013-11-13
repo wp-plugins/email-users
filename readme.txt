@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.5.1
 Tested up to: 3.7.1
-Stable tag: 4.6.1
+Stable tag: 4.6.2
 License: GPL
 
 == Description ==
@@ -19,14 +19,14 @@ All the instructions for installation, the support forums, a FAQ, etc. can be fo
 
 Email Users has language translation support for a number of languages.  New languages and updates to existing languages are always welcome.  Thank you to the people who have provided these translations.
 
-1. Spanish (es_ES) - Ponç J. Llaneras
-1. Bulgarian (sr_RS) - [Borisa Djuraskovic](http://www.webhostinghub.com/)
-1. Italian (it_IT)
-1. German (de_DE)
-1. Persian (fa_IR)
-1. French (fr_FR)
-1. Russian (ru_RU)
-1. Chinese (zh_CN)
+1. Spanish (es_ES) - Ponç J. Llaneras (last updated:  4.6.0)
+1. Bulgarian (sr_RS) - [Borisa Djuraskovic](http://www.webhostinghub.com/) (last update 4.6.2)
+1. Italian (it_IT) - ? (last updated 4.5.1)
+1. German (de_DE) - Tobias Bechtold (last updated 4.4.1)
+1. Persian (fa_IR) - ? (last updated 4.3.6)
+1. French (fr_FR) - Emilie DCCLXI (last updated 4.3.6)
+1. Russian (ru_RU) - ? (last updated 4.3.8)
+1. Chinese (zh_CN) - ? (last updated 4.5.1)
 
 
 == License ==
@@ -193,6 +193,7 @@ function update_publicworks_meta_filter()
 * Refactored integration with other "Groups" plugins.
 * Added integration support with ItThinx Groups plugin.
 * Fixed language translation issues with several strings on Options page.
+* Updated Bulgarian language translation files.  (thank you Borisa Djuraskovic)
 
 = Version 4.6.1 =
 * Updated Spanish language translation files. (thank you Ponç J. Llaneras)
