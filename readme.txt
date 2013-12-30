@@ -189,6 +189,9 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.6.3 =
+* Fixed several strings which were not properly set up for language translation.
+
 = Version 4.6.2 =
 * Refactored integration with other "Groups" plugins.
 * Added integration support with ItThinx Groups plugin.

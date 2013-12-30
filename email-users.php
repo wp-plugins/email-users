@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.2
+Version: 4.6.3-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.2');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-1');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -86,7 +86,7 @@ function mailusers_get_default_plugin_settings($option = null)
 		// Version of the email users plugin
 		'mailusers_version' => mailusers_get_current_version(),
 		// The default title to use when using the post notification functionality
-		'mailusers_default_subject' => __('[%BLOG_NAME%] A post of interest: "%POST_TITLE%"', MAILUSERS_I18N_DOMAIN),
+		'mailusers_default_subject' => '[%BLOG_NAME%] ' . __('A post of interest:', MAILUSERS_I18N_DOMAIN) . ' "%POST_TITLE%"',
 		// Mail User - The default body to use when using the post notification functionality
 		'mailusers_default_body' => __('<p>Hello, </p><p>I would like to bring your attention on a new post published on the blog. Details of the post follow; I hope you will find it interesting.</p><p>Best regards, </p><p>%FROM_NAME%</p><hr><p><strong>%POST_TITLE%</strong></p><p>%POST_EXCERPT%</p><ul><li>Link to the post: <a href="%POST_URL%">%POST_URL%</a></li><li>Link to %BLOG_NAME%: <a href="%BLOG_URL%">%BLOG_URL%</a></li></ul>', MAILUSERS_I18N_DOMAIN),
 		// Mail User - Default mail format (html or plain text)
@@ -120,7 +120,7 @@ function mailusers_get_default_plugin_settings($option = null)
 		// Mail User - Default setting Omit Display Names in Email Addresses
 		'mailusers_omit_display_names' => 'false',
 		// Mail User - The footer to use when using the post notification functionality
-		'mailusers_footer' => __('<h5 style="border-top: 1px solid #eee;">Powered by <a href="http://wordpress.org/plugins/email-users/">Email Users</a>.</h5>', MAILUSERS_I18N_DOMAIN),
+		'mailusers_footer' => '<h5 style="border-top: 1px solid #eee;">' . __('Powered by', MAILUSERS_I18N_DOMAIN) . ' <a href="http://wordpress.org/plugins/email-users/">Email Users</a>.</h5>',
 		// Mail User - Default setting for Debug
 		'mailusers_debug' => 'false',
 	) ;
