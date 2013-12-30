@@ -191,6 +191,7 @@ function update_publicworks_meta_filter()
 
 = Version 4.6.3 =
 * Fixed several strings which were not properly set up for language translation.
+* Re-added French translation file as it had gotten corrupted somehow and wouldn't load in WordPress.
 
 = Version 4.6.2 =
 * Refactored integration with other "Groups" plugins.
