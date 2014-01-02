@@ -1052,6 +1052,8 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     }
 
     ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
+    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count(get_users()), true)); ?> --><?php echo PHP_EOL;
+    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
     ?><!-- <?php printf('%s%s', PHP_EOL, print_r($args, true)); ?> --><?php echo PHP_EOL;
     //  Retrieve the list of users
 
