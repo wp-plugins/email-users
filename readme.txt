@@ -27,6 +27,7 @@ Email Users has language translation support for a number of languages.  New lan
 1. French (fr_FR) - Emilie DCCLXI (last updated 4.3.6)
 1. Russian (ru_RU) - ? (last updated 4.3.8)
 1. Chinese (zh_CN) - ? (last updated 4.5.1)
+1. Dutch (nl_NL) - Bart van Strien (last updated 4.6.3)
 
 
 == License ==
