@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Email-Users\n"
-"POT-Creation-Date: 2013-12-30 16:43+0100\n"
-"PO-Revision-Date: 2013-12-30 20:17+0100\n"
+"POT-Creation-Date: 2014-01-02 13:34+0100\n"
+"PO-Revision-Date: 2014-01-02 13:37+0100\n"
 "Last-Translator: bvstrien\n"
 "Language-Team: bvstrien\n"
 "Language: nl_NL\n"
@@ -1077,40 +1077,38 @@ msgstr "Er zijn geen ontvangers gevonden."
 
 #: ../email_users_send_custom_filter_mail.php:149
 #: ../email_users_send_group_mail.php:195
-msgid ""
-"<div class=\"error fade\"><p>There was a problem trying to send email to "
-"users.</p></div>"
+#: ../email_users_send_user_mail.php:136
+msgid "There was a problem trying to send email to users."
 msgstr ""
-"<div class=\"error fade\"><p>Er is een probleem met het versturen van de "
-"emailberichten naar de geselecteerde gebruikers.</p></div>"
+"Er is een probleem met het versturen van de emailberichten naar de "
+"geselecteerde gebruikers."
 
-#: ../email_users_send_custom_filter_mail.php:151
+#: ../email_users_send_custom_filter_mail.php:152
 #: ../email_users_send_group_mail.php:197
+#: ../email_users_send_user_mail.php:138
 msgid ""
-"<div class=\"error fade\"><p>No email has been sent to other users. This may "
-"be because no valid email addresses were found.</p></div>"
+"No email has been sent to other users. This may be because no valid email "
+"addresses were found."
 msgstr ""
-"<div class=\"error fade\"><p>Er is geen emailbericht verstuurd naar de "
-"andere ontvangers. Dit zou kunnen omdat er geen geldig emailadressen zijn "
-"gevonden.</p></div>"
+"Er is geen emailbericht verstuurd naar de andere ontvangers. Dit zou kunnen "
+"omdat er geen geldig emailadressen zijn gevonden."
 
-#: ../email_users_send_custom_filter_mail.php:155
+#: ../email_users_send_custom_filter_mail.php:156
 #: ../email_users_send_group_mail.php:201
 #: ../email_users_send_user_mail.php:142
 #, php-format
 msgid "Email sent to %s user(s)."
 msgstr "Emailbericht is verstuurd aan %s gebruiker(s)."
 
-#: ../email_users_send_custom_filter_mail.php:159
+#: ../email_users_send_custom_filter_mail.php:160
 #: ../email_users_send_group_mail.php:205
-msgid ""
-"<div class=\"error fade\"><p>WARNING: More email has been sent than the "
-"number of recipients found.</p></div>"
+#: ../email_users_send_user_mail.php:146
+msgid "WARNING: More email has been sent than the number of recipients found."
 msgstr ""
-"<div class=\"error fade\"><p>WAARSCHUWING: Er zijn meer emailberichten "
-"verstuurd dan het aantal gevonden ontvangers.</p></div>"
+"WAARSCHUWING: Er zijn meer emailberichten verstuurd dan het aantal gevonden "
+"ontvangers."
 
-#: ../email_users_send_custom_filter_mail.php:161
+#: ../email_users_send_custom_filter_mail.php:162
 #: ../email_users_send_group_mail.php:207
 #, php-format
 msgid ""
@@ -1147,26 +1145,6 @@ msgid ""
 msgstr ""
 "<br/>%d gebruikers die geen Massa Mail kunnen of willen ontvangen, zijn "
 "gefilterd uit de list met ontvangers."
-
-#: ../email_users_send_user_mail.php:136
-msgid "There was a problem trying to send email to users."
-msgstr ""
-"Er is een probleem met het versturen van de emailberichten naar de "
-"geselecteerde gebruikers."
-
-#: ../email_users_send_user_mail.php:138
-msgid ""
-"No email has been sent to other users. This may be because no valid email "
-"addresses were found."
-msgstr ""
-"Er is geen emailbericht verstuurd naar de andere ontvangers. Dit zou kunnen "
-"omdat er geen geldig emailadressen zijn gevonden."
-
-#: ../email_users_send_user_mail.php:146
-msgid "WARNING: More email has been sent than the number of recipients found."
-msgstr ""
-"WAARSCHUWING: Er zijn meer emailberichten verstuurd dan het aantal gevonden "
-"ontvangers."
 
 #: ../email_users_send_user_mail.php:148
 #, php-format
@@ -1246,6 +1224,28 @@ msgstr "Geen gebruikers geselecteerd"
 #: ../email_users_user_settings.php:489
 msgid "Search"
 msgstr "Zoeken"
+
+#~ msgid ""
+#~ "<div class=\"error fade\"><p>There was a problem trying to send email to "
+#~ "users.</p></div>"
+#~ msgstr ""
+#~ "<div class=\"error fade\"><p>Er is een probleem met het versturen van de "
+#~ "emailberichten naar de geselecteerde gebruikers.</p></div>"
+
+#~ msgid ""
+#~ "<div class=\"error fade\"><p>No email has been sent to other users. This "
+#~ "may be because no valid email addresses were found.</p></div>"
+#~ msgstr ""
+#~ "<div class=\"error fade\"><p>Er is geen emailbericht verstuurd naar de "
+#~ "andere ontvangers. Dit zou kunnen omdat er geen geldig emailadressen zijn "
+#~ "gevonden.</p></div>"
+
+#~ msgid ""
+#~ "<div class=\"error fade\"><p>WARNING: More email has been sent than the "
+#~ "number of recipients found.</p></div>"
+#~ msgstr ""
+#~ "<div class=\"error fade\"><p>WAARSCHUWING: Er zijn meer emailberichten "
+#~ "verstuurd dan het aantal gevonden ontvangers.</p></div>"
 
 #~ msgid "[%BLOG_NAME%] A post of interest: \"%POST_TITLE%\""
 #~ msgstr "[%BLOG_NAME%] Een interessant bericht: \"%POST_TITLE%\""
