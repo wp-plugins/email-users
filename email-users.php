@@ -1007,6 +1007,8 @@ function mailusers_update_debug( $debug ) {
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array(), $sortby = null, $meta_value = 'true', $meta_compare = '=') {
+    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php
+    
 	if ($sortby == null) $sortby = mailusers_get_default_sort_users_by();
 
     //  Set up the arguments for get_users()
@@ -1049,6 +1051,7 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     }
 
+    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php
     //  Retrieve the list of users
 
 	$users = get_users($args) ;
@@ -1080,6 +1083,7 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     }
 
+    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php
     return $users ;
 }
 

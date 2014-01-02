@@ -92,6 +92,7 @@
 			</small></label></th>
 			<td>
 				<select id="send_users" name="send_users[]" size="8" style="width: 654px; height: 250px;" <?php if (current_user_can(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP)) echo 'multiple="multiple"'; ?> >
+                <!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> -->
 				<?php
 					//  Display of users is based on plugin setting
 					$na = __('N/A', MAILUSERS_I18N_DOMAIN);
@@ -168,6 +169,7 @@
 					}
 				?>
 				</select>
+                <!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> -->
 			</td>
 		</tr>
 		<tr>
