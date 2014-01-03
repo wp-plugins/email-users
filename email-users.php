@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.3-beta-6
+Version: 4.6.3-beta-8
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-6');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-8');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1013,15 +1013,24 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     //  Set up the arguments for get_users()
 
-    $args['exclude'] = $exclude_id;
-    $args['fields'] = 'all_with_meta';
+    //$args['exclude'] = $exclude_id;
+    //$args['fields'] = 'all_with_meta';
+    //$args['fields'] = array('ID', 'display_name', 'first_name', 'last_name') ;
+    //$args['fields'] = array('ID', 'display_name') ;
+
+    $args = array_merge($args, array(
+        'exclude' => $exclude_id,
+        'fields' => array('ID', 'display_name'),
+        'offset' => '0',
+        'number' => '500',
+    )) ;
 
     //  Apply the meta filter
 
     if ($meta_filter != '')
     {
         $args = array_merge($args, array(
-            'fields' => 'all_with_meta',
+            //'fields' => 'all_with_meta',
             'meta_key' => $meta_filter,
             'meta_value' => $meta_value,
             'meta_like_escape' => false,
@@ -1057,8 +1066,8 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     ?><!-- <?php printf('%s%s', PHP_EOL, print_r($args, true)); ?> --><?php echo PHP_EOL;
     //  Retrieve the list of users
 
-	$users = get_users($args) ;
-    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count($users), true)); ?> --><?php echo PHP_EOL;
+	//$users = get_users($args) ;
+    ?><!-- <?php //printf('%s%s', PHP_EOL, print_r(count($users), true)); ?> --><?php //echo PHP_EOL;
 
     ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
 
@@ -1066,17 +1075,20 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     //  when calling get_users() with the arguments 'fields' => 'all_with_meta'.  To
     //  prevent this situation, the query is done in chunks and a result is assembled.
 
-    $args['offset'] = '0' ;
-    $args['number'] = '100' ;
+    //$args['offset'] = '0' ;
+    //$args['number'] = '500' ;
 
     $users = count_users() ;
     $total = $users['total_users'] ;
 
     $users = array() ;
 
+    $q = 1 ;
+
     while ($args['offset'] < $total)
     {
-    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
+        ?><!-- <?php printf('%s::%s  Query #%s  Memory Usage:  %s',
+            basename(__FILE__), __LINE__, $q++, mailusers_memory_usage(true)); ?> --><?php echo PHP_EOL;
         $users = array_merge($users, get_users($args)) ;
         $args['offset'] += $args['number'] ;
     }
@@ -1752,4 +1764,15 @@ function mailusers_whereami($x, $y)
 }
 endif;
 
+function mailusers_memory_usage($real_usage = false)
+{ 
+    $mem_usage = memory_get_usage($real_usage); 
+
+    if ($mem_usage < 1024) 
+        return $mem_usage." bytes"; 
+    elseif ($mem_usage < 1048576) 
+        return round($mem_usage/1024,2)."K"; 
+    else 
+        return round($mem_usage/1048576,2)."M"; 
+}
 ?>
