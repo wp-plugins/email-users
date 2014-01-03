@@ -1052,14 +1052,35 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     }
 
     ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
-    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count(get_users()), true)); ?> --><?php echo PHP_EOL;
+    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count_users(), true)); ?> --><?php echo PHP_EOL;
     ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
     ?><!-- <?php printf('%s%s', PHP_EOL, print_r($args, true)); ?> --><?php echo PHP_EOL;
     //  Retrieve the list of users
 
 	$users = get_users($args) ;
+    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count($users), true)); ?> --><?php echo PHP_EOL;
 
     ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
+
+    //  On some sites with a large number of users, it is possible to run out of memory
+    //  when calling get_users() with the arguments 'fields' => 'all_with_meta'.  To
+    //  prevent this situation, the query is done in chunks and a result is assembled.
+
+    $args['offset'] = '0' ;
+    $args['number'] = '100' ;
+
+    $users = count_users() ;
+    $total = $users['total_users'] ;
+
+    $users = array() ;
+
+    while ($args['offset'] < $total)
+    {
+        $users = array_merge($users, get_users($args)) ;
+        $args['offset'] += $args['number'] ;
+    }
+    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count($users), true)); ?> --><?php echo PHP_EOL;
+
     //  Sort the users based on the plugin settings
 
     if ( ! empty( $users) ) {
