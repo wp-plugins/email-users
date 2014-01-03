@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.3-beta-5
+Version: 4.6.3-beta-6
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-5');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-6');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1076,6 +1076,7 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     while ($args['offset'] < $total)
     {
+    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
         $users = array_merge($users, get_users($args)) ;
         $args['offset'] += $args['number'] ;
     }
