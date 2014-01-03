@@ -194,6 +194,7 @@ function update_publicworks_meta_filter()
 * Fixed several strings which were not properly set up for language translation.
 * Re-added French translation file as it had gotten corrupted somehow and wouldn't load in WordPress.
 * Added Dutch translation support.
+* Fixed bug where sites with large numbers of users would exhaust memory.
 
 = Version 4.6.2 =
 * Refactored integration with other "Groups" plugins.
