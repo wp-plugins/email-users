@@ -19,7 +19,7 @@ All the instructions for installation, the support forums, a FAQ, etc. can be fo
 
 Email Users has language translation support for a number of languages.  New languages and updates to existing languages are always welcome.  Thank you to the people who have provided these translations.
 
-1. Spanish (es_ES) - Ponç J. Llaneras (last updated:  4.6.0)
+1. Spanish (es_ES) - Ponç J. Llaneras (last updated:  4.6.3)
 1. Bulgarian (sr_RS) - [Borisa Djuraskovic](http://www.webhostinghub.com/) (last update 4.6.2)
 1. Italian (it_IT) - ? (last updated 4.5.1)
 1. German (de_DE) - Tobias Bechtold (last updated 4.4.1)
