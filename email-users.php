@@ -1007,16 +1007,11 @@ function mailusers_update_debug( $debug ) {
  * $meta_filter can be '', MAILUSERS_ACCEPT_NOTIFICATION_USER_META, or MAILUSERS_ACCEPT_MASS_EMAIL_USER_META
  */
 function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array(), $sortby = null, $meta_value = 'true', $meta_compare = '=') {
-    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
+    if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL);
     
 	if ($sortby == null) $sortby = mailusers_get_default_sort_users_by();
 
     //  Set up the arguments for get_users()
-
-    //$args['exclude'] = $exclude_id;
-    //$args['fields'] = 'all_with_meta';
-    //$args['fields'] = array('ID', 'display_name', 'first_name', 'last_name') ;
-    //$args['fields'] = array('ID', 'display_name') ;
 
     $args = array_merge($args, array(
         'exclude' => $exclude_id,
@@ -1060,23 +1055,19 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     }
 
-    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
-    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count_users(), true)); ?> --><?php echo PHP_EOL;
-    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
-    ?><!-- <?php printf('%s%s', PHP_EOL, print_r($args, true)); ?> --><?php echo PHP_EOL;
-    //  Retrieve the list of users
-
-	//$users = get_users($args) ;
-    ?><!-- <?php //printf('%s%s', PHP_EOL, print_r(count($users), true)); ?> --><?php //echo PHP_EOL;
-
-    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
+    if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
+    if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
+    if (MAILUSERS_DEBUG) printf('<!-- %s%s -->%s', PHP_EOL, print_r(count_users(), true), PHP_EOL) ;
+    if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
+    if (MAILUSERS_DEBUG) printf('<!-- %s%s -->%s', PHP_EOL, print_r($args, true), PHP_EOL) ;
+    if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
 
     //  On some sites with a large number of users, it is possible to run out of memory
-    //  when calling get_users() with the arguments 'fields' => 'all_with_meta'.  To
-    //  prevent this situation, the query is done in chunks and a result is assembled.
+    //  when calling get_users() with the arguments 'fields' => 'all_with_meta' (which is
+    //  no longer being used as it become unnecessary in WordPress 3.x).  To limit the
+    //  potential of memory exhaustion, the query is done in chunks and a result is assembled.
 
-    //$args['offset'] = '0' ;
-    //$args['number'] = '500' ;
+    //  Retrieve the list of users
 
     $users = count_users() ;
     $total = $users['total_users'] ;
@@ -1087,12 +1078,13 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     while ($args['offset'] < $total)
     {
-        ?><!-- <?php printf('%s::%s  Query #%s  Memory Usage:  %s',
-            basename(__FILE__), __LINE__, $q++, mailusers_memory_usage(true)); ?> --><?php echo PHP_EOL;
+        if (MAILUSERS_DEBUG) printf('<!-- %s::%s  Query #%s  Memory Usage:  %s -->%s',
+            basename(__FILE__), __LINE__, $q++, mailusers_memory_usage(true), PHP_EOL) ;
         $users = array_merge($users, get_users($args)) ;
         $args['offset'] += $args['number'] ;
     }
-    ?><!-- <?php printf('%s%s', PHP_EOL, print_r(count($users), true)); ?> --><?php echo PHP_EOL;
+
+    if (MAILUSERS_DEBUG) printf('<!-- %s%s -->%s', PHP_EOL, print_r(count($users), true), PHP_EOL);
 
     //  Sort the users based on the plugin settings
 
@@ -1121,7 +1113,8 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     }
 
-    ?><!-- <?php printf('%s::%s', basename(__FILE__), __LINE__); ?> --><?php echo PHP_EOL;
+    if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
+
     return $users ;
 }
 
