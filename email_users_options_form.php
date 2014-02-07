@@ -166,7 +166,7 @@ print $reflection->getFileName();
 		<th scope="row" valign="top">
             <label for="default_subject"><?php _e('Default<br/>Notification Subject', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-			<input type="text" name="mailusers_default_subject" style="width: auto;" 
+			<input type="text" name="mailusers_default_subject" style="width: 100%;" 
 				value="<?php echo format_to_edit(mailusers_get_default_subject()); ?>" 
 				size="80" /></td>
 	</tr>
@@ -209,7 +209,7 @@ print $reflection->getFileName();
 		<td>
 			<input type="text" name="mailusers_from_sender_address_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_from_sender_address_override()); ?>" 
-                size="80" id="from_sender_address_override"/><br/><i><small><?php _e('An email address that can be used in place of the logged in user\'s email address when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?>&nbsp;<b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></small></i></td>
+                size="80" id="from_sender_address_override"/><br/><div style="width: 90%;"><i><small><?php _e('An email address that can be used in place of the logged in user\'s email address when sending email or notifications.', MAILUSERS_I18N_DOMAIN); ?><br /><b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></small></i></div></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
@@ -217,13 +217,13 @@ print $reflection->getFileName();
 		<td>
 			<input type="text" name="mailusers_send_bounces_to_address_override" style="width: 235px;" 
 				value="<?php echo format_to_edit(mailusers_get_send_bounces_to_address_override()); ?>" 
-                size="80" id="from_sender_address_override"/><br/><i><small><?php _e('An email address that can be used in place of the logged in user\'s email address to receive bounced email notifications.', MAILUSERS_I18N_DOMAIN); ?>&nbsp;<b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></small></i></td>
+                size="80" id="from_sender_address_override"/><br/><div style="width: 90%;"><i><small><?php _e('An email address that can be used in place of the logged in user\'s email address to receive bounced email notifications.', MAILUSERS_I18N_DOMAIN); ?><br /><b><i><?php _e('Note:  Invalid email addresses are not saved.', MAILUSERS_I18N_DOMAIN); ?></i></b></small></i></div></td>
 	</tr>
 	<tr>
 		<th scope="row" valign="top">
             <label for="mailusers_default_body"><?php _e('Default<br/>Notification Body', MAILUSERS_I18N_DOMAIN); ?></th>
 		<td>
-            <?php wp_editor(stripslashes(mailusers_get_default_body()), "mailusers_default_body");?>
+            <?php wp_editor(stripslashes(mailusers_get_default_body()), "mailusers_default_body", array('editor_css' => '<style>div.wp-editor-wrap { width: 90%; }</style>'));?>
 
 		</td>
 	</tr>
@@ -594,6 +594,11 @@ print $reflection->getFileName();
 		<td><b><a href="http://wordpress.org/plugins/groups/">Groups</a></b></td>
 		<td><?php _e('Groups provides group-based user membership management, group-based capabilities and content access control.', MAILUSERS_I18N_DOMAIN); ?></td>
 		<td><?php _e((class_exists(MAILUSERS_ITTHINX_GROUPS_CLASS) ? 'Enabled' : 'Disabled'), MAILUSERS_I18N_DOMAIN); ?></td>
+	</tr>
+	<tr>
+		<td><b><a href="http://wordpress.org/plugins/paid-memberships-pro/">Paid Memberships Pro</a></b></td>
+		<td><?php _e('Paid Memberships Pro:  The easiest way to GET PAID with your WordPress site. Flexible content control by Membership Level, Reports, Affiliates and Discounts.', MAILUSERS_I18N_DOMAIN); ?></td>
+		<td><?php _e((class_exists(MAILUSERS_PMPRO_CLASS) ? 'Enabled' : 'Disabled'), MAILUSERS_I18N_DOMAIN); ?></td>
 	</tr>
 	</tbody>
 </table>
