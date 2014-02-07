@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.3-beta-10
+Version: 4.6.3-beta-11
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-10');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.3-beta-11');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -60,6 +60,13 @@ define( 'MAILUSERS_USER_ACCESS_MANAGER_CLASS', 'UserAccessManager' );
 //  @see http://wordpress.org/plugins/groups/
 
 define( 'MAILUSERS_ITTHINX_GROUPS_CLASS', 'Groups_WordPress' );
+
+//  Enable integration with PMPro plugin?
+
+//  @see http://wordpress.org/plugins/paid-memberships-pro/
+define( 'MAILUSERS_PMPRO_CLASS', 'MemberOrder' );
+
+
 
 $mailusers_user_custom_meta_filters = array() ;
 $mailusers_group_custom_meta_filters = array() ;
@@ -1611,6 +1618,13 @@ function mailusers_plugin_integration()
     if (class_exists(MAILUSERS_ITTHINX_GROUPS_CLASS)) :
         require_once(plugin_dir_path(__FILE__) . 'integration/itthinx-groups.php') ;
     endif;
+    
+    //  Enable integration with PMPro plugin?
+    //  @see http://wordpress.org/plugins/paid-memberships-pro/
+    if (class_exists(MAILUSERS_PMPRO_CLASS)) :
+        require_once(plugin_dir_path(__FILE__) . 'integration/pmpro.php') ;
+    endif;
+
 }
 
 if (MAILUSERS_DEBUG) :

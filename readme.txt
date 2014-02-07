@@ -197,6 +197,8 @@ function update_publicworks_meta_filter()
 * Fixed bug where sites with large numbers of users would exhaust memory.
 * Updated Spanish translation (thank you Ponc J. Llaneras)
 * Added additional options for BCC limit.
+* Fixed several CSS bugs on Settings page.
+* Initial implementation of Paid Memeberships Pro integration.
 
 = Version 4.6.2 =
 * Refactored integration with other "Groups" plugins.
