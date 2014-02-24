@@ -554,11 +554,11 @@ print $reflection->getFileName();
     It is important to note that if the <strong><i>expected</i></strong> and <strong><i>actual</i></strong> do
     not match, it does not automatically mean there will be a problem.  However, if Email Users is not producing
     the expected results AND the <strong><i>expected</i></strong> and <strong><i>actual</i></strong> do not match,
-    it is something which should be looked at as a potential source of the problem.', MAILUSERS_I18_DOMAIN) ; ?>
+    it is something which should be looked at as a potential source of the problem.', MAILUSERS_I18N_DOMAIN) ; ?>
     </p>
     <p>
 <?php _e('The recommended way to eliminate the overloaded version of wp_mail() as the source of a problem is to disable
-    the plugin or theme which has overloaded wp_mail().', MAILUSERS_I18_DOMAIN) ; ?>
+    the plugin or theme which has overloaded wp_mail().', MAILUSERS_I18N_DOMAIN) ; ?>
     </p>
 <br/>
 </div><!-- inside -->
