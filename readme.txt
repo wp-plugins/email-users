@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.5.1
 Tested up to: 3.8
-Stable tag: 4.6.2
+Stable tag: 4.6.3
 License: GPL
 
 == Description ==
