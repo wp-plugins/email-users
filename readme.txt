@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.5.1
 Tested up to: 3.8
-Stable tag: 4.6.4
+Stable tag: 4.6.5
 License: GPL
 
 == Description ==
@@ -189,6 +189,9 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.6.5 =
+* Fixed sorting issue which was caused by commenting out code for debugging purposes to resolve problem fixed in 4.6.4.
 
 = Version 4.6.4 =
 * Fixed bug which caused first and last names to display as N/A in some instances.
