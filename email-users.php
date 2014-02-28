@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.4
+Version: 4.6.5
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.4');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.5');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1096,7 +1096,6 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 
     //  Sort the users based on the plugin settings
 
-    if (0):
     if ( ! empty( $users) ) {
 		switch ($sortby) {
 			case 'fl' :
@@ -1121,7 +1120,6 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 		}
 
     }
-    endif;
 
     if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
 
@@ -1131,8 +1129,8 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
 /**
  * Sort by last name
  */
-function mailusers_sort_users_by_last_name( $a, $b ) {
-
+function mailusers_sort_users_by_last_name( $a, $b )
+{
     if ( $a->last_name == $b->last_name ) {
         return 0;
     }
@@ -1143,8 +1141,8 @@ function mailusers_sort_users_by_last_name( $a, $b ) {
 /**
  * Sort by first name
  */
-function mailusers_sort_users_by_first_name( $a, $b ) {
-
+function mailusers_sort_users_by_first_name( $a, $b )
+{
     if ( $a->first_name == $b->first_name ) {
         return 0;
     }
@@ -1155,8 +1153,8 @@ function mailusers_sort_users_by_first_name( $a, $b ) {
 /**
  * Sort by display name
  */
-function mailusers_sort_users_by_display_name( $a, $b ) {
-
+function mailusers_sort_users_by_display_name( $a, $b )
+{
     if ( $a->display_name == $b->display_name ) {
         return 0;
     }
@@ -1167,8 +1165,8 @@ function mailusers_sort_users_by_display_name( $a, $b ) {
 /**
  * Sort by user login
  */
-function mailusers_sort_users_by_user_login( $a, $b ) {
-
+function mailusers_sort_users_by_user_login( $a, $b )
+{
     if ( $a->user_login == $b->user_login ) {
         return 0;
     }
