@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Basepath: F:\\Program Files\\apserv\\AppServ\\www\\wordpress\\wp-"
 "content\\plugins\\email-users\n"
 "Language: fa_IR\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-SearchPath-0: F:\\Program Files\\apserv\\AppServ\\www\\wordpress"
 "\\wp-content\\plugins\\email-users\n"
 
