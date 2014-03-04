@@ -20,8 +20,8 @@
 
 <?php 
 	wp_enqueue_script('postbox');
-    wp_enqueue_style('dashboard');
     wp_enqueue_script('dashboard');
+    wp_enqueue_style('dashboard');
 
 	if (!current_user_can('manage_options')) {
         wp_die(printf('<div class="error fade"><p>%s</p></div>',
@@ -272,7 +272,11 @@ print $reflection->getFileName();
 			<input 	type="checkbox"
 					name="mailusers_default_user_control" id="mailusers_default_user_control" value="true"
 					<?php if (mailusers_get_default_user_control()=='true') echo 'checked="checked"';?> ></input>
-			<?php _e('Allow Users to control their own Email Users settings.', MAILUSERS_I18N_DOMAIN); ?>
+			<?php _e('Allow Users to control their own Email Users settings.', MAILUSERS_I18N_DOMAIN); ?><br />
+			<input 	type="checkbox"
+					name="mailusers_no_role_filter" id="mailusers_no_role_filter" value="true"
+					<?php if (mailusers_get_no_role_filter()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Filter Users with <a href="https://codex.wordpress.org/Roles_and_Capabilities#Roles">no role</a> from Recipient List.', MAILUSERS_I18N_DOMAIN); ?>
 		</td>
 	</tr>
 	<tr>

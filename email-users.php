@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.5
+Version: 4.6.6-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.5');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.6-beta-1');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -116,6 +116,8 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_default_mass_email' => 'true',
 		// Mail User - Default setting for User Control
 		'mailusers_default_user_control' => 'true',
+		// Mail User - Default setting for "no roler" user filtering
+		'mailusers_no_role_filter' => 'false',
 		// Mail User - Default setting for Short Code Processing
 		'mailusers_shortcode_processing' => 'false',
 		// Mail User - Default setting for From Sender Exclude
@@ -649,6 +651,7 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_default_sort_users_by') ;
     register_setting('email_users', 'mailusers_default_subject') ;
     register_setting('email_users', 'mailusers_default_user_control') ;
+    register_setting('email_users', 'mailusers_no_role_filter') ;
     register_setting('email_users', 'mailusers_max_bcc_recipients') ;
     register_setting('email_users', 'mailusers_user_settings_table_rows') ;
     register_setting('email_users', 'mailusers_shortcode_processing') ;
@@ -892,6 +895,20 @@ function mailusers_update_default_user_control( $default_user_control ) {
 }
 
 /**
+ * Wrapper for the "no role" filter setting
+ */
+function mailusers_get_no_role_filter() {
+	return get_option( 'mailusers_no_role_filter' );
+}
+
+/**
+ * Wrapper to set the "no role" filter setting
+ */
+function mailusers_update_no_role_filter( $no_role_filter ) {
+	return update_option( 'mailusers_no_role_filter', $no_role_filter );
+}
+
+/**
  * Wrapper for getting the Add X-Mailer Header option
  */
 function mailusers_get_add_x_mailer_header() {
@@ -1021,7 +1038,7 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
     //  Set up the arguments for get_users()
 
     $args = array_merge($args, array(
-        'exclude' => $exclude_id,
+        'exclude' => array($exclude_id),
         //'fields' => array('ID', 'display_name', 'user_email'),
         'fields' => 'all',
         'offset' => '0',
@@ -1062,6 +1079,26 @@ function mailusers_get_users( $exclude_id='', $meta_filter = '', $args = array()
         }
 
     }
+
+    //  Filter users with no role on site from list?
+
+    $nr = array() ;
+
+    if (mailusers_get_no_role_filter()=='true'):
+        $roles = new WP_Roles() ;
+
+        //  Find all the users which have a role
+
+        $u = array() ;
+        foreach ($roles->get_names() as $role)
+            $u = array_merge($u, get_users(array('role' => $role, 'fields' => 'ID'))) ;
+
+        //  Now find all of the users which don't have a role
+
+        $nr = get_users(array('exclude' => $u, 'fields' => 'ID')) ;
+
+        $args['exclude'] = array_merge($args['exclude'], $nr) ;
+    endif;
 
     if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
     if (MAILUSERS_DEBUG) printf('<!-- %s::%s -->%s', basename(__FILE__), __LINE__, PHP_EOL) ;
@@ -1564,6 +1601,10 @@ function mailusers_dashboard_widget_function() {
    	<tr>
     <th><?php _e('Allow Users to control their own Email Users settings:', MAILUSERS_I18N_DOMAIN); ?></th>
 	<td><?php echo (mailusers_get_default_user_control()=='true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ; ?></td>
+	</tr>
+   	<tr>
+    <th><?php _e('Filter Users with no role from Recipient List:', MAILUSERS_I18N_DOMAIN); ?></th>
+	<td><?php echo (mailusers_get_no_role_filter()=='true') ? __('On', MAILUSERS_I18N_DOMAIN) : __('Off', MAILUSERS_I18N_DOMAIN) ; ?></td>
 	</tr>
 	</table>
     </div>
