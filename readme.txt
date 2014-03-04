@@ -2,7 +2,7 @@
 Contributors: vprat, mpwalsh8, marvinlabs
 Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
-Requires at least: 3.5.1
+Requires at least: 3.6.1
 Tested up to: 3.8
 Stable tag: 4.6.5
 License: GPL
@@ -189,6 +189,10 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.6.6 =
+* Added new option to filter users with no role from the User Recipient List.
+* Bumped supported version of WordPress to 3.6.1.
 
 = Version 4.6.5 =
 * Fixed sorting issue which was caused by commenting out code for debugging purposes to resolve problem fixed in 4.6.4.
