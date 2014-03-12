@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.6-beta-1
+Version: 4.6.6-beta-2
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.6-beta-1');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.6-beta-2');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1486,7 +1486,8 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		return $num_sent;
 	}
 
-    elseif ( $bcc_limit>0 && (count($recipients)>$bcc_limit) ) {
+    elseif ($bcc_limit != 0 && (count($recipients)>$bcc_limit))
+    {
 		$count = 0;
 		$sender_emailed = false;
 
@@ -1508,14 +1509,18 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
                 continue;
             }
 
-    		$bcc[] = sprintf('Bcc: %s', $recipient) ;
+            if ($bcc_limit == -1)
+                //$to = ($omit) ? $recipient->user_email : sprintf('%s <%s>', $recipient->display_name, $recipient->user_email) ;
+                $to = $recipient ;
+            else
+    		    $bcc[] = sprintf('Bcc: %s', $recipient) ;
 
 			$count++;
 
-			if (($bcc_limit == $count) || ($num_sent==count($recipients)-1)) {
+            //  Use abs() of bcc_limit to account for -1 setting
+			if ((abs($bcc_limit) == $count) || ($num_sent==count($recipients)-1)) {
 					
 				if (MAILUSERS_DEBUG) {
-					mailusers_preprint_r($newheaders);
 		            mailusers_debug_wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
 				}
 			
@@ -1527,8 +1532,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
 			$num_sent++;
 		}
-	} else {
-
+    }
+    else
+    {
         if ($ccsender) $headers[] = $cc ;
 
         foreach ($recipients as $key=> $value)

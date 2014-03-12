@@ -152,13 +152,14 @@ print $reflection->getFileName();
 		<td>
 			<select name="mailusers_max_bcc_recipients" style="width: 235px;">
 				<option value="0" <?php if (mailusers_get_max_bcc_recipients()=='0') echo 'selected="true"';?>><?php _e('None', MAILUSERS_I18N_DOMAIN); ?></option>
-				<option value="1" <?php if (mailusers_get_max_bcc_recipients()=='1') echo 'selected="true"';?>>1</option>
-				<option value="10" <?php if (mailusers_get_max_bcc_recipients()=='10') echo 'selected="true"';?>>10</option>
-				<option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"';?>>30</option>
-				<option value="100" <?php if (mailusers_get_max_bcc_recipients()=='100') echo 'selected="true"';?>>100</option>
-				<option value="250" <?php if (mailusers_get_max_bcc_recipients()=='250') echo 'selected="true"';?>>250</option>
-				<option value="500" <?php if (mailusers_get_max_bcc_recipients()=='500') echo 'selected="true"';?>>500</option>
-				<option value="1000" <?php if (mailusers_get_max_bcc_recipients()=='1000') echo 'selected="true"';?>>1000</option>
+                <option value="-1" <?php if (mailusers_get_max_bcc_recipients()=='-1') echo 'selected="true"';?>><?php _e('1 (use To: field)', MAILUSERS_I18N_DOMAIN);?></option>
+				<option value="1" <?php if (mailusers_get_max_bcc_recipients()=='1') echo 'selected="true"';?>><?php _e('1 (use Bcc: field)', MAILUSERS_I18N_DOMAIN);?></option>
+                <option value="10" <?php if (mailusers_get_max_bcc_recipients()=='10') echo 'selected="true"';?>><?php _e('10', MAILUSERS_I18N_DOMAIN);?></option>
+                <option value="30" <?php if (mailusers_get_max_bcc_recipients()=='30') echo 'selected="true"';?>><?php _e('30', MAILUSERS_I18N_DOMAIN);?></option>
+                <option value="100" <?php if (mailusers_get_max_bcc_recipients()=='100') echo 'selected="true"';?>><?php _e('100', MAILUSERS_I18N_DOMAIN);?></option>
+                <option value="250" <?php if (mailusers_get_max_bcc_recipients()=='250') echo 'selected="true"';?>><?php _e('250', MAILUSERS_I18N_DOMAIN);?></option>
+                <option value="500" <?php if (mailusers_get_max_bcc_recipients()=='500') echo 'selected="true"';?>><?php _e('500', MAILUSERS_I18N_DOMAIN);?></option>
+                <option value="1000" <?php if (mailusers_get_max_bcc_recipients()=='1000') echo 'selected="true"';?>><?php _e('1000', MAILUSERS_I18N_DOMAIN);?></option>
 			</select><br/><i><small><?php _e('Try 30 if you have problems sending emails to many users (some providers forbid too many recipients in BCC field).', MAILUSERS_I18N_DOMAIN); ?></i></small>
 		</td>
 	</tr>
