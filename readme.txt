@@ -193,6 +193,8 @@ function update_publicworks_meta_filter()
 = Version 4.6.6 =
 * Added new option to filter users with no role from the User Recipient List.
 * Bumped supported version of WordPress to 3.6.1.
+* Added ability to have recipient appear in To: list instead of Bcc: list when using BCC option of 1.
+* Fixed internationalization of BCC options.
 
 = Version 4.6.5 =
 * Fixed sorting issue which was caused by commenting out code for debugging purposes to resolve problem fixed in 4.6.4.
