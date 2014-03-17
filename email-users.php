@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.6-beta-2
+Version: 4.6.6-beta-3
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.6-beta-2');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.6-beta-3');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -50,24 +50,28 @@ define( 'MAILUSERS_DEBUG', (mailusers_get_debug() === 'true'));
 
 define( 'MAILUSERS_USER_GROUPS_CLASS', 'KWS_User_Groups' );
 define( 'MAILUSERS_USER_GROUPS_TAXONOMY', 'user-group' );
+define( 'MAILUSERS_USERS_GROUPS_PREFIX', 'ug') ;
 
 //  Enable integration with User Access Manager plugin?
 //  @see http://wordpress.org/plugins/user-access-manager/
 
 define( 'MAILUSERS_USER_ACCESS_MANAGER_CLASS', 'UserAccessManager' );
+define( 'MAILUSERS_USER_ACCESS_MANAGER_PREFIX', 'uam') ;
 
 //  Enable integration with ItThinx Groups plugin?
 //  @see http://wordpress.org/plugins/groups/
 
 define( 'MAILUSERS_ITTHINX_GROUPS_CLASS', 'Groups_WordPress' );
+define( 'MAILUSERS_ITTHINX_GROUPS_PREFIX', 'groups') ;
 
 //  Enable integration with PMPro plugin?
 
 //  @see http://wordpress.org/plugins/paid-memberships-pro/
 define( 'MAILUSERS_PMPRO_CLASS', 'MemberOrder' );
+define( 'MAILUSERS_PMPRO_PREFIX', 'pmpro') ;
 
 
-
+define( 'MAILUSERS_CM_FILTER_PREFIX', 'filter') ;
 $mailusers_user_custom_meta_filters = array() ;
 $mailusers_group_custom_meta_filters = array() ;
 

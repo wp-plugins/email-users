@@ -145,23 +145,23 @@
             //  Once known, put the target value in the proper pile
             switch ($key)
             {
-                case 'filter':
+                case MAILUSERS_CM_FILTER_PREFIX:
                     $send_filters[] = $value ;
                     break ;
 
-                case 'user group':
+                case MAILUSERS_USERS_GROUPS_PREFIX:
                     $send_ug[] = $value ;
                     break ;
 
-                case 'uam':
+                case MAILUSERS_USER_ACCESS_MANAGER_PREFIX:
                     $send_uam[] = $value ;
                     break ;
 
-                case 'groups':
+                case MAILUSERS_ITTHINX_GROUPS_PREFIX:
                     $send_groups[] = $value ;
                     break ;
 
-                case 'pmpro':
+                case MAILUSERS_PMPRO_PREFIX:
                     $send_pmpro[] = $value ;
                     break ;
 
