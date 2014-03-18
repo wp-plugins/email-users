@@ -3,8 +3,8 @@ Contributors: vprat, mpwalsh8, marvinlabs
 Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
-Tested up to: 3.8
-Stable tag: 4.6.5
+Tested up to: 3.8.1
+Stable tag: 4.6.6
 License: GPL
 
 == Description ==
