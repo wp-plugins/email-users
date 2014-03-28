@@ -152,7 +152,7 @@
 
                         foreach ($targets as $key => $value)
                         {
-                            $index = MAILUSERS_USER_ACCESS_MANAGER_PREFIX . '-' . strtolower($$key); ?>
+                            $index = MAILUSERS_USER_ACCESS_MANAGER_PREFIX . '-' . strtolower($key); ?>
                             <option value="<?php echo $index; ?>"
                             <?php echo (in_array($index, $send_targets) ? ' selected="yes"' : '');?>>
                             <?php printf('%s - %s', $prefix, __($value)); ?>
