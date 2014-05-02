@@ -3,8 +3,8 @@ Contributors: vprat, mpwalsh8, marvinlabs
 Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
-Tested up to: 3.8.1
-Stable tag: 4.6.7
+Tested up to: 3.9
+Stable tag: 4.6.8
 License: GPL
 
 == Description ==
@@ -189,6 +189,10 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.6.8 =
+* Added Finnish translation (thank you Juga Paazmaya)
+* Replaced calls to mysql_real_escape_string() with esc_sql() for PHP 5.5 compatibility.
 
 = Version 4.6.7 =
 * Fixed problem with User Access Manager integration which resulted in sending email to all users regardless of UAM group assignment.
