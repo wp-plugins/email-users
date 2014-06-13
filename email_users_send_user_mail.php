@@ -97,6 +97,14 @@
 
     }
 
+    // Replace the template variables concerning the blog and sender details
+    // --
+
+    $subject = mailusers_replace_sender_templates($subject, $from_name);
+    $mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
+    $subject = mailusers_replace_blog_templates($subject);
+    $mail_content = mailusers_replace_blog_templates($mail_content);
+
 	// If error, we simply show the form again
 	if (array_key_exists('send', $_POST) && ($_POST['send']=='true') && ($err_msg == '')) {
 		// No error, send the mail
