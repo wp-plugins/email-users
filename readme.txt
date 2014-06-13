@@ -193,6 +193,7 @@ function update_publicworks_meta_filter()
 = Version 4.6.9 =
 * Removed references to deprecated WordPress API function format_to_post().
 * Fixed bug where %FROM_NAME% substitution was not handled properly with Sender Name overrides.
+* Added author and blog keyword substitution to user and group emails.
 
 = Version 4.6.8 =
 * Added Finnish translation (thank you Juga Paazmaya)
