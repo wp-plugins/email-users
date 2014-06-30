@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
 Tested up to: 3.9.1
-Stable tag: 4.6.8
+Stable tag: 4.6.9
 License: GPL
 
 == Description ==
@@ -194,6 +194,7 @@ function update_publicworks_meta_filter()
 * Removed references to deprecated WordPress API function format_to_post().
 * Fixed bug where %FROM_NAME% substitution was not handled properly with Sender Name overrides.
 * Added author and blog keyword substitution to user and group emails.
+* Updated German translation (thanks Dr. Dieter Menne)
 
 = Version 4.6.8 =
 * Added Finnish translation (thank you Juga Paazmaya)
