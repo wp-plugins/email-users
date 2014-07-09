@@ -190,6 +190,9 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.6.10 =
+* Fixed bug with from_name which happens in certain circumstances.
+
 = Version 4.6.9 =
 * Removed references to deprecated WordPress API function format_to_post().
 * Fixed bug where %FROM_NAME% substitution was not handled properly with Sender Name overrides.
