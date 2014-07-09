@@ -32,20 +32,22 @@
     do_action('mailusers_update_custom_meta_filters') ;
 
 	$err_msg = '';
+	get_currentuserinfo();
+
 	$from_sender = 0;
-    $from_name = 'WordPress';
+    $from_name = empty($user_identity) ? get_bloginfo('name') : $user_identity;
+    $from_address = $user_email;
 
 	// Send the email if it has been requested
-		if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
-			get_currentuserinfo();
-		// Use current user info only if from name and address has not been set by the form
-		if (!isset($_POST['fromName']) || !isset($_POST['fromAddress']) || empty($_POST['fromName']) || empty($_POST['fromAddress'])) {
-			$from_name = $user_identity;
-			$from_address = $user_email;
-		} else {
-			$from_name = $_POST['fromName'];
-			$from_address = $_POST['fromAddress'];
-		}
+	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
+	    // Use current user info only if from name and address has not been set by the form
+	    if (!isset($_POST['fromName']) || !isset($_POST['fromAddress']) || empty($_POST['fromName']) || empty($_POST['fromAddress'])) {
+	        $from_name = empty($user_identity) ? get_bloginfo('name') : $user_identity;
+		    $from_address = $user_email;
+	    } else {
+		    $from_name = $_POST['fromName'];
+		    $from_address = $_POST['fromAddress'];
+	    }
 	    $override_name = mailusers_get_from_sender_name_override() ;
         $override_address = mailusers_get_from_sender_address_override() ;
         $exclude_sender = mailusers_get_from_sender_exclude() ;

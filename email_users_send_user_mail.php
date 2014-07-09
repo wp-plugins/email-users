@@ -30,14 +30,14 @@
 	global $user_identity, $user_email, $user_ID;
 
 	$err_msg = '';
+	get_currentuserinfo();
+
 	$from_sender = 0;
-    $from_name = 'WordPress';
+    $from_name = empty($user_identity) ? get_bloginfo('name') : $user_identity;
+	$from_address = $user_email;
 	
 	// Send the email if it has been requested
 	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
-		get_currentuserinfo();
-		$from_name = $user_identity;
-		$from_address = $user_email;
 	    $override_name = mailusers_get_from_sender_name_override() ;
         $override_address = mailusers_get_from_sender_address_override() ;
         $exclude_sender = mailusers_get_from_sender_exclude() ;
