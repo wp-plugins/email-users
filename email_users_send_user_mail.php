@@ -31,6 +31,7 @@
 
 	$err_msg = '';
 	$from_sender = 0;
+    $from_name = 'WordPress';
 	
 	// Send the email if it has been requested
 	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
