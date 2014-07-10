@@ -192,6 +192,7 @@ function update_publicworks_meta_filter()
 
 = Version 4.6.10 =
 * Fixed bug with from_name which happens in certain circumstances.
+* Added ability to edit post/page/cpt email content and subject.
 
 = Version 4.6.9 =
 * Removed references to deprecated WordPress API function format_to_post().
