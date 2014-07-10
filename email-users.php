@@ -1481,7 +1481,10 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		        mailusers_debug_wp_mail($to, $subject, $mailtext, $headers);
 			}
 			
+            do_action('mailusers_before_wp_mail') ;
 			@wp_mail($to, $subject, $mailtext, $headers);
+            do_action('mailusers_after_wp_mail') ;
+
 			$num_sent++;
 		} else {
 			echo '<div class="error fade"><p>' . sprintf(__('The email address (%s) of the user you are trying to send mail to is not a valid email address format.', MAILUSERS_I18N_DOMAIN), $recipient->user_email) . '</p></div>';
@@ -1528,7 +1531,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		            mailusers_debug_wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
 				}
 			
+                do_action('mailusers_before_wp_mail') ;
 				@wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+                do_action('mailusers_after_wp_mail') ;
 
 				$count = 0;
 				$bcc = array() ;
@@ -1564,7 +1569,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		    mailusers_debug_wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
 		}
 			
+        do_action('mailusers_before_wp_mail') ;
 		@wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+        do_action('mailusers_after_wp_mail') ;
 	}
 
 	return $num_sent;
