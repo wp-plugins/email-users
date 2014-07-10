@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: C:\\inetpub\\wwwroot\\wordpress\\wp-content\\plugins"
 "\\email-users\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.6\n"
 
 #: email_users_send_notify_mail.php:24 email_users_notify_form.php:26
 msgid "You are not allowed to notify users about posts and pages."
