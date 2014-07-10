@@ -35,8 +35,9 @@
 	get_currentuserinfo();
 
 	$from_sender = 0;
+    $from_address = empty($user_email) ? get_bloginfo('email') : $user_email;
     $from_name = empty($user_identity) ? get_bloginfo('name') : $user_identity;
-    $from_address = $user_email;
+
 
 	// Send the email if it has been requested
 	if (array_key_exists('send', $_POST) && $_POST['send']=='true') {
