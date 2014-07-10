@@ -112,6 +112,7 @@
     //  Deal with post content in array form
     if (is_array($post_content)) $post_content = $post_content[0] ;
 
+if (0):
     if (mailusers_get_default_mail_format()=='html') {
         $post_excerpt = wpautop($post_excerpt);
     }
@@ -140,6 +141,7 @@
         $mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
         $mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
 	}
+endif;
 
 ?>
 
