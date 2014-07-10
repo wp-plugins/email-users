@@ -75,6 +75,7 @@
 			$from_sender = $_POST['from_sender'];
 		}
 	}
+
 	if (!isset($send_targets)) {
 		$send_targets = array();
 	}
@@ -87,51 +88,52 @@
 		$mail_format = mailusers_get_default_mail_format();
 	}
 
-    if ( isset( $_POST['post_id'] ) ) {
-			$post_id = $_POST['post_id'];
+    $args = array_merge($_GET, $_POST) ;
+    if ( isset( $args['post_id']) ) {
+		$post_id = $args['post_id'] ;
 
-     // Replace the template variables concerning the post details
-    // --
-    $post = get_post( $post_id );
-    $post_title = $post->post_title;
-    $post_url = get_permalink( $post_id );            
-    $post_content = explode( '<!--more-->', $post->post_content, 2 );
-    $post_excerpt = get_the_excerpt() ;
-    $post_author = get_userdata( $post->post_author )->display_name;
+        // Replace the template variables concerning the post details
+        // --
+        $post = get_post( $post_id );
+        $post_title = $post->post_title;
+        $post_url = get_permalink( $post_id );            
+        $post_content = explode( '<!--more-->', $post->post_content, 2 );
+        $post_excerpt = get_the_excerpt() ;
+        $post_author = get_userdata( $post->post_author )->display_name;
 
-    if (empty($post_excerpt)) $post_excerpt = $post_content[0];
+        if (empty($post_excerpt)) $post_excerpt = $post_content[0];
 
-    //  Deal with post content in array form
-    if (is_array($post_content)) $post_content = $post_content[0] ;
+        //  Deal with post content in array form
+        if (is_array($post_content)) $post_content = $post_content[0] ;
 
-    if (mailusers_get_default_mail_format()=='html') {
-        $post_excerpt = wpautop($post_excerpt);
-    }
-    // Process short codes?
-    if (mailusers_get_shortcode_processing() == 'true') {
-        $post_content = do_shortcode($post_content) ;
-        $post_excerpt = do_shortcode($post_excerpt) ;
-    }
+        if (mailusers_get_default_mail_format()=='html') {
+            $post_excerpt = wpautop($post_excerpt);
+        }
+        // Process short codes?
+        if (mailusers_get_shortcode_processing() == 'true') {
+            $post_content = do_shortcode($post_content) ;
+            $post_excerpt = do_shortcode($post_excerpt) ;
+        }
     
-    // Replace the template variables concerning the blog details
-    // unless content has already been sent and comes back through a POST
-    // --
-	if (!isset($subject)) {
-        $subject = mailusers_get_default_subject();
-        $subject = mailusers_replace_blog_templates($subject);
-        $subject = mailusers_replace_sender_templates($subject, $from_name);
-        $subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
-	}
+        // Replace the template variables concerning the blog details
+        // unless content has already been sent and comes back through a POST
+        // --
+	    if (!isset($subject)) {
+            $subject = mailusers_get_default_subject();
+            $subject = mailusers_replace_blog_templates($subject);
+            $subject = mailusers_replace_sender_templates($subject, $from_name);
+            $subject = mailusers_replace_post_templates($subject, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
+	    }
 
-    // Replace the template variables concerning the blog details
-    // unless content has already been sent and comes back through a POST
-    // --
-	if (!isset($mail_content)) {
-        $mail_content = mailusers_get_default_body();
-        $mail_content = mailusers_replace_blog_templates($mail_content);
-        $mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
-        $mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
-	}
+        // Replace the template variables concerning the blog details
+        // unless content has already been sent and comes back through a POST
+        // --
+	    if (!isset($mail_content)) {
+            $mail_content = mailusers_get_default_body();
+            $mail_content = mailusers_replace_blog_templates($mail_content);
+            $mail_content = mailusers_replace_sender_templates($mail_content, $from_name);
+            $mail_content = mailusers_replace_post_templates($mail_content, $post_title, $post_author, $post_excerpt, $post_content, $post_url);
+	    }
     }
     else {
 	    if (!isset($subject)) {
