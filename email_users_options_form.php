@@ -388,8 +388,10 @@ print $reflection->getFileName();
 		get_currentuserinfo();
 		global $post, $user_identity, $user_email ;
 
-		$from_name = $user_identity;
-		$from_address = $user_email;
+        $from_sender = 0;
+        $from_address = empty($user_email) ? get_bloginfo('email') : $user_email;
+        $from_name = empty($user_identity) ? get_bloginfo('name') : $user_identity;
+        
 
         $override_name = mailusers_get_from_sender_name_override();
         $override_address = mailusers_get_from_sender_address_override();
