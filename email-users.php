@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.10-beta-4
+Version: 4.6.10-beta-5
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.10-beta-4');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.10-beta-5');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -136,6 +136,8 @@ function mailusers_get_default_plugin_settings($option = null)
 		'mailusers_footer' => '<h5 style="border-top: 1px solid #eee;">' . __('Powered by', MAILUSERS_I18N_DOMAIN) . ' <a href="http://wordpress.org/plugins/email-users/">Email Users</a>.</h5>',
 		// Mail User - Default setting for Debug
 		'mailusers_debug' => 'false',
+		// Mail User - Default setting for Base64 Encode
+		'mailusers_base64_encode' => 'false',
 	) ;
 
     if (array_key_exists($option, $default_plugin_settings))
@@ -1012,7 +1014,7 @@ function mailusers_update_copy_sender( $copy_sender ) {
 }
 
 /**
- * Wrapper for the from send exclude setting
+ * Wrapper for the DEBUG setting
  */
 function mailusers_get_debug() {
     $option = get_option( 'mailusers_debug' );
@@ -1024,10 +1026,29 @@ function mailusers_get_debug() {
 }
 
 /**
- * Wrapper for the from sender exclude setting
+ * Wrapper for the DEBUG setting
  */
 function mailusers_update_debug( $debug ) {
 	return update_option( 'mailusers_debug', $debug );
+}
+
+/**
+ * Wrapper for the Base64 Encoding setting
+ */
+function mailusers_get_base64_encode() {
+    $option = get_option( 'mailusers_base64_encode' );
+
+    if ($option === false)
+        $option = mailusers_get_default_plugin_settings( 'mailusers_base64_encode' );
+
+    return $option;
+}
+
+/**
+ * Wrapper for the DEBUG setting
+ */
+function mailusers_update_base64_encode( $base64_encode ) {
+	return update_option( 'mailusers_base64_encode', $base64_encode );
 }
 
 /**
@@ -1419,6 +1440,7 @@ function mailusers_replace_sender_templates($text, $sender_name) {
 function mailusers_send_mail($recipients = array(), $subject = '', $message = '', $type='plaintext', $sender_name='', $sender_email='') {
     
     $headers = array() ;
+    $base64 = (mailusers_get_base64_encode() == 'true') ;
     $omit = (mailusers_get_omit_display_names() == 'true') ;
 
     //  Default the To: and Cc: values to the send email address
@@ -1461,6 +1483,13 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		$message = preg_replace('|&amp;|', '&', $message);
 		$mailtext = wordwrap(strip_tags($message . "\n" . $footer), 80, "\n");
 	}
+
+    //  Base64 Encode email?
+    if ($base64) {
+        $subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+        $headers[] = "Content-Transfer-Encoding: base64";
+        $mailtext = base64_encode($mailtext);
+    }
 
 	// If unique recipient, send mail using TO field.
 	//--

@@ -302,6 +302,15 @@ print $reflection->getFileName();
 			<?php _e('Enable Debug Mode<br/><small><i>Note:  Email is not sent when in debug mode.</i></small>', MAILUSERS_I18N_DOMAIN); ?><br/>
 		</td>
 	</tr>
+	<tr>
+    <th><?php _e('Base64 Encode Email', MAILUSERS_I18N_DOMAIN); ?></th>
+		<td>
+			<input 	type="checkbox"
+					name="mailusers_debug" id="mailusers_debug" value="true"
+					<?php if (mailusers_get_base64_encode()=='true') echo 'checked="checked"';?> ></input>
+			<?php _e('Enable Base64 Encoding<br/><small><i>Note:  All email will be Base64 encoded when enabled.</i></small>', MAILUSERS_I18N_DOMAIN); ?><br/>
+		</td>
+	</tr>
 	</table>
 
 	<p class="submit">
