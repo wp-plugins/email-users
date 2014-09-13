@@ -194,6 +194,7 @@ function update_publicworks_meta_filter()
 * Fixed bug with from_name which happens in certain circumstances.
 * Added ability to edit post/page/cpt email content and subject.
 * Added _mailusers_before_wp_mail_ and _mailusers_before_wp_mail_ hooks to allow doing actions before and after calling wp_mail().
+* Added option to Base64 encode email [per Support Forum request](http://wordpress.org/support/topic/chinese-character-encoding-problem-on-ios-device?replies=3#post-5931091) to better support mobile devices.
 
 = Version 4.6.9 =
 * Removed references to deprecated WordPress API function format_to_post().
