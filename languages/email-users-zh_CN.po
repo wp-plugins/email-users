@@ -1,101 +1,101 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Email Users\n"
-"POT-Creation-Date: 2014-07-10 14:14-0000\n"
-"PO-Revision-Date: 2014-07-10 14:14-0000\n"
+"POT-Creation-Date: 2014-09-13 21:24-0000\n"
+"PO-Revision-Date: 2014-09-13 21:24-0000\n"
 "Last-Translator: Mike Walsh <mpwalsh8@gmail.com>\n"
 "Language-Team: \n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.6\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Poedit-KeywordsList: _;_e\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../email-users.php:310 ../email-users.php:325
+#: ../email-users.php:312 ../email-users.php:327
 #: ../email_users_overview.php:33
 msgid "Email Users"
 msgstr "邮件用户"
 
-#: ../email-users.php:312
+#: ../email-users.php:314
 msgid "Notify Users About this Post"
 msgstr "通知用户关于这篇文章"
 
-#: ../email-users.php:327
+#: ../email-users.php:329
 msgid "Notify Users About this Page"
 msgstr "通知用户关于这个页面"
 
-#: ../email-users.php:563
+#: ../email-users.php:565
 msgid "Email Preferences"
 msgstr "邮件选项"
 
-#: ../email-users.php:576
+#: ../email-users.php:578
 msgid "Accept to receive post or page notification emails"
 msgstr "接受接受文章或页面通知电子邮件"
 
-#: ../email-users.php:584
+#: ../email-users.php:586
 msgid ""
 "Accept to receive emails sent to multiple recipients (but still accept "
 "emails sent only to me)"
 msgstr "接受接收电子邮件发送给多个收件人（但仍然能接受只发送给我的电子邮件）"
 
-#: ../email-users.php:1601
+#: ../email-users.php:1637
 #, fuzzy
 msgid "Default User Settings"
 msgstr "默认<br/>用户设置"
 
-#: ../email-users.php:1604
+#: ../email-users.php:1640
 #, fuzzy
 msgid "Receive post or page notification emails:"
 msgstr "接受接受文章或页面通知电子邮件"
 
-#: ../email-users.php:1608
+#: ../email-users.php:1644
 #, fuzzy
 msgid "Receive emails sent to multiple recipients:"
 msgstr "接受接收电子邮件发送给多个收件人（但仍然能接受只发送给我的电子邮件）"
 
-#: ../email-users.php:1612
+#: ../email-users.php:1648
 #, fuzzy
 msgid "Allow Users to control their own Email Users settings:"
 msgstr "允许用户控制自己的电子邮件用户设置。"
 
-#: ../email-users.php:1616
+#: ../email-users.php:1652
 msgid "Filter Users with no role from Recipient List:"
 msgstr ""
 
-#: ../email-users.php:1630
+#: ../email-users.php:1666
 #, fuzzy
 msgid "User Statistics"
 msgstr "用户登录"
 
-#: ../email-users.php:1633 ../email_users_options_form.php:73
+#: ../email-users.php:1669 ../email_users_options_form.php:73
 #, fuzzy
 msgid "Number of Users who accept post or page notification emails:"
 msgstr "接受接受文章或页面通知电子邮件"
 
-#: ../email-users.php:1637 ../email_users_options_form.php:77
+#: ../email-users.php:1673 ../email_users_options_form.php:77
 #, fuzzy
 msgid "Number of Users who accept emails sent to multiple recipients:"
 msgstr "收到的邮件发送给多个收件人。"
 
-#: ../email-users.php:1716
+#: ../email-users.php:1752
 msgid "PHPMailer Debug"
 msgstr ""
 
-#: ../email-users.php:1748
+#: ../email-users.php:1784
 #, fuzzy
 msgid "wp_mail() Debug"
 msgstr "邮件格式"
 
-#: ../email_users_credits.php:23 ../email_users_options_form.php:680
+#: ../email_users_credits.php:23 ../email_users_options_form.php:689
 msgid "Make a Donation"
 msgstr "进行捐款"
 
-#: ../email_users_credits.php:29 ../email_users_options_form.php:686
+#: ../email_users_credits.php:29 ../email_users_options_form.php:695
 msgid "Plugin's Home Page"
 msgstr "插件的主页"
 
@@ -103,25 +103,25 @@ msgstr "插件的主页"
 msgid "EN"
 msgstr "EN"
 
-#: ../email_users_credits.php:51 ../email_users_options_form.php:714
+#: ../email_users_credits.php:51 ../email_users_options_form.php:723
 msgid "Discover other Plugins by MarvinLabs"
 msgstr "探索其他插件由MarvinLabs开发"
 
-#: ../email_users_credits.php:56 ../email_users_options_form.php:719
+#: ../email_users_credits.php:56 ../email_users_options_form.php:728
 msgid ""
 "If Email-Users is not robust enough or if you want to allow your users to "
 "communicate with each other, try: "
 msgstr "如果插件是不是足够强大，如果你想允许用户互相沟通，尝试："
 
-#: ../email_users_credits.php:57 ../email_users_options_form.php:720
+#: ../email_users_credits.php:57 ../email_users_options_form.php:729
 msgid "If you lose time copy/pasting the same post structure every time, try: "
 msgstr "如果你失去了复制/粘贴相同结构后每次尝试："
 
-#: ../email_users_credits.php:65 ../email_users_options_form.php:700
+#: ../email_users_credits.php:65 ../email_users_options_form.php:709
 msgid "More Plugins from Mike Walsh"
 msgstr "迈克·沃尔什更多插件"
 
-#: ../email_users_credits.php:70 ../email_users_options_form.php:705
+#: ../email_users_credits.php:70 ../email_users_options_form.php:714
 #, fuzzy
 msgid ""
 "If you use Google Forms and want to integrate them with your WordPress site, "
@@ -134,37 +134,37 @@ msgid "Send an Email to a Custom Filtered list of Users"
 msgstr "发送电子邮件至单个用户"
 
 #: ../email_users_custom_filter_mail_form.php:61
-#: ../email_users_group_mail_form.php:68 ../email_users_notify_form.php:152
+#: ../email_users_group_mail_form.php:68 ../email_users_notify_form.php:154
 #: ../email_users_options_form.php:105 ../email_users_user_mail_form.php:59
 msgid "Please correct the errors displayed above and try again."
 msgstr "请更正上面显示的错误，然后再试一次。"
 
 #: ../email_users_custom_filter_mail_form.php:71
-#: ../email_users_group_mail_form.php:80 ../email_users_notify_form.php:167
+#: ../email_users_group_mail_form.php:80 ../email_users_notify_form.php:169
 #: ../email_users_user_mail_form.php:69
 msgid "Mail format"
 msgstr "邮件格式"
 
 #: ../email_users_custom_filter_mail_form.php:73
-#: ../email_users_group_mail_form.php:82 ../email_users_notify_form.php:169
+#: ../email_users_group_mail_form.php:82 ../email_users_notify_form.php:171
 #: ../email_users_options_form.php:127 ../email_users_user_mail_form.php:71
 msgid "HTML"
 msgstr "HTML"
 
 #: ../email_users_custom_filter_mail_form.php:74
-#: ../email_users_group_mail_form.php:83 ../email_users_notify_form.php:170
+#: ../email_users_group_mail_form.php:83 ../email_users_notify_form.php:172
 #: ../email_users_options_form.php:128 ../email_users_user_mail_form.php:72
 msgid "Plain text"
 msgstr "纯文本"
 
 #: ../email_users_custom_filter_mail_form.php:78
-#: ../email_users_group_mail_form.php:87 ../email_users_notify_form.php:178
+#: ../email_users_group_mail_form.php:87 ../email_users_notify_form.php:180
 #: ../email_users_user_mail_form.php:76
 msgid "Sender"
 msgstr " 寄件人"
 
 #: ../email_users_custom_filter_mail_form.php:86
-#: ../email_users_group_mail_form.php:95 ../email_users_notify_form.php:186
+#: ../email_users_group_mail_form.php:95 ../email_users_notify_form.php:188
 #: ../email_users_user_mail_form.php:84
 msgid "Recipients"
 msgstr "接收者"
@@ -185,21 +185,21 @@ msgstr ""
 "滤。"
 
 #: ../email_users_custom_filter_mail_form.php:176
-#: ../email_users_group_mail_form.php:204 ../email_users_notify_form.php:381
-#: ../email_users_notify_form.php:395 ../email_users_options_form.php:425
+#: ../email_users_group_mail_form.php:204 ../email_users_notify_form.php:383
+#: ../email_users_notify_form.php:397 ../email_users_options_form.php:434
 #: ../email_users_user_mail_form.php:174
 msgid "Subject"
 msgstr "标题"
 
 #: ../email_users_custom_filter_mail_form.php:180
-#: ../email_users_group_mail_form.php:208 ../email_users_notify_form.php:385
-#: ../email_users_notify_form.php:399 ../email_users_options_form.php:429
+#: ../email_users_group_mail_form.php:208 ../email_users_notify_form.php:387
+#: ../email_users_notify_form.php:401 ../email_users_options_form.php:438
 #: ../email_users_user_mail_form.php:178
 msgid "Message"
 msgstr "内容"
 
 #: ../email_users_custom_filter_mail_form.php:198
-#: ../email_users_group_mail_form.php:227 ../email_users_notify_form.php:417
+#: ../email_users_group_mail_form.php:227 ../email_users_notify_form.php:419
 #: ../email_users_user_mail_form.php:196
 msgid "Send Email"
 msgstr "发送邮件"
@@ -224,24 +224,25 @@ msgid ""
 "here."
 msgstr "至少有一个用户可以接受群邮件的群体才会出现在这里。"
 
-#: ../email_users_notify_form.php:175
+#: ../email_users_notify_form.php:177
 msgid "Mail will be sent as:"
 msgstr "将发送邮件为："
 
-#: ../email_users_notify_form.php:188
+#: ../email_users_notify_form.php:190
 msgid "Use CTRL key to select/deselect multiple items"
 msgstr "使用CTRL键选择/取消选择多个项目"
 
-#: ../email_users_notify_form.php:190
+#: ../email_users_notify_form.php:192
 msgid ""
 "The users that did not agree to receive notifications do not appear here."
 msgstr "用户不同意接收通知并没有出现在这里。"
 
-#: ../email_users_notify_form.php:370
+#: ../email_users_notify_form.php:372
+#, fuzzy
 msgid "Preview"
-msgstr ""
+msgstr "通知邮件预览（更新当选项被保存）"
 
-#: ../email_users_notify_form.php:376
+#: ../email_users_notify_form.php:378
 #, fuzzy
 msgid "Notification Mail Preview (based on default notification body)"
 msgstr "通知邮件预览（更新当选项被保存）"
@@ -555,107 +556,118 @@ msgid ""
 "</i></small>"
 msgstr ""
 
-#: ../email_users_options_form.php:308
+#: ../email_users_options_form.php:306
+#, fuzzy
+msgid "Base64 Encode Email"
+msgstr "邮件用户"
+
+#: ../email_users_options_form.php:311
+msgid ""
+"Enable Base64 Encoding<br/><small><i>Note:  All email will be Base64 encoded "
+"when enabled.</i></small>"
+msgstr ""
+
+#: ../email_users_options_form.php:317
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: ../email_users_options_form.php:319
+#: ../email_users_options_form.php:328
 msgid "Email-Users Defaults"
 msgstr "默认选项"
 
-#: ../email_users_options_form.php:321
+#: ../email_users_options_form.php:330
 msgid ""
 "Email-Users has default values for all settings.  When reset, the following "
 "values are used."
 msgstr "电子邮件用户的所有设置的默认值。当复位，使用下列值。"
 
-#: ../email_users_options_form.php:325
+#: ../email_users_options_form.php:334
 msgid "Settings"
 msgstr "设置"
 
-#: ../email_users_options_form.php:326
+#: ../email_users_options_form.php:335
 msgid "Default Value"
 msgstr "默认值"
 
-#: ../email_users_options_form.php:346
+#: ../email_users_options_form.php:355
 msgid "Apply Default Settings"
 msgstr "启用默认值"
 
-#: ../email_users_options_form.php:357
+#: ../email_users_options_form.php:366
 msgid "Email-Users Test Notification Mail"
 msgstr "电子邮件用户测试通知邮件"
 
-#: ../email_users_options_form.php:359
+#: ../email_users_options_form.php:368
 msgid "Use this Test Notification to verify proper operation of Email-Users."
 msgstr "使用此测试通知电子邮件用户确认运行正常。"
 
-#: ../email_users_options_form.php:363
+#: ../email_users_options_form.php:372
 msgid "Notification Mail Preview (updated when the options are saved)"
 msgstr "通知邮件预览（更新当选项被保存）"
 
-#: ../email_users_options_form.php:373 ../email_users_send_test_mail.php:74
+#: ../email_users_options_form.php:382 ../email_users_send_test_mail.php:74
 msgid "No post found in the blog in order to build a notification preview."
 msgstr "没有文章被在博客中发现，以建立通知预览。"
 
-#: ../email_users_options_form.php:440
+#: ../email_users_options_form.php:449
 msgid "Send Test Notification to Yourself"
 msgstr "发送测试通知到您自己"
 
-#: ../email_users_options_form.php:450
+#: ../email_users_options_form.php:459
 msgid "Email-Users Variables"
 msgstr "电子邮件用户变量"
 
-#: ../email_users_options_form.php:452
+#: ../email_users_options_form.php:461
 msgid "Variables you can include in the subject or body templates"
 msgstr "变量可以包括在主题或正文模板"
 
-#: ../email_users_options_form.php:456
+#: ../email_users_options_form.php:465
 msgid "Variable"
 msgstr "可变的"
 
-#: ../email_users_options_form.php:457 ../email_users_options_form.php:511
+#: ../email_users_options_form.php:466 ../email_users_options_form.php:520
 msgid "Description"
 msgstr "描述"
 
-#: ../email_users_options_form.php:463
+#: ../email_users_options_form.php:472
 msgid "the link to the blog"
 msgstr "博客的链接"
 
-#: ../email_users_options_form.php:467
+#: ../email_users_options_form.php:476
 msgid "the blog's name"
 msgstr "博客的名字"
 
-#: ../email_users_options_form.php:471
+#: ../email_users_options_form.php:480
 msgid "the WordPress user name of the person sending the mail"
 msgstr "WordPress的用户名发送邮件的人"
 
-#: ../email_users_options_form.php:475
+#: ../email_users_options_form.php:484
 msgid "the title of the post you want to highlight"
 msgstr "文章标题要突出显示"
 
-#: ../email_users_options_form.php:479
+#: ../email_users_options_form.php:488
 #, fuzzy
 msgid "the author of the post you want to highlight"
-msgstr "文章链接后，你想要突出"
+msgstr "文章标题要突出显示"
 
-#: ../email_users_options_form.php:483
+#: ../email_users_options_form.php:492
 msgid "the excerpt of the post you want to highlight"
 msgstr "摘录的文章，你要突出"
 
-#: ../email_users_options_form.php:487
+#: ../email_users_options_form.php:496
 #, fuzzy
 msgid "the content of the post you want to highlight"
-msgstr "文章标题要突出显示"
+msgstr "摘录的文章，你要突出"
 
-#: ../email_users_options_form.php:491
+#: ../email_users_options_form.php:500
 msgid "the link to the post you want to highlight"
 msgstr "文章链接后，你想要突出"
 
-#: ../email_users_options_form.php:502
+#: ../email_users_options_form.php:511
 msgid "Email-Users Capabilities"
 msgstr "电子邮件用户的能力"
 
-#: ../email_users_options_form.php:505
+#: ../email_users_options_form.php:514
 msgid ""
 "Email Users uses capabilities to define what users are allowed to do. Below "
 "is a list of the capabilities used by the plugin and the default user role "
@@ -664,80 +676,80 @@ msgstr ""
 "邮件用户使用的功能来定义哪些用户被允许做。下面是由插件所使用的能力，允许进行"
 "这些操作的默认用户角色的列表。"
 
-#: ../email_users_options_form.php:505
+#: ../email_users_options_form.php:514
 msgid ""
 "If you want to change the roles having those capabilities, you should use "
 "the plugin:"
 msgstr "如果你想改变的角色有那些功能，你应该使用插件："
 
-#: ../email_users_options_form.php:510
+#: ../email_users_options_form.php:519
 msgid "Capability"
 msgstr "能力"
 
-#: ../email_users_options_form.php:512
+#: ../email_users_options_form.php:521
 msgid "Default Roles"
 msgstr "默认角色"
 
-#: ../email_users_options_form.php:518
+#: ../email_users_options_form.php:527
 msgid "Access this options page."
 msgstr "访问此选项页。"
 
-#: ../email_users_options_form.php:519
+#: ../email_users_options_form.php:528
 msgid "Administrators only."
 msgstr "只有管理员。"
 
-#: ../email_users_options_form.php:523
+#: ../email_users_options_form.php:532
 msgid "Send an email to a single user."
 msgstr "发送电子邮件至单个用户"
 
-#: ../email_users_options_form.php:524
+#: ../email_users_options_form.php:533
 msgid "Administrators, editors, authors and contributors."
 msgstr "管理员，编辑，作者和投稿者。"
 
-#: ../email_users_options_form.php:528
+#: ../email_users_options_form.php:537
 msgid "Send an email to various users at the same time."
 msgstr "在相同的时间，不同的用户发送电子邮件至。"
 
-#: ../email_users_options_form.php:529
+#: ../email_users_options_form.php:538
 msgid "Administrators, editors and authors."
 msgstr "管理员，编辑和作者。"
 
-#: ../email_users_options_form.php:533
+#: ../email_users_options_form.php:542
 msgid "Notify users of new posts."
 msgstr "通知用户的新职位。"
 
-#: ../email_users_options_form.php:534 ../email_users_options_form.php:539
+#: ../email_users_options_form.php:543 ../email_users_options_form.php:548
 msgid "Administrators and editors."
 msgstr "管理员和编辑。"
 
-#: ../email_users_options_form.php:538
+#: ../email_users_options_form.php:547
 msgid "Send an email to user groups."
 msgstr "发送电子邮件至用户群体。"
 
-#: ../email_users_options_form.php:550
+#: ../email_users_options_form.php:559
 #, fuzzy
 msgid "Email-Users wp_mail() Check"
 msgstr "电子邮件用户测试通知邮件"
 
-#: ../email_users_options_form.php:553
+#: ../email_users_options_form.php:562
 msgid ""
 "Email Users is dependent on the <a href=\"http://codex.wordpress.org/"
 "Function_Reference/wp_mail\">wp_mail()</a> function."
 msgstr ""
 
-#: ../email_users_options_form.php:558
+#: ../email_users_options_form.php:567
 msgid "wp_mail() is loaded from:"
 msgstr ""
 
-#: ../email_users_options_form.php:562
+#: ../email_users_options_form.php:571
 msgid "Expected:"
 msgstr ""
 
-#: ../email_users_options_form.php:566
+#: ../email_users_options_form.php:575
 msgid "Actual:"
 msgstr ""
 
-#: ../email_users_options_form.php:572
+#: ../email_users_options_form.php:581
 msgid ""
 "The WordPress wp_mail() function is <a href=\"http://codex.wordpress.org/"
 "Pluggable_Functions\">pluggable</a>\n"
@@ -753,86 +765,86 @@ msgid ""
 "problem."
 msgstr ""
 
-#: ../email_users_options_form.php:580
+#: ../email_users_options_form.php:589
 msgid ""
 "The recommended way to eliminate the overloaded version of wp_mail() as the "
 "source of a problem is to disable\n"
 "    the plugin or theme which has overloaded wp_mail()."
 msgstr ""
 
-#: ../email_users_options_form.php:589
+#: ../email_users_options_form.php:598
 #, fuzzy
 msgid "Email-Users Integration"
 msgstr "邮件用户"
 
-#: ../email_users_options_form.php:592
+#: ../email_users_options_form.php:601
 msgid ""
 "Email Users provides integration hooks with several WordPress \"Group\" "
 "plugins."
 msgstr ""
 
-#: ../email_users_options_form.php:597
+#: ../email_users_options_form.php:606
 #, fuzzy
 msgid "Plugin"
 msgstr "插件的主页"
 
-#: ../email_users_options_form.php:598
+#: ../email_users_options_form.php:607
 msgid "Description <small><i>(from the plugin web site)</i></small>"
 msgstr ""
 
-#: ../email_users_options_form.php:599
+#: ../email_users_options_form.php:608
 msgid "Status"
 msgstr ""
 
-#: ../email_users_options_form.php:605
+#: ../email_users_options_form.php:614
 msgid ""
 "This plugin does one thing, and does it well: create groups and organize "
 "your users by that group."
 msgstr ""
 
-#: ../email_users_options_form.php:610
+#: ../email_users_options_form.php:619
 msgid ""
 "With the \"User Access Manager\"-plugin you can manage the access to your "
 "posts, pages and files."
 msgstr ""
 
-#: ../email_users_options_form.php:615
+#: ../email_users_options_form.php:624
 msgid ""
 "Groups provides group-based user membership management, group-based "
 "capabilities and content access control."
 msgstr ""
 
-#: ../email_users_options_form.php:620
+#: ../email_users_options_form.php:629
 msgid ""
 "Paid Memberships Pro:  The easiest way to GET PAID with your WordPress site. "
 "Flexible content control by Membership Level, Reports, Affiliates and "
 "Discounts."
 msgstr ""
 
-#: ../email_users_options_form.php:639
+#: ../email_users_options_form.php:648
 #, fuzzy
 msgid "Email-Users Information"
 msgstr "邮件用户"
 
-#: ../email_users_options_form.php:645
+#: ../email_users_options_form.php:654
 msgid "User Settings"
 msgstr "用户设置"
 
-#: ../email_users_options_form.php:647
+#: ../email_users_options_form.php:656
 #, fuzzy
 msgid "Number of Users who accept<br/>post or page notification emails:"
 msgstr "接受接受文章或页面通知电子邮件"
 
-#: ../email_users_options_form.php:651
+#: ../email_users_options_form.php:660
 #, fuzzy
 msgid "Number of Users who accept<br/>emails sent to multiple recipients:"
 msgstr "收到的邮件发送给多个收件人。"
 
-#: ../email_users_options_form.php:657
+#: ../email_users_options_form.php:666
 msgid "Filters"
 msgstr ""
 
-#: ../email_users_options_form.php:671
+#: ../email_users_options_form.php:680
 msgid ""
 "There are a number of <a href=\"http://codex.wordpress.org/Plugin_API/"
 "Filter_Reference\">WordPress Filters</a> which <strong><i>may</i></strong> "
@@ -875,7 +887,7 @@ msgstr "发送群组邮件"
 
 #: ../email_users_send_custom_filter_mail.php:144
 #: ../email_users_send_group_mail.php:209
-#: ../email_users_send_notify_mail.php:210
+#: ../email_users_send_notify_mail.php:259
 #: ../email_users_send_test_mail.php:103 ../email_users_send_user_mail.php:140
 msgid "No recipients were found."
 msgstr "没有收件人被发现。"

@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Email-Users\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-10 14:14-0000\n"
-"PO-Revision-Date: 2014-07-10 14:14-0000\n"
+"POT-Creation-Date: 2014-09-13 21:23-0000\n"
+"PO-Revision-Date: 2014-09-13 21:24-0000\n"
 "Last-Translator: Mike Walsh <mpwalsh8@gmail.com>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.6\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -35,134 +35,134 @@ msgstr ""
 msgid "Powered by"
 msgstr ""
 
-#: ../email-users.php:310 ../email-users.php:325 ../email-users.php:359
-#: ../email-users.php:360 ../email-users.php:366 ../email-users.php:367
+#: ../email-users.php:312 ../email-users.php:327 ../email-users.php:361
+#: ../email-users.php:362 ../email-users.php:368 ../email-users.php:369
 #: ../email_users_overview.php:33
 #, fuzzy
 msgid "Email Users"
 msgstr "Email"
 
-#: ../email-users.php:312
+#: ../email-users.php:314
 msgid "Notify Users About this Post"
 msgstr ""
 
-#: ../email-users.php:327
+#: ../email-users.php:329
 msgid "Notify Users About this Page"
 msgstr ""
 
-#: ../email-users.php:345 ../email-users.php:346 ../email-users.php:352
-#: ../email-users.php:353
+#: ../email-users.php:347 ../email-users.php:348 ../email-users.php:354
+#: ../email-users.php:355
 msgid "Notify Users"
 msgstr ""
 
-#: ../email-users.php:375 ../email-users.php:376
+#: ../email-users.php:377 ../email-users.php:378
 msgid "Send to User(s)"
 msgstr ""
 
-#: ../email-users.php:405 ../email-users.php:406
+#: ../email-users.php:407 ../email-users.php:408
 #, fuzzy, php-format
 msgid "Send to %s"
 msgstr "Poslato na"
 
-#: ../email-users.php:414 ../email-users.php:415
+#: ../email-users.php:416 ../email-users.php:417
 #, fuzzy
 msgid "Send to Group(s)"
 msgstr "Poslato na"
 
-#: ../email-users.php:446 ../email-users.php:447
-#: ../email_users_options_form.php:645
+#: ../email-users.php:448 ../email-users.php:449
+#: ../email_users_options_form.php:654
 #, fuzzy
 msgid "User Settings"
 msgstr "HTTP User Agent"
 
-#: ../email-users.php:563
+#: ../email-users.php:565
 #, fuzzy
 msgid "Email Preferences"
 msgstr "Email"
 
-#: ../email-users.php:576
+#: ../email-users.php:578
 msgid "Accept to receive post or page notification emails"
 msgstr ""
 
-#: ../email-users.php:584
+#: ../email-users.php:586
 msgid ""
 "Accept to receive emails sent to multiple recipients (but still accept "
 "emails sent only to me)"
 msgstr ""
 
-#: ../email-users.php:1487
+#: ../email-users.php:1519
 #, php-format
 msgid ""
 "The email address (%s) of the user you are trying to send mail to is not a "
 "valid email address format."
 msgstr ""
 
-#: ../email-users.php:1552
+#: ../email-users.php:1586
 #, php-format
 msgid "Invalid email address (\"%s\") found."
 msgstr ""
 
-#: ../email-users.php:1601
+#: ../email-users.php:1637
 msgid "Default User Settings"
 msgstr ""
 
-#: ../email-users.php:1604
+#: ../email-users.php:1640
 msgid "Receive post or page notification emails:"
 msgstr ""
 
-#: ../email-users.php:1605 ../email-users.php:1609 ../email-users.php:1613
-#: ../email-users.php:1617 ../email_users_user_settings.php:107
+#: ../email-users.php:1641 ../email-users.php:1645 ../email-users.php:1649
+#: ../email-users.php:1653 ../email_users_user_settings.php:107
 msgid "On"
 msgstr ""
 
-#: ../email-users.php:1605 ../email-users.php:1609 ../email-users.php:1613
-#: ../email-users.php:1617 ../email_users_user_settings.php:107
+#: ../email-users.php:1641 ../email-users.php:1645 ../email-users.php:1649
+#: ../email-users.php:1653 ../email_users_user_settings.php:107
 #, fuzzy
 msgid "Off"
 msgstr "Ugašeno"
 
-#: ../email-users.php:1608
+#: ../email-users.php:1644
 msgid "Receive emails sent to multiple recipients:"
 msgstr ""
 
-#: ../email-users.php:1612
+#: ../email-users.php:1648
 msgid "Allow Users to control their own Email Users settings:"
 msgstr ""
 
-#: ../email-users.php:1616
+#: ../email-users.php:1652
 msgid "Filter Users with no role from Recipient List:"
 msgstr ""
 
-#: ../email-users.php:1630
+#: ../email-users.php:1666
 #, fuzzy
 msgid "User Statistics"
 msgstr "HTTP User Agent"
 
-#: ../email-users.php:1633 ../email_users_options_form.php:73
+#: ../email-users.php:1669 ../email_users_options_form.php:73
 msgid "Number of Users who accept post or page notification emails:"
 msgstr ""
 
-#: ../email-users.php:1637 ../email_users_options_form.php:77
+#: ../email-users.php:1673 ../email_users_options_form.php:77
 msgid "Number of Users who accept emails sent to multiple recipients:"
 msgstr ""
 
-#: ../email-users.php:1692 ../email-users.php:1693
+#: ../email-users.php:1728 ../email-users.php:1729
 msgid "Mail sending aborted."
 msgstr ""
 
-#: ../email-users.php:1716
+#: ../email-users.php:1752
 msgid "PHPMailer Debug"
 msgstr ""
 
-#: ../email-users.php:1748
+#: ../email-users.php:1784
 msgid "wp_mail() Debug"
 msgstr ""
 
-#: ../email_users_credits.php:23 ../email_users_options_form.php:680
+#: ../email_users_credits.php:23 ../email_users_options_form.php:689
 msgid "Make a Donation"
 msgstr ""
 
-#: ../email_users_credits.php:29 ../email_users_options_form.php:686
+#: ../email_users_credits.php:29 ../email_users_options_form.php:695
 #, fuzzy
 msgid "Plugin's Home Page"
 msgstr " URL potvrda stranice  "
@@ -171,25 +171,25 @@ msgstr " URL potvrda stranice  "
 msgid "EN"
 msgstr ""
 
-#: ../email_users_credits.php:51 ../email_users_options_form.php:714
+#: ../email_users_credits.php:51 ../email_users_options_form.php:723
 msgid "Discover other Plugins by MarvinLabs"
 msgstr ""
 
-#: ../email_users_credits.php:56 ../email_users_options_form.php:719
+#: ../email_users_credits.php:56 ../email_users_options_form.php:728
 msgid ""
 "If Email-Users is not robust enough or if you want to allow your users to "
 "communicate with each other, try: "
 msgstr ""
 
-#: ../email_users_credits.php:57 ../email_users_options_form.php:720
+#: ../email_users_credits.php:57 ../email_users_options_form.php:729
 msgid "If you lose time copy/pasting the same post structure every time, try: "
 msgstr ""
 
-#: ../email_users_credits.php:65 ../email_users_options_form.php:700
+#: ../email_users_credits.php:65 ../email_users_options_form.php:709
 msgid "More Plugins from Mike Walsh"
 msgstr ""
 
-#: ../email_users_credits.php:70 ../email_users_options_form.php:705
+#: ../email_users_credits.php:70 ../email_users_options_form.php:714
 msgid ""
 "If you use Google Forms and want to integrate them with your WordPress site, "
 "try: "
@@ -205,39 +205,39 @@ msgid "Send an Email to a Custom Filtered list of Users"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:61
-#: ../email_users_group_mail_form.php:68 ../email_users_notify_form.php:152
+#: ../email_users_group_mail_form.php:68 ../email_users_notify_form.php:154
 #: ../email_users_options_form.php:105 ../email_users_user_mail_form.php:59
 msgid "Please correct the errors displayed above and try again."
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:71
-#: ../email_users_group_mail_form.php:80 ../email_users_notify_form.php:167
+#: ../email_users_group_mail_form.php:80 ../email_users_notify_form.php:169
 #: ../email_users_user_mail_form.php:69
 msgid "Mail format"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:73
 #: ../email_users_group_mail_form.php:82 ../email_users_notify_form.php:81
-#: ../email_users_notify_form.php:169 ../email_users_options_form.php:127
+#: ../email_users_notify_form.php:171 ../email_users_options_form.php:127
 #: ../email_users_user_mail_form.php:71
 msgid "HTML"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:74
 #: ../email_users_group_mail_form.php:83 ../email_users_notify_form.php:81
-#: ../email_users_notify_form.php:170 ../email_users_options_form.php:128
+#: ../email_users_notify_form.php:172 ../email_users_options_form.php:128
 #: ../email_users_user_mail_form.php:72
 msgid "Plain text"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:78
-#: ../email_users_group_mail_form.php:87 ../email_users_notify_form.php:178
+#: ../email_users_group_mail_form.php:87 ../email_users_notify_form.php:180
 #: ../email_users_user_mail_form.php:76
 msgid "Sender"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:86
-#: ../email_users_group_mail_form.php:95 ../email_users_notify_form.php:186
+#: ../email_users_group_mail_form.php:95 ../email_users_notify_form.php:188
 #: ../email_users_user_mail_form.php:84
 msgid "Recipients"
 msgstr ""
@@ -256,33 +256,33 @@ msgid ""
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:99
-#: ../email_users_notify_form.php:293 ../email_users_user_mail_form.php:97
+#: ../email_users_notify_form.php:295 ../email_users_user_mail_form.php:97
 msgid "N/A"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:167
-#: ../email_users_notify_form.php:361 ../email_users_user_mail_form.php:165
+#: ../email_users_notify_form.php:363 ../email_users_user_mail_form.php:165
 #, fuzzy
 msgid "User"
 msgstr "HTTP User Agent"
 
 #: ../email_users_custom_filter_mail_form.php:176
-#: ../email_users_group_mail_form.php:204 ../email_users_notify_form.php:381
-#: ../email_users_notify_form.php:395 ../email_users_options_form.php:425
+#: ../email_users_group_mail_form.php:204 ../email_users_notify_form.php:383
+#: ../email_users_notify_form.php:397 ../email_users_options_form.php:434
 #: ../email_users_user_mail_form.php:174
 msgid "Subject"
 msgstr ""
 
 #: ../email_users_custom_filter_mail_form.php:180
-#: ../email_users_group_mail_form.php:208 ../email_users_notify_form.php:385
-#: ../email_users_notify_form.php:399 ../email_users_options_form.php:429
+#: ../email_users_group_mail_form.php:208 ../email_users_notify_form.php:387
+#: ../email_users_notify_form.php:401 ../email_users_options_form.php:438
 #: ../email_users_user_mail_form.php:178
 #, fuzzy
 msgid "Message"
 msgstr "Poruka opomene "
 
 #: ../email_users_custom_filter_mail_form.php:198
-#: ../email_users_group_mail_form.php:227 ../email_users_notify_form.php:417
+#: ../email_users_group_mail_form.php:227 ../email_users_notify_form.php:419
 #: ../email_users_user_mail_form.php:196
 #, fuzzy
 msgid "Send Email"
@@ -313,28 +313,28 @@ msgid ""
 "here."
 msgstr ""
 
-#: ../email_users_group_mail_form.php:104 ../email_users_notify_form.php:195
+#: ../email_users_group_mail_form.php:104 ../email_users_notify_form.php:197
 msgid "Filter"
 msgstr ""
 
-#: ../email_users_group_mail_form.php:117 ../email_users_notify_form.php:208
+#: ../email_users_group_mail_form.php:117 ../email_users_notify_form.php:210
 msgid "Role"
 msgstr ""
 
-#: ../email_users_group_mail_form.php:133 ../email_users_notify_form.php:224
+#: ../email_users_group_mail_form.php:133 ../email_users_notify_form.php:226
 #, fuzzy
 msgid "User Group"
 msgstr "HTTP User Agent"
 
-#: ../email_users_group_mail_form.php:150 ../email_users_notify_form.php:241
+#: ../email_users_group_mail_form.php:150 ../email_users_notify_form.php:243
 msgid "UAM"
 msgstr ""
 
-#: ../email_users_group_mail_form.php:167 ../email_users_notify_form.php:258
+#: ../email_users_group_mail_form.php:167 ../email_users_notify_form.php:260
 msgid "Groups"
 msgstr ""
 
-#: ../email_users_group_mail_form.php:186 ../email_users_notify_form.php:274
+#: ../email_users_group_mail_form.php:186 ../email_users_notify_form.php:276
 msgid "PMPro"
 msgstr ""
 
@@ -347,7 +347,7 @@ msgstr ""
 msgid "Trying to notify users of a %s without passing the %s id!"
 msgstr ""
 
-#: ../email_users_notify_form.php:53 ../email_users_notify_form.php:148
+#: ../email_users_notify_form.php:53 ../email_users_notify_form.php:150
 #, fuzzy, php-format
 msgid "Notify Users of a %s"
 msgstr "Custom %s CSS"
@@ -362,24 +362,24 @@ msgstr ""
 msgid "Select %s"
 msgstr "Custom %s CSS"
 
-#: ../email_users_notify_form.php:175
+#: ../email_users_notify_form.php:177
 msgid "Mail will be sent as:"
 msgstr ""
 
-#: ../email_users_notify_form.php:188
+#: ../email_users_notify_form.php:190
 msgid "Use CTRL key to select/deselect multiple items"
 msgstr ""
 
-#: ../email_users_notify_form.php:190
+#: ../email_users_notify_form.php:192
 msgid ""
 "The users that did not agree to receive notifications do not appear here."
 msgstr ""
 
-#: ../email_users_notify_form.php:370
+#: ../email_users_notify_form.php:372
 msgid "Preview"
 msgstr ""
 
-#: ../email_users_notify_form.php:376
+#: ../email_users_notify_form.php:378
 msgid "Notification Mail Preview (based on default notification body)"
 msgstr ""
 
@@ -703,188 +703,199 @@ msgid ""
 "</i></small>"
 msgstr ""
 
-#: ../email_users_options_form.php:308
+#: ../email_users_options_form.php:306
+#, fuzzy
+msgid "Base64 Encode Email"
+msgstr "Email"
+
+#: ../email_users_options_form.php:311
+msgid ""
+"Enable Base64 Encoding<br/><small><i>Note:  All email will be Base64 encoded "
+"when enabled.</i></small>"
+msgstr ""
+
+#: ../email_users_options_form.php:317
 msgid "Save Changes"
 msgstr ""
 
-#: ../email_users_options_form.php:319
+#: ../email_users_options_form.php:328
 #, fuzzy
 msgid "Email-Users Defaults"
 msgstr "Email"
 
-#: ../email_users_options_form.php:321
+#: ../email_users_options_form.php:330
 msgid ""
 "Email-Users has default values for all settings.  When reset, the following "
 "values are used."
 msgstr ""
 
-#: ../email_users_options_form.php:325
+#: ../email_users_options_form.php:334
 #, fuzzy
 msgid "Settings"
 msgstr ""
 "Ova notifikacija može da bude skrivena via postavkama na <a href=\"%s"
 "\">Google Forms stranica postavki</a>."
 
-#: ../email_users_options_form.php:326
+#: ../email_users_options_form.php:335
 #, fuzzy
 msgid "Default Value"
 msgstr "Vrednost"
 
-#: ../email_users_options_form.php:346
+#: ../email_users_options_form.php:355
 #, fuzzy
 msgid "Apply Default Settings"
 msgstr "Proveriti sve iznad."
 
-#: ../email_users_options_form.php:357
+#: ../email_users_options_form.php:366
 msgid "Email-Users Test Notification Mail"
 msgstr ""
 
-#: ../email_users_options_form.php:359
+#: ../email_users_options_form.php:368
 msgid "Use this Test Notification to verify proper operation of Email-Users."
 msgstr ""
 
-#: ../email_users_options_form.php:363
+#: ../email_users_options_form.php:372
 msgid "Notification Mail Preview (updated when the options are saved)"
 msgstr ""
 
-#: ../email_users_options_form.php:373 ../email_users_send_test_mail.php:74
+#: ../email_users_options_form.php:382 ../email_users_send_test_mail.php:74
 msgid "No post found in the blog in order to build a notification preview."
 msgstr ""
 
-#: ../email_users_options_form.php:440
+#: ../email_users_options_form.php:449
 msgid "Send Test Notification to Yourself"
 msgstr ""
 
-#: ../email_users_options_form.php:450
+#: ../email_users_options_form.php:459
 #, fuzzy
 msgid "Email-Users Variables"
 msgstr "Email"
 
-#: ../email_users_options_form.php:452
+#: ../email_users_options_form.php:461
 msgid "Variables you can include in the subject or body templates"
 msgstr ""
 
-#: ../email_users_options_form.php:456
+#: ../email_users_options_form.php:465
 msgid "Variable"
 msgstr ""
 
-#: ../email_users_options_form.php:457 ../email_users_options_form.php:511
+#: ../email_users_options_form.php:466 ../email_users_options_form.php:520
 #, fuzzy
 msgid "Description"
 msgstr "Opis forme"
 
-#: ../email_users_options_form.php:463
+#: ../email_users_options_form.php:472
 msgid "the link to the blog"
 msgstr ""
 
-#: ../email_users_options_form.php:467
+#: ../email_users_options_form.php:476
 #, fuzzy
 msgid "the blog's name"
 msgstr "Ime"
 
-#: ../email_users_options_form.php:471
+#: ../email_users_options_form.php:480
 msgid "the WordPress user name of the person sending the mail"
 msgstr ""
 
-#: ../email_users_options_form.php:475
+#: ../email_users_options_form.php:484
 msgid "the title of the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:479
+#: ../email_users_options_form.php:488
 msgid "the author of the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:483
+#: ../email_users_options_form.php:492
 msgid "the excerpt of the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:487
+#: ../email_users_options_form.php:496
 msgid "the content of the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:491
+#: ../email_users_options_form.php:500
 msgid "the link to the post you want to highlight"
 msgstr ""
 
-#: ../email_users_options_form.php:502
+#: ../email_users_options_form.php:511
 #, fuzzy
 msgid "Email-Users Capabilities"
 msgstr "Email"
 
-#: ../email_users_options_form.php:505
+#: ../email_users_options_form.php:514
 msgid ""
 "Email Users uses capabilities to define what users are allowed to do. Below "
 "is a list of the capabilities used by the plugin and the default user role "
 "allowed to make these actions."
 msgstr ""
 
-#: ../email_users_options_form.php:505
+#: ../email_users_options_form.php:514
 msgid ""
 "If you want to change the roles having those capabilities, you should use "
 "the plugin:"
 msgstr ""
 
-#: ../email_users_options_form.php:510
+#: ../email_users_options_form.php:519
 msgid "Capability"
 msgstr ""
 
-#: ../email_users_options_form.php:512
+#: ../email_users_options_form.php:521
 msgid "Default Roles"
 msgstr ""
 
-#: ../email_users_options_form.php:518
+#: ../email_users_options_form.php:527
 #, fuzzy
 msgid "Access this options page."
 msgstr "Google Form Opcije"
 
-#: ../email_users_options_form.php:519
+#: ../email_users_options_form.php:528
 #, fuzzy
 msgid "Administrators only."
 msgstr "Pročitati samo"
 
-#: ../email_users_options_form.php:523
+#: ../email_users_options_form.php:532
 msgid "Send an email to a single user."
 msgstr ""
 
-#: ../email_users_options_form.php:524
+#: ../email_users_options_form.php:533
 msgid "Administrators, editors, authors and contributors."
 msgstr ""
 
-#: ../email_users_options_form.php:528
+#: ../email_users_options_form.php:537
 msgid "Send an email to various users at the same time."
 msgstr ""
 
-#: ../email_users_options_form.php:529
+#: ../email_users_options_form.php:538
 msgid "Administrators, editors and authors."
 msgstr ""
 
-#: ../email_users_options_form.php:533
+#: ../email_users_options_form.php:542
 msgid "Notify users of new posts."
 msgstr ""
 
-#: ../email_users_options_form.php:534 ../email_users_options_form.php:539
+#: ../email_users_options_form.php:543 ../email_users_options_form.php:548
 msgid "Administrators and editors."
 msgstr ""
 
-#: ../email_users_options_form.php:538
+#: ../email_users_options_form.php:547
 msgid "Send an email to user groups."
 msgstr ""
 
-#: ../email_users_options_form.php:550
+#: ../email_users_options_form.php:559
 msgid "Email-Users wp_mail() Check"
 msgstr ""
 
-#: ../email_users_options_form.php:553
+#: ../email_users_options_form.php:562
 msgid ""
 "Email Users is dependent on the <a href=\"http://codex.wordpress.org/"
 "Function_Reference/wp_mail\">wp_mail()</a> function."
 msgstr ""
 
-#: ../email_users_options_form.php:558
+#: ../email_users_options_form.php:567
 msgid "wp_mail() is loaded from:"
 msgstr ""
 
-#: ../email_users_options_form.php:562
+#: ../email_users_options_form.php:571
 #, fuzzy
 msgid "Expected:"
 msgstr ""
@@ -901,11 +912,11 @@ msgstr ""
 "Joomla core Kontrola < / a> dodatak se preporučuje za napredno otklanjanje "
 "grešaka od <a href=\"%s\"> WordPress HTTP API pitanja . < / a> < / p >"
 
-#: ../email_users_options_form.php:566
+#: ../email_users_options_form.php:575
 msgid "Actual:"
 msgstr ""
 
-#: ../email_users_options_form.php:572
+#: ../email_users_options_form.php:581
 msgid ""
 "The WordPress wp_mail() function is <a href=\"http://codex.wordpress.org/"
 "Pluggable_Functions\">pluggable</a>\n"
@@ -921,90 +932,90 @@ msgid ""
 "problem."
 msgstr ""
 
-#: ../email_users_options_form.php:580
+#: ../email_users_options_form.php:589
 msgid ""
 "The recommended way to eliminate the overloaded version of wp_mail() as the "
 "source of a problem is to disable\n"
 "    the plugin or theme which has overloaded wp_mail()."
 msgstr ""
 
-#: ../email_users_options_form.php:589
+#: ../email_users_options_form.php:598
 #, fuzzy
 msgid "Email-Users Integration"
 msgstr "Email"
 
-#: ../email_users_options_form.php:592
+#: ../email_users_options_form.php:601
 msgid ""
 "Email Users provides integration hooks with several WordPress \"Group\" "
 "plugins."
 msgstr ""
 
-#: ../email_users_options_form.php:597
+#: ../email_users_options_form.php:606
 #, fuzzy
 msgid "Plugin"
 msgstr ""
 "Razmislite o davanju <a href=\"%s\" target=\"_blank\">PayPal donacije </a> "
 "ako vam se dopada plugin."
 
-#: ../email_users_options_form.php:598
+#: ../email_users_options_form.php:607
 msgid "Description <small><i>(from the plugin web site)</i></small>"
 msgstr ""
 
-#: ../email_users_options_form.php:599
+#: ../email_users_options_form.php:608
 msgid "Status"
 msgstr ""
 
-#: ../email_users_options_form.php:605
+#: ../email_users_options_form.php:614
 msgid ""
 "This plugin does one thing, and does it well: create groups and organize "
 "your users by that group."
 msgstr ""
 
-#: ../email_users_options_form.php:610
+#: ../email_users_options_form.php:619
 msgid ""
 "With the \"User Access Manager\"-plugin you can manage the access to your "
 "posts, pages and files."
 msgstr ""
 
-#: ../email_users_options_form.php:615
+#: ../email_users_options_form.php:624
 msgid ""
 "Groups provides group-based user membership management, group-based "
 "capabilities and content access control."
 msgstr ""
 
-#: ../email_users_options_form.php:620
+#: ../email_users_options_form.php:629
 msgid ""
 "Paid Memberships Pro:  The easiest way to GET PAID with your WordPress site. "
 "Flexible content control by Membership Level, Reports, Affiliates and "
 "Discounts."
 msgstr ""
 
-#: ../email_users_options_form.php:639
+#: ../email_users_options_form.php:648
 #, fuzzy
 msgid "Email-Users Information"
 msgstr "Email"
 
-#: ../email_users_options_form.php:647
+#: ../email_users_options_form.php:656
 msgid "Number of Users who accept<br/>post or page notification emails:"
 msgstr ""
 
-#: ../email_users_options_form.php:651
+#: ../email_users_options_form.php:660
 msgid "Number of Users who accept<br/>emails sent to multiple recipients:"
 msgstr ""
 
-#: ../email_users_options_form.php:657
+#: ../email_users_options_form.php:666
 msgid "Filters"
 msgstr ""
 
-#: ../email_users_options_form.php:665
+#: ../email_users_options_form.php:674
 msgid "Yes"
 msgstr ""
 
-#: ../email_users_options_form.php:665
+#: ../email_users_options_form.php:674
 msgid "No"
 msgstr ""
 
-#: ../email_users_options_form.php:671
+#: ../email_users_options_form.php:680
 msgid ""
 "There are a number of <a href=\"http://codex.wordpress.org/Plugin_API/"
 "Filter_Reference\">WordPress Filters</a> which <strong><i>may</i></strong> "
@@ -1077,7 +1088,7 @@ msgstr ""
 
 #: ../email_users_send_custom_filter_mail.php:144
 #: ../email_users_send_group_mail.php:209
-#: ../email_users_send_notify_mail.php:210
+#: ../email_users_send_notify_mail.php:259
 #: ../email_users_send_test_mail.php:103 ../email_users_send_user_mail.php:140
 #, fuzzy
 msgid "No recipients were found."
@@ -1126,7 +1137,7 @@ msgstr ""
 msgid "You must select at least a recipient."
 msgstr ""
 
-#: ../email_users_send_notify_mail.php:216
+#: ../email_users_send_notify_mail.php:265
 #, php-format
 msgid "Notification sent to %s user(s)."
 msgstr ""
