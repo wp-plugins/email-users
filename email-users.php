@@ -241,12 +241,14 @@ function mailusers_add_default_capabilities() {
 	$role = get_role('contributor');
 
     if ($role !== null) {
+        error_log(sprintf("%s::%s  contributor", basename(__FILE__), __LINE__)) ;
 	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
     }
 
 	$role = get_role('author');
 
     if ($role !== null) {
+        error_log(sprintf("%s::%s  author", basename(__FILE__), __LINE__)) ;
 	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
 	    $role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
     }
@@ -254,6 +256,7 @@ function mailusers_add_default_capabilities() {
 	$role = get_role('editor');
 
     if ($role !== null) {
+        error_log(sprintf("%s::%s  editor", basename(__FILE__), __LINE__)) ;
 	    $role->add_cap(MAILUSERS_NOTIFY_USERS_CAP);
 	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
 	    $role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
@@ -263,6 +266,7 @@ function mailusers_add_default_capabilities() {
 	$role = get_role('administrator');
 
     if ($role !== null) {
+        error_log(sprintf("%s::%s  admin", basename(__FILE__), __LINE__)) ;
 	    $role->add_cap(MAILUSERS_NOTIFY_USERS_CAP);
 	    $role->add_cap(MAILUSERS_EMAIL_SINGLE_USER_CAP);
 	    $role->add_cap(MAILUSERS_EMAIL_MULTIPLE_USERS_CAP);
@@ -674,6 +678,7 @@ function mailusers_admin_init() {
     register_setting('email_users', 'mailusers_add_mime_version_header') ;
     register_setting('email_users', 'mailusers_footer') ;
     register_setting('email_users', 'mailusers_debug') ;
+    register_setting('email_users', 'mailusers_base64_encode') ;
     register_setting('email_users', 'mailusers_version') ;
 }
 
@@ -1462,6 +1467,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	$headers[] = ($omit) ? $sender_email : sprintf('From: "%s" <%s>', $sender_name, $sender_email);
 	$headers[] = sprintf('Return-Path: <%s>', $return_path);
 	$headers[] = ($omit) ? $sender_email : sprintf('Reply-To: "%s" <%s>', $sender_name, $sender_email);
+    $headers[] = 'MIME-Version: 1.0';
 
     if (mailusers_get_add_x_mailer_header() == 'true')
 	    $headers[] = sprintf('X-Mailer: PHP %s', phpversion()) ;
@@ -1486,9 +1492,9 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 
     //  Base64 Encode email?
     if ($base64) {
-        $subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
+        //$subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
         $headers[] = "Content-Transfer-Encoding: base64";
-        $mailtext = base64_encode($mailtext);
+        //$mailtext = base64_encode($mailtext);
     }
 
 	// If unique recipient, send mail using TO field.
@@ -1511,7 +1517,10 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 			}
 			
             do_action('mailusers_before_wp_mail') ;
-			@wp_mail($to, $subject, $mailtext, $headers);
+            if ($base64)
+			    @wp_mail($to, sprintf("=UTF-8?B?%s?=", base64_encode($subject)), base64_encode($mailtext), $headers);
+            else
+			    @wp_mail($to, $subject, $mailtext, $headers);
             do_action('mailusers_after_wp_mail') ;
 
 			$num_sent++;
@@ -1561,7 +1570,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 				}
 			
                 do_action('mailusers_before_wp_mail') ;
-				@wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+                if ($base64)
+                    @wp_mail($to, sprintf("=UTF-8?B?%s?=",
+                        base64_encode($subject)), base64_encode($mailtext), array_merge($headers, $bcc));
+                else
+				    @wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
                 do_action('mailusers_after_wp_mail') ;
 
 				$count = 0;
@@ -1599,7 +1612,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 		}
 			
         do_action('mailusers_before_wp_mail') ;
-		@wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
+        if ($base64)
+            @wp_mail($to, sprintf("=UTF-8?B?%s?=",
+                base64_encode($subject)), base64_encode($mailtext), array_merge($headers, $bcc));
+        else
+		    @wp_mail($to, $subject, $mailtext, array_merge($headers, $bcc)) ;
         do_action('mailusers_after_wp_mail') ;
 	}
 
