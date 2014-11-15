@@ -190,6 +190,10 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.6.11 =
+* Fixed bug with excerpt - excerpt was not being extracted from post properly.
+* Added information to Dashboard widget to show status of filters which may affect Email Users.
+
 = Version 4.6.10 =
 * Fixed bug with from_name which happens in certain circumstances.
 * Added ability to edit post/page/cpt email content and subject.
