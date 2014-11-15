@@ -98,6 +98,7 @@
 
     }
 
+if (0):
     // Replace the template variables concerning the post details
     // --
     $post = get_post( $post_id );
@@ -112,7 +113,6 @@
     //  Deal with post content in array form
     if (is_array($post_content)) $post_content = $post_content[0] ;
 
-if (0):
     if (mailusers_get_default_mail_format()=='html') {
         $post_excerpt = wpautop($post_excerpt);
     }
