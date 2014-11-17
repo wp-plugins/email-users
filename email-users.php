@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.6.11-beta-2
+Version: 4.6.11
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.6.11-beta-2');
+define( 'MAILUSERS_CURRENT_VERSION', '4.6.11');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1467,7 +1467,7 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
 	$headers[] = ($omit) ? sprintf('From: %s', $sender_email) : sprintf('From: "%s" <%s>', $sender_name, $sender_email);
 	$headers[] = sprintf('Return-Path: <%s>', $return_path);
 	$headers[] = ($omit) ? sprintf('Reply-To: %s', $sender_email) : sprintf('Reply-To: "%s" <%s>', $sender_name, $sender_email);
-    $headers[] = 'MIME-Version: 1.0';
+    //$headers[] = 'MIME-Version: 1.0';
 
     if (mailusers_get_add_x_mailer_header() == 'true')
 	    $headers[] = sprintf('X-Mailer: PHP %s', phpversion()) ;

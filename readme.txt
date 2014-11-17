@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
 Tested up to: 4.0
-Stable tag: 4.6.10
+Stable tag: 4.6.11
 License: GPL
 
 == Description ==
@@ -193,6 +193,7 @@ function update_publicworks_meta_filter()
 = Version 4.6.11 =
 * Fixed bug with excerpt - excerpt was not being extracted from post properly.
 * Added information to Dashboard widget to show status of filters which may affect Email Users.
+* Fixed duplicate MIME-Version header per [Support Forum bug report](https://wordpress.org/support/topic/duplicate-mime-version-header?replies=1#post-6230950).
 
 = Version 4.6.10 =
 * Fixed bug with from_name which happens in certain circumstances.
