@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
 Tested up to: 4.0
-Stable tag: 4.6.11
+Stable tag: 4.7.0
 License: GPL
 
 == Description ==
@@ -192,6 +192,7 @@ function update_publicworks_meta_filter()
 
 = Version 4.7.0 =
 * Added code to detect scenario where number of email recipients could potentially exceed the web server's ability to process it (PHP's max_input_vars setting).  A warning is displayed to the user when this situation is detected.
+* Swedish translation added (thank you Elger Lindgren).
 
 = Version 4.6.11 =
 * Fixed bug with excerpt - excerpt was not being extracted from post properly.
