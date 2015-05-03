@@ -3,8 +3,8 @@ Contributors: vprat, mpwalsh8, marvinlabs
 Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
-Tested up to: 4.1.1
-Stable tag: 4.7.1
+Tested up to: 4.2.1
+Stable tag: 4.7.2
 License: GPL
 
 == Description ==
@@ -220,6 +220,9 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.7.2 =
+*  Added *mailusers_html_wrapper* filter to allow sites to customize the HTML which is wrapped around the message text.  When using this hook, the hook implementation is responsible for adding all of necessary HTML necessary for a valid document.  There is an example usage in the /examples directory within the plugin.
 
 = Version 4.7.1 =
 *  Tightened up the max_input_vars check to account for older versions of PHP which do not have this setting.

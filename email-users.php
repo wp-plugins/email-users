@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.7.1
+Version: 4.7.2
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.7.1');
+define( 'MAILUSERS_CURRENT_VERSION', '4.7.2');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1508,7 +1508,12 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
         if (mailusers_get_add_mime_version_header() == 'true')
 		    $headers[] = 'MIME-Version: 1.0';
 		$headers[] = sprintf('Content-Type: %s; charset="%s"', get_bloginfo('html_type'), get_bloginfo('charset')) ;
-		$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
+
+        //  Apply HTML wrapper filter(s) if one exists
+        if (has_filter('mailusers_html_wrapper'))
+            $mailtext = apply_filters('mailusers_html_wrapper', $subject, $message, $footer) ;
+        else
+		    $mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
 	} else {
         if (mailusers_get_add_mime_version_header() == 'true')
 		    $headers[] = 'MIME-Version: 1.0';
@@ -2008,5 +2013,62 @@ function mailusers_mandrill_headers($to, $headers, $bcc)
 }
 
 add_filter('mailusers_manipulate_headers', 'mailusers_mandrill_headers', 10, 3) ;
+endif;
+
+if (1):
+/**
+ * To customize the look of HTML email or to integrate with other
+ * plugins which enhance wp_mail() (e.g. WP Better Emails), use this
+ * hook to wrap the email content with whatever HTML is desired - or
+ * in some cases, none at all if another plugin will be adding the
+ * necessary HTML.
+ *
+ * This example wraps an "Urgent" message and table around the email
+ * content so the background can be styled.  A table is the best way
+ * to do this because not all mail clients will recognize styling
+ * elements such as BODY and DIV like a traditional web page.
+ *
+ * Drop this code snippet and modify to suit your needs into your
+ * theme's functions.php file.
+ *
+ * @see https://wordpress.org/plugins/wp-better-emails/
+ * @see https://litmus.com/blog/background-colors-html-email
+ *
+ */
+function mailusers_sample_html_wrapper($subject, $message, $footer)
+{
+    //  Wrap the HTML in proper header and body tags
+    //  add some CSS styling to make the email look good.
+
+    $mailtext = sprintf('
+<html>
+<head>
+<title>%s</title>
+<style>
+table { border: 1px solid black; width: 800px; background-color: #c5f6c0; }
+td { background-color: #c5f6c0 }
+</style>
+</head>
+<body>
+<table class="content">
+<tr>
+<td class="content">
+<div class="content">
+<h1>This is an Urgent Message from Email Users!</h1>
+%s
+</div>
+<div class="footer">
+%s
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>', $subject, $message, $footer) ;
+    
+    return $mailtext ;
+}
+
+add_filter('mailusers_html_wrapper', 'mailusers_sample_html_wrapper', 10, 3) ;
 endif;
 ?>
