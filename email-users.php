@@ -2015,7 +2015,7 @@ function mailusers_mandrill_headers($to, $headers, $bcc)
 add_filter('mailusers_manipulate_headers', 'mailusers_mandrill_headers', 10, 3) ;
 endif;
 
-if (1):
+if (0):
 /**
  * To customize the look of HTML email or to integrate with other
  * plugins which enhance wp_mail() (e.g. WP Better Emails), use this
