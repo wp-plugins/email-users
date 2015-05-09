@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.7.2
+Version: 4.7.3-beta-1
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.7.2');
+define( 'MAILUSERS_CURRENT_VERSION', '4.7.3-beta-1');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -230,10 +230,17 @@ function mailusers_plugin_deactivation() {
 * Add default user meta information
 */
 function mailusers_add_default_user_meta() {
+if (0) :
 	$users = get_users() ;
 	foreach ($users as $user) {
 		mailusers_user_register($user->ID);
 	}
+else :
+    $users = get_users(array('blog_id' => get_current_blog_id(), 'fields' => 'ID') );
+	foreach ($users as $user) {
+		mailusers_user_register($user);
+	}
+endif;
 }
 
 /**
@@ -1513,7 +1520,11 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
         if (has_filter('mailusers_html_wrapper'))
             $mailtext = apply_filters('mailusers_html_wrapper', $subject, $message, $footer) ;
         else
-		    $mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
+		    //$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
+
+$mailtext = preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''), $message) ;
+//$mailtext = preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),
+        //sprintf('<h1>WPBE Test</h1><div>%s</div>', $message)) ;
 	} else {
         if (mailusers_get_add_mime_version_header() == 'true')
 		    $headers[] = 'MIME-Version: 1.0';
@@ -1851,7 +1862,7 @@ class mailusersDebugPHPMailer {
     }
 }
 
-add_action( 'phpmailer_init', 'mailusers_phpmailer_init', 99 );
+add_action( 'phpmailer_init', 'mailusers_phpmailer_init', 1000 );
 function mailusers_phpmailer_init( $phpmailer ) {
     $phpmailer = new mailusersDebugPHPMailer();
 }
@@ -2070,5 +2081,45 @@ td { background-color: #c5f6c0 }
 }
 
 add_filter('mailusers_html_wrapper', 'mailusers_sample_html_wrapper', 10, 3) ;
+endif;
+if (0):
+/**
+ * To customize the look of HTML email or to integrate with other
+ * plugins which enhance wp_mail() (e.g. WP Better Emails), use this
+ * hook to wrap the email content with whatever HTML is desired - or
+ * in some cases, none at all if another plugin will be adding the
+ * necessary HTML.
+ *
+ * This example wraps an "Urgent" message and table around the email
+ * content so the background can be styled.  A table is the best way
+ * to do this because not all mail clients will recognize styling
+ * elements such as BODY and DIV like a traditional web page.
+ *
+ * Drop this code snippet and modify to suit your needs into your
+ * theme's functions.php file.
+ *
+ * @see https://wordpress.org/plugins/wp-better-emails/
+ * @see https://litmus.com/blog/background-colors-html-email
+ *
+ */
+function mailusers_sample_html_wrapper($subject, $message, $footer)
+{
+    //  WP Better Emails will handle the HTML wrapping so simply return
+    //  the message content.
+
+    return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),
+        sprintf('<h1>WPBE Test</h1><div>%s</div>', $message)) ;
+}
+
+add_filter('mailusers_html_wrapper', 'mailusers_sample_html_wrapper', 10, 3) ;
+endif;
+
+if (1):
+
+add_filter( 'wp_mail_content_type', 'mailusers_set_content_type' );
+function mailusers_set_content_type( $content_type ) {
+	return 'text/plain';
+}
+
 endif;
 ?>

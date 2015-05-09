@@ -221,6 +221,9 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.7.3 =
+*  Changed plugin activation hook to handle sites with large amounts of users.  This addresses an out of memory bug reported on the WordPress Support Forum.  The get_users() function returns a large amount of information for each user by default, the activation hook only needs the ID field.
+
 = Version 4.7.2 =
 *  Added *mailusers_html_wrapper* filter to allow sites to customize the HTML which is wrapped around the message text.  When using this hook, the hook implementation is responsible for adding all of necessary HTML necessary for a valid document.  There is an example usage in the /examples directory within the plugin.
 
