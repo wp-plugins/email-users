@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
 Tested up to: 4.2.2
-Stable tag: 4.7.3
+Stable tag: 4.7.4
 License: GPL
 
 == Description ==
@@ -220,6 +220,9 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.7.4 =
+*  Resolved a number of PHP Strict Standard notices resulting from calling non-static functions statically.
 
 = Version 4.7.3 =
 *  Changed plugin activation hook to handle sites with large amounts of users.  This addresses an out of memory bug reported on the WordPress Support Forum.  The get_users() function returns a large amount of information for each user by default, the activation hook only needs the ID field.
