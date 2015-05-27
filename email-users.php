@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /*
 Plugin Name: Email Users
-Version: 4.7.4
+Version: 4.7.5
 Plugin URI: http://wordpress.org/extend/plugins/email-users/
 Description: Allows the site editors to send an e-mail to the blog users. Credits to <a href="http://www.catalinionescu.com">Catalin Ionescu</a> who gave me (Vincent Pratt) some ideas for the plugin and has made a similar plugin. Bug reports and corrections by Cyril Crua, Pokey and Mike Walsh.  Development for enhancements and bug fixes since version 4.1 primarily by <a href="http://michaelwalsh.org">Mike Walsh</a>.
 Author: Mike Walsh & MarvinLabs
@@ -27,7 +27,7 @@ Author URI: http://www.michaelwalsh.org
 */
 
 // Version of the plugin
-define( 'MAILUSERS_CURRENT_VERSION', '4.7.4');
+define( 'MAILUSERS_CURRENT_VERSION', '4.7.5');
 
 // i18n plugin domain
 define( 'MAILUSERS_I18N_DOMAIN', 'email-users' );
@@ -1520,11 +1520,8 @@ function mailusers_send_mail($recipients = array(), $subject = '', $message = ''
         if (has_filter('mailusers_html_wrapper'))
             $mailtext = apply_filters('mailusers_html_wrapper', $subject, $message, $footer) ;
         else
-		    //$mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
+		    $mailtext = "<html><head><title>" . $subject . "</title></head><body>" . $message . $footer . "</body></html>";
 
-$mailtext = preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''), $message) ;
-//$mailtext = preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),
-        //sprintf('<h1>WPBE Test</h1><div>%s</div>', $message)) ;
 	} else {
         if (mailusers_get_add_mime_version_header() == 'true')
 		    $headers[] = 'MIME-Version: 1.0';
