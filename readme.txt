@@ -4,7 +4,7 @@ Donate link: http://michaelwalsh.org/wordpress/wordpress-plugins/email-users/
 Tags: email, users, list, admin
 Requires at least: 3.6.1
 Tested up to: 4.2.2
-Stable tag: 4.7.4
+Stable tag: 4.7.5
 License: GPL
 
 == Description ==
@@ -220,6 +220,9 @@ function update_publicworks_meta_filter()
 `
 
 == Changelog ==
+
+= Version 4.7.5 =
+* Fixed bug in footer text setting introduced during WPBE testing.
 
 = Version 4.7.4 =
 *  Resolved a number of PHP Strict Standard notices resulting from calling non-static functions statically.
