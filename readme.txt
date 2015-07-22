@@ -221,6 +221,9 @@ function update_publicworks_meta_filter()
 
 == Changelog ==
 
+= Version 4.7.6 =
+* Fixed integration bug with ItThinx Groups plugin due to PHP 5.4 and 5.5 differences.  Tested with Groups 1.7.1 and WordPress 4.2.2.
+
 = Version 4.7.5 =
 * Fixed bug in footer text setting introduced during WPBE testing.
 
